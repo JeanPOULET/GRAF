@@ -1,12 +1,5 @@
 package m1graf2020;
 
-
-import m1graf2020.Exceptions.NodeAlreadyExist;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
-
 public class Node {
 
     private int id;

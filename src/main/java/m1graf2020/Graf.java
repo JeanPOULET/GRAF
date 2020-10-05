@@ -69,11 +69,13 @@ public class Graf {
             }
         }
 
+        Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
             if (myNode.equals(n)) {
-                adjList.remove(myNode);
+                toRemove = myNode;
             }
         }
+        adjList.remove(toRemove);
         poubelle.add(n.getId());
 
     }
@@ -86,13 +88,18 @@ public class Graf {
                 }
             }
         }*/
-
+        Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == id) {
-                adjList.remove(myNode);
+               toRemove = myNode;
             }
         }
+        adjList.remove(toRemove);
         poubelle.add(id);
+    }
+
+    public List<Node> getSuccessors(Node n){
+        return adjList.get(n);
     }
 
     public Set<Node> getNodes() {
@@ -103,6 +110,10 @@ public class Graf {
         return poubelle;
     }
 
+    public HashMap<Node, List<Node>> getMap(){
+        return adjList;
+    }
+
     public static int indexToUse() {
         if (poubelle.isEmpty()) {
             return adjList.keySet().size()+1;
@@ -110,6 +121,17 @@ public class Graf {
         int i = poubelle.first();
         poubelle.remove(i);
         return i;
+    }
+
+    public void addEdge(Node from, Node to) {
+        for(Node key : adjList.keySet()) {
+            if(key.equals(from)){
+                adjList.get(key).add(to);
+            }
+        }
+//        List<Node> nodeDestination = new ArrayList<>();
+//        nodeDestination.add(to);
+//        adjList.put(from, nodeDestination);
     }
 
 
