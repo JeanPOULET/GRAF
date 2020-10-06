@@ -17,6 +17,7 @@ public class main {
         g.addNode(1);
         g.addNode(new Node());
         g.addEdge(2,1);
+        g.addEdge(1,2);
         for (Node key : g.getMap().keySet()) {
             List<Node> value = g.getMap().get(key);
             System.out.print("[" + key.getId() + "] -> ");
@@ -29,18 +30,40 @@ public class main {
         g.addNode(n3);
         System.out.println("Nombre de noeud (expect 3) : " + g.nbNodes());
         System.out.println("3 existe (expect true): " + g.existsNode(n3));
-        System.out.println("Graph :");
 
-        //Affichage map
-        for (Node n : g.getNodes()) {
-            System.out.print("[" + n.getId() + "]");
+        for (Node key : g.getMap().keySet()) {
+            List<Node> value = g.getMap().get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
         }
+
+        for (Edge ed : g.getEdges()){
+            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
+        }
+
         System.out.println();
 
         g.removeNode(2);
 
         System.out.println("edge de 2 à 1 exists ? expect : false  => " +g.existsEdge(2,1));
 
+        for (Node key : g.getMap().keySet()) {
+            List<Node> value = g.getMap().get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
+        }
+
+        for (Edge ed : g.getEdges()){
+            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
+        }
+
+        System.out.println();
         //Affichage map
         for (Node n : g.getNodes()) {
             System.out.print("[" + n.getId() + "]");

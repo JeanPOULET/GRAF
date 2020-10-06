@@ -2,6 +2,7 @@ package m1graf2020;
 
 import m1graf2020.Exceptions.NodeAlreadyExist;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Graf {
@@ -108,19 +109,31 @@ public class Graf {
     }
 
     public void removeNode(int id) {
-        Node toRemove = new Node();
+       /* Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == id) {
                 toRemove = myNode;
                 break;
             }
-        }
-        for (Node myNode : adjList.get(toRemove)){
-            removeEdge(toRemove, myNode);
-        }
+        }*/
 
-        adjList.remove(adjList.get(toRemove));
-        adjList.remove(toRemove);
+        /*List<Edge> newEdges= new ArrayList<Edge>();
+        for (Edge myEdge : edges){
+            if(myEdge.getFrom() != id && myEdge.getTo() != id){
+                newEdges.add(myEdge);
+            }
+        }
+        edges = newEdges;*/
+
+        edges.removeIf(e->(e.getFrom() == id || e.getTo() == id));
+        /*for (Edge myEdge : edges){
+            if(myEdge.getFrom() == id || myEdge.getTo() == id){
+                removeEdge(myEdge);
+            }
+        }*/
+        adjList.keySet().removeIf(e->(e.getId()==id));
+        //adjList.values().removeAll(Collections.singleton(toRemove));
+        //adjList.remove(toRemove);
         poubelle.add(id);
     }
 
