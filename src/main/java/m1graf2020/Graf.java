@@ -7,6 +7,7 @@ import java.util.*;
 public class Graf {
     private static HashMap<Node, List<Node>> adjList = new HashMap<>();
     private static TreeSet<Integer> poubelle = new TreeSet<>();
+    private static List<Edge> edges = new ArrayList<>();
 
 
     public Graf() {
@@ -61,18 +62,19 @@ public class Graf {
     }
 
     public void removeNode(Node n) {
-        for (List<Node> adjLs : adjList.values()) {
+        /*for (List<Node> adjLs : adjList.values()) {
             for (Node adjNode : adjLs) {
                 if (adjNode.equals(n)) {
                     adjLs.remove(adjNode);
                 }
             }
-        }
+        }*/
 
         Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
             if (myNode.equals(n)) {
                 toRemove = myNode;
+                break;
             }
         }
         adjList.remove(toRemove);
@@ -92,15 +94,20 @@ public class Graf {
         Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == id) {
-               toRemove = myNode;
+                toRemove = myNode;
+                break;
             }
         }
         adjList.remove(toRemove);
         poubelle.add(id);
     }
 
-    public List<Node> getSuccessors(Node n){
+    public List<Node> getSuccessors(Node n) {
         return adjList.get(n);
+    }
+
+    public boolean adjacent(Node u, Node v) {
+        return false;
     }
 
     public Set<Node> getNodes() {
@@ -111,30 +118,83 @@ public class Graf {
         return poubelle;
     }
 
-    public HashMap<Node, List<Node>> getMap(){
+    public HashMap<Node, List<Node>> getMap() {
         return adjList;
     }
 
 
     public static int indexToUse() {
         if (poubelle.isEmpty()) {
-            return adjList.keySet().size()+1;
+            return adjList.keySet().size() + 1;
         }
         int i = poubelle.first();
         poubelle.remove(i);
         return i;
     }
 
-    public void addEdge(Node from, Node to) {
-        for(Node key : adjList.keySet()) {
-            if(key.equals(from)){
-                adjList.get(key).add(to);
+    public int nbEdges() {
+        return edges.size();
+    }
+
+    /**
+     * Ordre définie entre u et v ?
+     *
+     * @param u
+     * @param v
+     * @return
+     */
+    public boolean existsEdge(Node u, Node v) {
+        for (Edge e : edges) {
+            if (u.getId() == e.getFrom() && v.getId() == e.getTo()
+                    || u.getId() == e.getTo() && v.getId() == e.getFrom()) {
+                return true;
             }
         }
-//        List<Node> nodeDestination = new ArrayList<>();
-//        nodeDestination.add(to);
-//        adjList.put(from, nodeDestination);
+        return false;
     }
+
+    public boolean existsEdge(int u, int v) {
+        for (Edge e : edges) {
+            if (u == e.getFrom() && v == e.getTo()
+                    || u == e.getTo() && v == e.getFrom()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean existsEdge(Edge e) {
+        return edges.contains(e);
+    }
+
+    public void addEdge(Node from, Node to) {
+        Edge ed = new Edge(from.getId(), to.getId());
+        if (!edges.contains(ed)) {
+            adjList.get(from).add(to);
+            edges.add(new Edge(from.getId(), to.getId()));
+        }
+    }
+
+    public void addEdge(int from, int to) {
+        Edge ed = new Edge(from, to);
+        if (!edges.contains(ed)) {
+            adjList.get(new Node(from)).add(new Node(to));
+            edges.add(new Edge(from, to));
+        }
+    }
+
+
+    public void addEdge(Edge ed) {
+        if (!edges.contains(ed)) {
+            for (Node n : adjList.keySet()) {
+                if (n.getId() == ed.getFrom()) {
+                    adjList.get(n).add(new Node(ed.getTo()));
+                    edges.add(ed);
+                }
+            }
+        }
+    }
+
 
 }
 

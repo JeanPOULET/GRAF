@@ -1,6 +1,6 @@
 package m1graf2020;
 
-public class Node {
+public class Node implements Comparable<Node> {
 
     private int id;
 
@@ -13,14 +13,22 @@ public class Node {
     }
 
     @Override
-    public boolean equals(Object o){
-        int i = (int) o;
-        return i == this.id;
+    public boolean equals(Object o) {
+        Node i = (Node) o;
+        return i.getId() == this.id;
     }
 
 
-    public int getId(){
+
+    public int getId() {
         return this.id;
     }
 
+    @Override
+    public int compareTo(Node o) {
+        if (o.getId() == this.id) {
+            return 0;
+        }
+        return o.getId() > this.id ? 1 : -1;
+    }
 }
