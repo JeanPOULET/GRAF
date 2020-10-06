@@ -16,6 +16,15 @@ public class main {
         System.out.println("Nombre de noeud (expect 0) : " + g.nbNodes());
         g.addNode(1);
         g.addNode(new Node());
+        g.addEdge(2,1);
+        for (Node key : g.getMap().keySet()) {
+            List<Node> value = g.getMap().get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
+        }
         System.out.println("Noeud numéro " + g.getNode(2).getId());
         g.addNode(n3);
         System.out.println("Nombre de noeud (expect 3) : " + g.nbNodes());
@@ -30,6 +39,8 @@ public class main {
 
         g.removeNode(2);
 
+        System.out.println("edge de 2 à 1 exists ? expect : false  => " +g.existsEdge(2,1));
+
         //Affichage map
         for (Node n : g.getNodes()) {
             System.out.print("[" + n.getId() + "]");
@@ -37,11 +48,6 @@ public class main {
         System.out.println();
 
         System.out.println("2 existe (expect false): " + g.existsNode(2));
-
-        System.out.println("Poubelle :");
-        for (int i : g.getPoubelle()) {
-            System.out.println("elem : " + i);
-        }
 
         g.addNode(new Node());
 

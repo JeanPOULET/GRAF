@@ -48,7 +48,7 @@ public class Graf {
     }
 
     public boolean existsNode(Node n) {
-        return adjList.keySet().contains(n);
+        return adjList.containsKey(n);
     }
 
     public boolean existsNode(int id) {
@@ -88,13 +88,13 @@ public class Graf {
     }
 
     public void removeNode(Node n) {
-        /*for (List<Node> adjLs : adjList.values()) {
+        for (List<Node> adjLs : adjList.values()) {
             for (Node adjNode : adjLs) {
                 if (adjNode.equals(n)) {
                     adjLs.remove(adjNode);
                 }
             }
-        }*/
+        }
 
         Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
@@ -202,8 +202,12 @@ public class Graf {
     public void addEdge(int from, int to) {
         Edge ed = new Edge(from, to);
         if (!edges.contains(ed)) {
-            adjList.get(new Node(from)).add(new Node(to));
-            edges.add(new Edge(from, to));
+            for (Node n : adjList.keySet()) {
+                if (n.getId() == ed.getFrom()) {
+                    adjList.get(n).add(new Node(ed.getTo()));
+                    edges.add(ed);
+                }
+            }
         }
     }
 
