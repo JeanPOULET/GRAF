@@ -108,14 +108,6 @@ public class Graf {
     }
 
     public void removeNode(int id) {
-        /*for (List<Node> adjLs : adjList.values()) {
-            for (Node adjNode : adjLs) {
-                if (adjNode.getId() == id) {
-                    adjLs.remove(adjNode);
-                }
-            }
-        }*/
-
         Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == id) {
@@ -123,6 +115,11 @@ public class Graf {
                 break;
             }
         }
+        for (Node myNode : adjList.get(toRemove)){
+            removeEdge(toRemove, myNode);
+        }
+
+        adjList.remove(adjList.get(toRemove));
         adjList.remove(toRemove);
         poubelle.add(id);
     }
