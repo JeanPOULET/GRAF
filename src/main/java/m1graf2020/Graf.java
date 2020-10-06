@@ -66,8 +66,11 @@ public class Graf {
                 return adjNode;
             }
         }
-
         return null;
+    }
+
+    public List<Edge> getEdges() {
+        return edges;
     }
 
     public void addNode(Node n) throws NodeAlreadyExist {
@@ -107,13 +110,13 @@ public class Graf {
     public void removeNode(int id) {
         List<Node> toRemoveNodes = new ArrayList<>();
         Node willRemove = new Node(id);
-        for (List<Node> adjLs : adjList.values()) {
-            for (Node adjNode : adjLs) {
+        /*for( Map.Entry<Node, List<Node>> adjListEntry : adjList.entrySet()){
+            for (Node adjNode : adjListEntry.getValue()) {
                 if (adjNode.getId() == id) {
-                    toRemoveNodes.add(adjNode);
+                    toRemoveNodes.add(adjListEntry.getKey());
                 }
             }
-        }
+        }*/
 
         Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
@@ -156,6 +159,10 @@ public class Graf {
     public List<Node> getAllNodes() {
         List<Node> ln = new ArrayList<>(adjList.keySet());
         return ln;
+    }
+
+    public int nbEdges() {
+        return edges.size();
     }
 
     /**
@@ -209,7 +216,6 @@ public class Graf {
         }
     }
 
-
     public void addEdge(Edge ed) {
         if (!edges.contains(ed)) {
             for (Node n : adjList.keySet()) {
@@ -219,6 +225,53 @@ public class Graf {
                 }
             }
         }
+    }
+
+    public void removeEdge(Node from, Node to) {
+        Edge edToDelete = null;
+        for (Edge ed : edges) {
+            if (ed.getFrom() == from.getId() && ed.getTo() == to.getId()) {
+                edToDelete = ed;
+            }
+        }
+        if (edToDelete != null) {
+            edges.remove(edToDelete);
+        }
+
+        adjList.get(from).remove(to);
+    }
+
+    public void removeEdge(int from, int to) {
+        Edge edToDelete = new Edge();
+        for (Edge ed : edges) {
+            if (ed.getFrom() == from && ed.getTo() == to) {
+                edToDelete = ed;
+            }
+        }
+
+        edges.remove(edToDelete);
+
+        Node nodeToDelete = new Node();
+        for (Node myNode : adjList.keySet()){
+            if(myNode.getId() == from){
+                nodeToDelete = myNode;
+            }
+        }
+
+        adjList.get(nodeToDelete).remove(new Node(to));
+    }
+
+    public void removeEdge(Edge e) {
+        edges.remove(e);
+
+        Node nodeToDelete = new Node();
+        for (Node myNode : adjList.keySet()){
+            if(myNode.getId() == e.getFrom()){
+                nodeToDelete = myNode;
+            }
+        }
+
+        adjList.get(nodeToDelete).remove(new Node(e.getTo()));
     }
 
 

@@ -119,5 +119,59 @@ public class main {
         for (Node key : allNode){
             System.out.print(key.getId() + ", ");
         }
+        System.out.println();
+
+        System.out.println("Nombre de lien (expect 5): " + g.nbEdges());
+
+        g.removeEdge(n3, n4);
+
+        for (Node key : g.getMap().keySet()) {
+            List<Node> value = g.getMap().get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
+        }
+
+        for (Edge ed : g.getEdges()){
+            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
+        }
+
+        System.out.println();
+
+        g.removeEdge(3, 5);
+
+        for (Node key : g.getMap().keySet()) {
+            List<Node> value = g.getMap().get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
+        }
+
+        for (Edge ed : g.getEdges()){
+            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
+        }
+
+        System.out.println();
+
+        g.removeEdge(e);
+
+        for (Node key : g.getMap().keySet()) {
+            List<Node> value = g.getMap().get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
+        }
+
+        for (Edge ed : g.getEdges()){
+            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
+        }
+
+        System.out.println();
     }
 }
