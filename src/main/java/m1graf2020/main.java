@@ -77,12 +77,41 @@ public class main {
             }
             System.out.println();
         }
-        Edge e = new Edge(4, 5);
-        g.addEdge(e);
 
-        System.out.println();
+        Edge e = new Edge(4, 2);
+        g.addEdge(e);
 
         System.out.println("graf a le edge : " + g.existsEdge(e));
 
+        for (Node key : g.getMap().keySet()) {
+            List<Node> value = g.getMap().get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
+        }
+
+        List<Node> ln = g.getSuccessors(n3);
+        System.out.print("Successors (expect 4, 5, 6, 7): ");
+        for (Node key : ln){
+            System.out.print("{" + key.getId() + "}");
+        }
+        System.out.println();
+
+        List<Node> ln2 = g.getSuccessors(3);
+        System.out.print("Successors2 (expect 4, 5, 6, 7): ");
+        for (Node key : ln2){
+            System.out.print("{" + key.getId() + "}");
+        }
+        System.out.println();
+
+        System.out.println("Adjacent ? (expect true, false true, false): " + g.adjacent(n3, n4) + " / " + g.adjacent(n5, n4) + " / " + g.adjacent(4, 2) + " / " + g.adjacent(1, 5));
+
+        System.out.print("Liste de tous les noeuds (expect 1, 2, ..., 7): ");
+        List<Node> allNode = g.getAllNodes();
+        for (Node key : allNode){
+            System.out.print(key.getId() + ", ");
+        }
     }
 }

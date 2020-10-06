@@ -18,6 +18,30 @@ public class Graf {
 
     }
 
+    /************************************ FONCTIONS A NOUS ************************************/
+
+    public Set<Node> getNodes() {
+        return adjList.keySet();
+    }
+
+    public TreeSet<Integer> getPoubelle() {
+        return poubelle;
+    }
+
+    public HashMap<Node, List<Node>> getMap() {
+        return adjList;
+    }
+
+    public static int indexToUse() {
+        if (poubelle.isEmpty()) {
+            return adjList.keySet().size() + 1;
+        }
+        int i = poubelle.first();
+        poubelle.remove(i);
+        return i;
+    }
+
+    /************************************ FONCTIONS A PAS NOUS ************************************/
 
     public static int nbNodes() {
         return adjList.keySet().size();
@@ -37,7 +61,6 @@ public class Graf {
     }
 
     public Node getNode(int id) {
-
         for (Node adjNode : adjList.keySet()) {
             if (adjNode.getId() == id) {
                 return adjNode;
@@ -79,7 +102,6 @@ public class Graf {
         }
         adjList.remove(toRemove);
         poubelle.add(n.getId());
-
     }
 
     public void removeNode(int id) {
@@ -106,34 +128,31 @@ public class Graf {
         return adjList.get(n);
     }
 
-    public boolean adjacent(Node u, Node v) {
-        return false;
-    }
-
-    public Set<Node> getNodes() {
-        return adjList.keySet();
-    }
-
-    public TreeSet<Integer> getPoubelle() {
-        return poubelle;
-    }
-
-    public HashMap<Node, List<Node>> getMap() {
-        return adjList;
-    }
-
-
-    public static int indexToUse() {
-        if (poubelle.isEmpty()) {
-            return adjList.keySet().size() + 1;
+    /**
+     * Si inexistant ???
+     * @param id
+     * @return
+     */
+    public List<Node> getSuccessors(int id) {
+        for (Node myNode : adjList.keySet()) {
+            if (myNode.getId() == id) {
+                return adjList.get(myNode);
+            }
         }
-        int i = poubelle.first();
-        poubelle.remove(i);
-        return i;
+        return adjList.get(new Node(id));
     }
 
-    public int nbEdges() {
-        return edges.size();
+    public boolean adjacent(Node u, Node v) {
+        return existsEdge(u,v);
+    }
+
+    public boolean adjacent(int u, int v) {
+        return existsEdge(u,v);
+    }
+
+    public List<Node> getAllNodes() {
+        List<Node> ln = new ArrayList<>(adjList.keySet());
+        return ln;
     }
 
     /**
