@@ -25,6 +25,11 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
+    public String toString(){
+        return id +" ";
+    }
+
+    @Override
     public int compareTo(Node o) {
         if (o.getId() == this.id) {
             return 0;
