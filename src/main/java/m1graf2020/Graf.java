@@ -42,6 +42,29 @@ public class Graf {
         return i;
     }
 
+    public static void printMap (){
+        for (Node key : adjList.keySet()) {
+            List<Node> value = adjList.get(key);
+            System.out.print("[" + key.getId() + "] -> ");
+            for (Node vNode : value) {
+                System.out.print("{" + vNode.getId() + "}");
+            }
+            System.out.println();
+        }
+
+        for (Edge ed : edges){
+            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
+        }
+
+        System.out.println();
+    }
+
+    public static void printPoubelle(){
+        for (int i : poubelle) {
+            System.out.println("elem : " + i);
+        }
+    }
+
     /************************************ FONCTIONS A PAS NOUS ************************************/
 
     public static int nbNodes() {
