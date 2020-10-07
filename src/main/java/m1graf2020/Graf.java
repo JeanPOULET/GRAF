@@ -230,14 +230,11 @@ public class Graf {
     public void removeEdge(Edge e) {
         edges.remove(e);
 
-        Node nodeToDelete = new Node();
-        for (Node myNode : adjList.keySet()) {
-            if (myNode.getId() == e.getFrom()) {
-                nodeToDelete = myNode;
-            }
-        }
+        Node nodeToDelete = new Node(e.getTo());
 
-        adjList.get(nodeToDelete).remove(new Node(e.getTo()));
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            entry.getValue().removeIf(node -> node.equals(nodeToDelete));
+        }
     }
 
 

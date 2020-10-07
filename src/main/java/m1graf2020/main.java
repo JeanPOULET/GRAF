@@ -146,7 +146,6 @@ public class main {
 
         System.out.println("Nombre de lien (expect 5): " + g.nbEdges());
 
-        g.removeNode(n4);
 
         for (Node key : g.getMap().keySet()) {
             List<Node> value = g.getMap().get(key);
@@ -156,8 +155,9 @@ public class main {
             }
             System.out.println();
         }
+        System.out.println();
 
-        /*g.removeEdge(n3, n4);
+        g.removeEdge(n3, n4);
 
         for (Node key : g.getMap().keySet()) {
             List<Node> value = g.getMap().get(key);
@@ -208,6 +208,6 @@ public class main {
             System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
         }
 
-        System.out.println();*/
+        System.out.println();
     }
 }
