@@ -72,7 +72,8 @@ public class Graf {
         System.out.println();
     }
 
-    public void printPoubelle() {
+
+    public void printPoubelle(){
         for (int i : poubelle) {
             System.out.println("elem : " + i);
         }
@@ -85,7 +86,7 @@ public class Graf {
     }
 
     public boolean existsNode(Node n) {
-        return adjList.containsKey(n);
+        return existsNode(n.getId());
     }
 
     public boolean existsNode(int id) {
@@ -123,7 +124,7 @@ public class Graf {
     }
 
     public void addNode(int id) throws NodeAlreadyExist {
-        if (existsNode(id)) {
+        if(existsNode(id)) {
             throw new NodeAlreadyExist();
         }
         adjList.put(new Node(id), new ArrayList<>());
