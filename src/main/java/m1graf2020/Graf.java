@@ -77,14 +77,14 @@ public class Graf {
         if (existsNode(n)) {
             throw new NodeAlreadyExist();
         }
-        adjList.put(n, new ArrayList<Node>());
+        adjList.put(n, new ArrayList<>());
     }
 
     public void addNode(int id) throws NodeAlreadyExist {
         if (existsNode(id)) {
             throw new NodeAlreadyExist();
         }
-        adjList.put(new Node(id), new ArrayList<Node>());
+        adjList.put(new Node(id), new ArrayList<>());
     }
 
     public void removeNode(Node n) {
@@ -108,15 +108,6 @@ public class Graf {
     }
 
     public void removeNode(int id) {
-        List<Node> toRemoveNodes = new ArrayList<>();
-        Node willRemove = new Node(id);
-        /*for( Map.Entry<Node, List<Node>> adjListEntry : adjList.entrySet()){
-            for (Node adjNode : adjListEntry.getValue()) {
-                if (adjNode.getId() == id) {
-                    toRemoveNodes.add(adjListEntry.getKey());
-                }
-            }
-        }*/
 
         Node toRemove = new Node();
         for (Node myNode : adjList.keySet()) {
@@ -252,8 +243,8 @@ public class Graf {
         edges.remove(edToDelete);
 
         Node nodeToDelete = new Node();
-        for (Node myNode : adjList.keySet()){
-            if(myNode.getId() == from){
+        for (Node myNode : adjList.keySet()) {
+            if (myNode.getId() == from) {
                 nodeToDelete = myNode;
             }
         }
@@ -265,8 +256,8 @@ public class Graf {
         edges.remove(e);
 
         Node nodeToDelete = new Node();
-        for (Node myNode : adjList.keySet()){
-            if(myNode.getId() == e.getFrom()){
+        for (Node myNode : adjList.keySet()) {
+            if (myNode.getId() == e.getFrom()) {
                 nodeToDelete = myNode;
             }
         }

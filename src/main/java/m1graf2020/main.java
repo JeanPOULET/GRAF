@@ -159,6 +159,8 @@ public class main {
 
         g.removeEdge(e);
 
+        System.out.println("edge exits ? expect false : " + g.existsEdge(e) );
+
         for (Node key : g.getMap().keySet()) {
             List<Node> value = g.getMap().get(key);
             System.out.print("[" + key.getId() + "] -> ");
