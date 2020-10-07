@@ -9,7 +9,12 @@ import java.util.Map;
 public class main {
     public static void main(String args[]) throws NodeAlreadyExist {
 
-        Node n3 = new Node(3);
+        Graf g = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+
+        g.printMap();
+
+
+       /* Node n3 = new Node(3);
 
         Graf g = new Graf();
 
@@ -155,6 +160,8 @@ public class main {
             System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
         }
 
-        System.out.println();
+        System.out.println();*/
+
+
     }
 }

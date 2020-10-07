@@ -4,10 +4,11 @@ import m1graf2020.Exceptions.NodeAlreadyExist;
 
 import java.lang.reflect.Array;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Graf {
     private HashMap<Node, List<Node>> adjList = new HashMap<>();
-    private static TreeSet<Integer> poubelle = new TreeSet<>();
+    private TreeSet<Integer> poubelle = new TreeSet<>();
     private List<Edge> edges = new ArrayList<>();
 
 
@@ -15,9 +16,19 @@ public class Graf {
 
     }
 
-    public Graf(int... SA) {
+    public Graf(int... SA) throws NodeAlreadyExist {
+        int actualNode = 1;
+        addNode(1);
+        for (int indice : SA) {
+            if (indice != 0) {
+                addEdge(actualNode, indice);
+            } else {
+                addNode(actualNode + 1);
+                actualNode++;
+            }
+        }
 
-
+        adjList = adjList.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1,e2) -> e1, HashMap::new));
 
     }
 
@@ -44,7 +55,7 @@ public class Graf {
         return i;
     }
 
-    public void printMap (){
+    public void printMap() {
         for (Node key : adjList.keySet()) {
             List<Node> value = adjList.get(key);
             System.out.print("[" + key.getId() + "] -> ");
@@ -54,14 +65,14 @@ public class Graf {
             System.out.println();
         }
 
-        for (Edge ed : edges){
-            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  " );
+        for (Edge ed : edges) {
+            System.out.print("(" + ed.getFrom() + "," + ed.getTo() + ")  ");
         }
 
         System.out.println();
     }
 
-    public static void printPoubelle(){
+    public void printPoubelle() {
         for (int i : poubelle) {
             System.out.println("elem : " + i);
         }
@@ -69,7 +80,7 @@ public class Graf {
 
     /************************************ FONCTIONS A PAS NOUS ************************************/
 
-    public  int nbNodes() {
+    public int nbNodes() {
         return adjList.keySet().size();
     }
 
@@ -105,8 +116,9 @@ public class Graf {
         }
         adjList.put(n, new ArrayList<>());
     }
+
     public void addNode() {
-        Node n  = new Node(indexToUse());
+        Node n = new Node(indexToUse());
         adjList.put(n, new ArrayList<>());
     }
 
