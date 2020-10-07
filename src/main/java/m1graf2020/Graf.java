@@ -6,9 +6,9 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Graf {
-    private static HashMap<Node, List<Node>> adjList = new HashMap<>();
-    private static TreeSet<Integer> poubelle = new TreeSet<>();
-    private static List<Edge> edges = new ArrayList<>();
+    private HashMap<Node, List<Node>> adjList = new HashMap<>();
+    private TreeSet<Integer> poubelle = new TreeSet<>();
+    private List<Edge> edges = new ArrayList<>();
 
 
     public Graf() {
@@ -42,7 +42,7 @@ public class Graf {
         return i;
     }
 
-    public static void printMap (){
+    public void printMap (){
         for (Node key : adjList.keySet()) {
             List<Node> value = adjList.get(key);
             System.out.print("[" + key.getId() + "] -> ");
@@ -59,7 +59,7 @@ public class Graf {
         System.out.println();
     }
 
-    public static void printPoubelle(){
+    public void printPoubelle(){
         for (int i : poubelle) {
             System.out.println("elem : " + i);
         }
@@ -105,7 +105,7 @@ public class Graf {
     }
 
     public void addNode(int id) throws NodeAlreadyExist {
-        if (existsNode(id)) {
+        if(existsNode(id)) {
             throw new NodeAlreadyExist();
         }
         adjList.put(new Node(id), new ArrayList<>());
