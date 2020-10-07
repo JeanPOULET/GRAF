@@ -2,6 +2,7 @@ package m1graf2020;
 
 import m1graf2020.Exceptions.NodeAlreadyExist;
 
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Graf {
@@ -18,97 +19,7 @@ public class Graf {
 
     }
 
-
-    public static int nbNodes() {
-        return adjList.keySet().size();
-    }
-
-    public boolean existsNode(Node n) {
-        return adjList.keySet().contains(n);
-    }
-
-    public boolean existsNode(int id) {
-        for (Node adjNode : adjList.keySet()) {
-            if (adjNode.getId() == id) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public Node getNode(int id) {
-
-        for (Node adjNode : adjList.keySet()) {
-            if (adjNode.getId() == id) {
-                return adjNode;
-            }
-        }
-
-        return null;
-    }
-
-    public void addNode(Node n) throws NodeAlreadyExist {
-        if (existsNode(n)) {
-            throw new NodeAlreadyExist();
-        }
-        adjList.put(n, new ArrayList<Node>());
-    }
-
-    public void addNode(int id) throws NodeAlreadyExist {
-        if (existsNode(id)) {
-            throw new NodeAlreadyExist();
-        }
-        adjList.put(new Node(id), new ArrayList<Node>());
-    }
-
-    public void removeNode(Node n) {
-        /*for (List<Node> adjLs : adjList.values()) {
-            for (Node adjNode : adjLs) {
-                if (adjNode.equals(n)) {
-                    adjLs.remove(adjNode);
-                }
-            }
-        }*/
-
-        Node toRemove = new Node();
-        for (Node myNode : adjList.keySet()) {
-            if (myNode.equals(n)) {
-                toRemove = myNode;
-                break;
-            }
-        }
-        adjList.remove(toRemove);
-        poubelle.add(n.getId());
-
-    }
-
-    public void removeNode(int id) {
-       /* for (List<Node> adjLs : adjList.values()) {
-            for (Node adjNode : adjLs) {
-                if (adjNode.getId() == id) {
-                    adjLs.remove(adjNode);
-                }
-            }
-        }*/
-
-        Node toRemove = new Node();
-        for (Node myNode : adjList.keySet()) {
-            if (myNode.getId() == id) {
-                toRemove = myNode;
-                break;
-            }
-        }
-        adjList.remove(toRemove);
-        poubelle.add(id);
-    }
-
-    public List<Node> getSuccessors(Node n) {
-        return adjList.get(n);
-    }
-
-    public boolean adjacent(Node u, Node v) {
-        return false;
-    }
+    /************************************ FONCTIONS A NOUS ************************************/
 
     public Set<Node> getNodes() {
         return adjList.keySet();
@@ -122,7 +33,6 @@ public class Graf {
         return adjList;
     }
 
-
     public static int indexToUse() {
         if (poubelle.isEmpty()) {
             return adjList.keySet().size() + 1;
@@ -130,6 +40,106 @@ public class Graf {
         int i = poubelle.first();
         poubelle.remove(i);
         return i;
+    }
+
+    /************************************ FONCTIONS A PAS NOUS ************************************/
+
+    public static int nbNodes() {
+        return adjList.keySet().size();
+    }
+
+    public boolean existsNode(Node n) {
+        return adjList.containsKey(n);
+    }
+
+    public boolean existsNode(int id) {
+        for (Node adjNode : adjList.keySet()) {
+            if (adjNode.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public Node getNode(int id) {
+        for (Node adjNode : adjList.keySet()) {
+            if (adjNode.getId() == id) {
+                return adjNode;
+            }
+        }
+        return null;
+    }
+
+    public List<Edge> getEdges() {
+        return edges;
+    }
+
+    public void addNode(Node n) throws NodeAlreadyExist {
+        if (existsNode(n)) {
+            throw new NodeAlreadyExist();
+        }
+        adjList.put(n, new ArrayList<>());
+    }
+
+    public void addNode(int id) throws NodeAlreadyExist {
+        if (existsNode(id)) {
+            throw new NodeAlreadyExist();
+        }
+        adjList.put(new Node(id), new ArrayList<>());
+    }
+
+    public void removeNode(Node n) {
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            entry.getValue().removeIf(node -> node.equals(n));
+        }
+        edges.removeIf(e -> (e.getFrom() == n.getId() || e.getTo() == n.getId()));
+
+        adjList.keySet().removeIf(e -> (e.getId() == n.getId()));
+        poubelle.add(n.getId());
+    }
+
+    public void removeNode(int id) {
+        Node toRemove = new Node(id);
+        edges.removeIf(e -> (e.getFrom() == id || e.getTo() == id));
+
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            entry.getValue().removeIf(node -> node.equals(toRemove));
+        }
+
+        adjList.keySet().removeIf(e -> (e.getId() == id));
+        poubelle.add(id);
+    }
+
+    public List<Node> getSuccessors(Node n) {
+        return adjList.get(n);
+    }
+
+    /**
+     * Si inexistant ???
+     *
+     * @param id
+     * @return
+     */
+    public List<Node> getSuccessors(int id) {
+        for (Node myNode : adjList.keySet()) {
+            if (myNode.getId() == id) {
+                return adjList.get(myNode);
+            }
+        }
+        return adjList.get(new Node(id));
+    }
+
+    public boolean adjacent(Node u, Node v) {
+        return existsEdge(u, v);
+    }
+
+    public boolean adjacent(int u, int v) {
+        return existsEdge(u, v);
+    }
+
+    public List<Node> getAllNodes() {
+        List<Node> ln = new ArrayList<>(adjList.keySet());
+        return ln;
     }
 
     public int nbEdges() {
@@ -178,11 +188,14 @@ public class Graf {
     public void addEdge(int from, int to) {
         Edge ed = new Edge(from, to);
         if (!edges.contains(ed)) {
-            adjList.get(new Node(from)).add(new Node(to));
-            edges.add(new Edge(from, to));
+            for (Node n : adjList.keySet()) {
+                if (n.getId() == ed.getFrom()) {
+                    adjList.get(n).add(new Node(ed.getTo()));
+                    edges.add(ed);
+                }
+            }
         }
     }
-
 
     public void addEdge(Edge ed) {
         if (!edges.contains(ed)) {
@@ -193,6 +206,38 @@ public class Graf {
                 }
             }
         }
+    }
+
+    public void removeEdge(Node from, Node to) {
+        edges.removeIf(e -> (e.getFrom() == from.getId() || e.getTo() == to.getId()));
+
+        adjList.get(from).remove(to);
+    }
+
+    public void removeEdge(int from, int to) {
+        edges.removeIf(e -> (e.getFrom() == from || e.getTo() == to));
+
+        Node nodeToDelete = new Node();
+        for (Node myNode : adjList.keySet()) {
+            if (myNode.getId() == from) {
+                nodeToDelete = myNode;
+            }
+        }
+
+        adjList.get(nodeToDelete).remove(new Node(to));
+    }
+
+    public void removeEdge(Edge e) {
+        edges.remove(e);
+
+        Node nodeToDelete = new Node();
+        for (Node myNode : adjList.keySet()) {
+            if (myNode.getId() == e.getFrom()) {
+                nodeToDelete = myNode;
+            }
+        }
+
+        adjList.get(nodeToDelete).remove(new Node(e.getTo()));
     }
 
 

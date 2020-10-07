@@ -4,9 +4,18 @@ public class Edge implements Comparable<Edge> {
     private int from;
     private int to;
 
+    public Edge(){
+
+    }
+
     public Edge(int from, int to) {
         this.from = from;
         this.to = to;
+    }
+
+    public Edge(Node from, Node to) {
+        this.from = from.getId();
+        this.to = to.getId();
     }
 
     public int getFrom() {
