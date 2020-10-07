@@ -17,6 +17,8 @@ public class Graf {
 
     public Graf(int... SA) {
 
+
+
     }
 
     /************************************ FONCTIONS A NOUS ************************************/
@@ -33,7 +35,7 @@ public class Graf {
         return adjList;
     }
 
-    public static int indexToUse() {
+    public int indexToUse() {
         if (poubelle.isEmpty()) {
             return adjList.keySet().size() + 1;
         }
@@ -67,7 +69,7 @@ public class Graf {
 
     /************************************ FONCTIONS A PAS NOUS ************************************/
 
-    public static int nbNodes() {
+    public  int nbNodes() {
         return adjList.keySet().size();
     }
 
@@ -101,6 +103,10 @@ public class Graf {
         if (existsNode(n)) {
             throw new NodeAlreadyExist();
         }
+        adjList.put(n, new ArrayList<>());
+    }
+    public void addNode() {
+        Node n  = new Node(indexToUse());
         adjList.put(n, new ArrayList<>());
     }
 
@@ -240,7 +246,7 @@ public class Graf {
     public void removeEdge(int from, int to) {
         edges.removeIf(e -> (e.getFrom() == from || e.getTo() == to));
 
-        Node nodeToDelete = new Node();
+        Node nodeToDelete = null;
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == from) {
                 nodeToDelete = myNode;
@@ -253,14 +259,11 @@ public class Graf {
     public void removeEdge(Edge e) {
         edges.remove(e);
 
-        Node nodeToDelete = new Node();
-        for (Node myNode : adjList.keySet()) {
-            if (myNode.getId() == e.getFrom()) {
-                nodeToDelete = myNode;
-            }
-        }
+        Node nodeToDelete = new Node(e.getTo());
 
-        adjList.get(nodeToDelete).remove(new Node(e.getTo()));
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            entry.getValue().removeIf(node -> node.equals(nodeToDelete));
+        }
     }
 
 

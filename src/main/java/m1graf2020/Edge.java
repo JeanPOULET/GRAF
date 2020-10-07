@@ -32,9 +32,9 @@ public class Edge implements Comparable<Edge> {
             if (o.getTo() == this.to) {
                 return 0;
             }
-            return o.getTo() > this.to ? 1 : -1;
+            return o.getTo() > this.to ? -1 : 1;
 
         }
-        return o.getFrom() > this.from ? 1 : -1;
+        return o.getFrom() > this.from ? -1 : 1;
     }
 }

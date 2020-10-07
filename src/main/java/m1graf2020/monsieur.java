@@ -109,7 +109,7 @@ public class monsieur {
         g.addEdge(6, 6);
         g.addEdge(1, 4);
         System.out.println("Graph now:");
-        System.out.println(g.toDotString());
+        System.out.println(g.toDotStringtoDotString());
         System.out.println(""+g.nbNodes()+" nodes, "+g.nbEdges()+" edges");
         nodes = g.getAllNodes();
         Collections.sort(nodes);
