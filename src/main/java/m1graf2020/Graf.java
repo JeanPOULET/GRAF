@@ -74,7 +74,7 @@ public class Graf {
     }
 
     public boolean existsNode(Node n) {
-        return adjList.containsKey(n);
+        return existsNode(n.getId());
     }
 
     public boolean existsNode(int id) {

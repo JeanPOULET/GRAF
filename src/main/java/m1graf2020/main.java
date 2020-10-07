@@ -43,7 +43,7 @@ public class main {
 
         System.out.println("Poubelle :");
 
-        Graf.printPoubelle();
+        g.printPoubelle();
 
         Node n4 = new Node(4);
         g.addNode(n4);
