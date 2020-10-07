@@ -6,9 +6,9 @@ import java.lang.reflect.Array;
 import java.util.*;
 
 public class Graf {
-    private static HashMap<Node, List<Node>> adjList = new HashMap<>();
+    private HashMap<Node, List<Node>> adjList = new HashMap<>();
     private static TreeSet<Integer> poubelle = new TreeSet<>();
-    private static List<Edge> edges = new ArrayList<>();
+    private List<Edge> edges = new ArrayList<>();
 
 
     public Graf() {
@@ -16,6 +16,8 @@ public class Graf {
     }
 
     public Graf(int... SA) {
+
+
 
     }
 
@@ -33,7 +35,7 @@ public class Graf {
         return adjList;
     }
 
-    public static int indexToUse() {
+    public int indexToUse() {
         if (poubelle.isEmpty()) {
             return adjList.keySet().size() + 1;
         }
@@ -42,7 +44,7 @@ public class Graf {
         return i;
     }
 
-    public static void printMap (){
+    public void printMap (){
         for (Node key : adjList.keySet()) {
             List<Node> value = adjList.get(key);
             System.out.print("[" + key.getId() + "] -> ");
@@ -67,7 +69,7 @@ public class Graf {
 
     /************************************ FONCTIONS A PAS NOUS ************************************/
 
-    public static int nbNodes() {
+    public  int nbNodes() {
         return adjList.keySet().size();
     }
 
@@ -101,6 +103,10 @@ public class Graf {
         if (existsNode(n)) {
             throw new NodeAlreadyExist();
         }
+        adjList.put(n, new ArrayList<>());
+    }
+    public void addNode() {
+        Node n  = new Node(indexToUse());
         adjList.put(n, new ArrayList<>());
     }
 
@@ -240,7 +246,7 @@ public class Graf {
     public void removeEdge(int from, int to) {
         edges.removeIf(e -> (e.getFrom() == from || e.getTo() == to));
 
-        Node nodeToDelete = new Node();
+        Node nodeToDelete = null;
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == from) {
                 nodeToDelete = myNode;

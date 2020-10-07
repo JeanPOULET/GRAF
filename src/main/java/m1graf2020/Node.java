@@ -8,10 +8,6 @@ public class Node implements Comparable<Node> {
         this.id = id;
     }
 
-    public Node() {
-        this.id = Graf.indexToUse();
-    }
-
     @Override
     public boolean equals(Object o) {
         Node i = (Node) o;
@@ -34,6 +30,6 @@ public class Node implements Comparable<Node> {
         if (o.getId() == this.id) {
             return 0;
         }
-        return o.getId() > this.id ? 1 : -1;
+        return o.getId() > this.id ? -1 : 1;
     }
 }
