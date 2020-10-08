@@ -38,6 +38,10 @@ public class Graf {
         return adjList.keySet();
     }
 
+    public List<Edge> getEdges() {
+        return edges;
+    }
+
     public TreeSet<Integer> getPoubelle() {
         return poubelle;
     }
@@ -107,19 +111,15 @@ public class Graf {
         return null;
     }
 
-    public List<Edge> getEdges() {
-        return edges;
+    public void addNode() {
+        Node n = new Node(indexToUse());
+        adjList.put(n, new ArrayList<>());
     }
 
     public void addNode(Node n) throws NodeAlreadyExist {
         if (existsNode(n)) {
             throw new NodeAlreadyExist();
         }
-        adjList.put(n, new ArrayList<>());
-    }
-
-    public void addNode() {
-        Node n = new Node(indexToUse());
         adjList.put(n, new ArrayList<>());
     }
 
