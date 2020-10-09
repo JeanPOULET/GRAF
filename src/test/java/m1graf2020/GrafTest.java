@@ -1,7 +1,5 @@
 package m1graf2020;
 
-import static org.junit.Assert.assertTrue;
-
 import m1graf2020.Exceptions.NodeAlreadyExist;
 import org.junit.Assert;
 import org.junit.Before;
@@ -37,7 +35,7 @@ public class GrafTest
     @Test
     public void testNbNodesVide(){
         Set<Node> ln = g.getNodes();
-        Assert.assertTrue(ln.size() == g.nbNodes());
+        Assert.assertEquals(ln.size(), g.nbNodes());
     }
 
     @Test
@@ -45,29 +43,29 @@ public class GrafTest
         g.addNode();
         g.addNode();
         Set<Node> ln = g.getNodes();
-        Assert.assertTrue(ln.size() == g.nbNodes());
+        Assert.assertEquals(ln.size(), g.nbNodes());
     }
 
     @Test
     public void testExistsNodeWithNode() throws NodeAlreadyExist {
         g.addNode(n1);
         for (Node myNode : g.getNodes()){
-            Assert.assertTrue((myNode.getId() == n1.getId()) == g.existsNode(n1));
+            Assert.assertEquals((myNode.getId() == n1.getId()), g.existsNode(n1));
         }
     }
 
     @Test
     public void testExistsNodeWithInt() throws NodeAlreadyExist {
-        g.addNode(n1);
+        g.addNode(1);
         for (Node myNode : g.getNodes()){
-            Assert.assertTrue((myNode.getId() == n1.getId()) == g.existsNode(1));
+            Assert.assertTrue(myNode.getId() == 1 == g.existsNode(1));
         }
     }
 
     @Test
     public void testAddNodeWithInt() throws NodeAlreadyExist {
         g.addNode(1);
-        Assert.assertTrue(g.nbNodes() == 1);
+        Assert.assertEquals(1, g.nbNodes());
         Assert.assertTrue(g.existsNode(n1));
         Assert.assertTrue(g.existsNode(1));
         //g.printMap();
@@ -76,7 +74,7 @@ public class GrafTest
     @Test
     public void testAddNodeWithNode() throws NodeAlreadyExist {
         g.addNode(n1);
-        Assert.assertTrue(g.nbNodes() == 1);
+        Assert.assertEquals(1, g.nbNodes());
         Assert.assertTrue(g.existsNode(n1));
         Assert.assertTrue(g.existsNode(1));
         //g.printMap();
@@ -101,7 +99,7 @@ public class GrafTest
         g.addNode();
         Assert.assertTrue(g.existsNode(1));
         Assert.assertTrue(g.existsNode(n1));
-        Assert.assertTrue(g.nbNodes() == 1);
+        Assert.assertEquals(1, g.nbNodes());
     }
 
     @Test
@@ -164,7 +162,7 @@ public class GrafTest
         lnCheck.add(n3);
         List<Node> ln = g.getSuccessors(n1);
         for(int i = 0; i < ln.size(); i++){
-            Assert.assertTrue(ln.get(i).getId() == lnCheck.get(i).getId());
+            Assert.assertEquals(ln.get(i).getId(), lnCheck.get(i).getId());
         }
     }
 
@@ -185,7 +183,7 @@ public class GrafTest
         lnCheck.add(n3);
         List<Node> ln = g.getSuccessors(1);
         for(int i = 0; i < ln.size(); i++){
-            Assert.assertTrue(ln.get(i).getId() == lnCheck.get(i).getId());
+            Assert.assertEquals(ln.get(i).getId(), lnCheck.get(i).getId());
         }
     }
 
@@ -199,15 +197,8 @@ public class GrafTest
         g.addEdge(n1,n3);
         g.addEdge(n2,n3);
 
-        //g.printMap();
-
-        List<Node> lnCheck = new ArrayList<>();
-        lnCheck.add(n2);
-        lnCheck.add(n3);
         List<Node> ln = g.getSuccessors(4);
-        for(int i = 0; i < ln.size(); i++){
-            Assert.assertTrue(ln.get(i).getId() == lnCheck.get(i).getId());
-        }
+        Assert.assertTrue(ln.isEmpty());
     }
 
     @Test
@@ -266,9 +257,9 @@ public class GrafTest
         lnCheck.add(n2);
         lnCheck.add(n3);
         List<Node> ln = g.getAllNodes();
-        Assert.assertTrue(ln.size() == lnCheck.size());
-        for(int i = 0; i < ln.size(); i++){
-            Assert.assertTrue(ln.get(i).getId() == lnCheck.get(i).getId());
+        Assert.assertEquals(ln.size(), lnCheck.size());
+        for (Node node : lnCheck) {
+            Assert.assertTrue(g.existsNode(node));
         }
     }
 
@@ -284,12 +275,12 @@ public class GrafTest
 
         //g.printMap();
 
-        Assert.assertTrue(g.nbEdges() == 3);
+        Assert.assertEquals(3, g.nbEdges());
     }
 
     @Test
     public void testNbEdgesEmpty(){
-        Assert.assertTrue(g.nbEdges() == 0);
+        Assert.assertEquals(0, g.nbEdges());
     }
 
     @Test

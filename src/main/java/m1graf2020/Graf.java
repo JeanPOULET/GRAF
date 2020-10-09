@@ -159,8 +159,6 @@ public class Graf {
     /**
      * Si inexistant ???
      *
-     * @param id
-     * @return
      */
     public List<Node> getSuccessors(int id) {
         for (Node myNode : adjList.keySet()) {
@@ -168,7 +166,7 @@ public class Graf {
                 return adjList.get(myNode);
             }
         }
-        return adjList.get(new Node(id));
+        return new ArrayList<>();
     }
 
     public boolean adjacent(Node u, Node v) {
@@ -180,8 +178,7 @@ public class Graf {
     }
 
     public List<Node> getAllNodes() {
-        List<Node> ln = new ArrayList<>(adjList.keySet());
-        return ln;
+        return new ArrayList<>(adjList.keySet());
     }
 
     public int nbEdges() {
@@ -191,9 +188,6 @@ public class Graf {
     /**
      * Ordre définie entre u et v ?
      *
-     * @param u
-     * @param v
-     * @return
      */
     public boolean existsEdge(Node u, Node v) {
         for (Edge e : edges) {

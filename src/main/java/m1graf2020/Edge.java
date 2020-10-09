@@ -37,4 +37,10 @@ public class Edge implements Comparable<Edge> {
         }
         return o.getFrom() > this.from ? -1 : 1;
     }
+
+    @Override
+    public boolean equals(Object o){
+        Edge e = (Edge)o;
+        return e.from == this.from && e.to == this.to;
+    }
 }
