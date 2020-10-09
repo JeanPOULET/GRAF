@@ -10,6 +10,9 @@ public class Node implements Comparable<Node> {
 
     @Override
     public boolean equals(Object o) {
+        if(!(o instanceof Node)){
+            return false;
+        }
         Node i = (Node) o;
         return i.getId() == this.id;
     }

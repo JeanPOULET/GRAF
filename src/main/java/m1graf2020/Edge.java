@@ -40,6 +40,9 @@ public class Edge implements Comparable<Edge> {
 
     @Override
     public boolean equals(Object o){
+        if(!(o instanceof Edge)){
+            return false;
+        }
         Edge e = (Edge)o;
         return e.from == this.from && e.to == this.to;
     }
