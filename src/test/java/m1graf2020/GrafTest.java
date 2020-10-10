@@ -81,6 +81,14 @@ public class GrafTest {
     }
 
     @Test
+    public void testGetNodeWithInt()throws NodeAlreadyExist {
+        g.addNode(n1);
+        Node newNode = g.getNode(1);
+        Assert.assertTrue(newNode == n1);
+
+    }
+
+    @Test
     public void testAddNodeWithInt() throws NodeAlreadyExist {
         g.addNode(1);
         Assert.assertEquals(1, g.nbNodes());
@@ -471,6 +479,5 @@ public class GrafTest {
         for(Edge e : le1){
             System.out.print("{" + e.getFrom() + ", " + e.getTo() + "}");
         }
-        //g.printMap();
     }
 }
