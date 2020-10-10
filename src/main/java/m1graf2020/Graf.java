@@ -46,11 +46,14 @@ public class Graf {
         while ((fileRes = fileReader.read()) > 0) {
 
             if ((fileRes >= 'a' && fileRes <= 'z') || (fileRes >= 'A' && fileRes <= 'Z') || fileRes == '\n'
-                    || fileRes == '\t' || fileRes == ' ' || fileRes == '}') {
+                    || fileRes == '\t' || fileRes == ' ' || Character.isWhitespace(fileRes)) {
                 continue;
             }
             if (fileRes == '{') {
                 canParse = true;
+            }
+            if (fileRes == '}') {
+                break;
             }
 
             if (fileRes == ';') {
@@ -80,6 +83,7 @@ public class Graf {
                 }
             }
         }
+        fileReader.close();
     }
 
     /************************************ FONCTIONS A NOUS ************************************/

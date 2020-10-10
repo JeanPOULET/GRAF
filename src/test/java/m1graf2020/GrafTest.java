@@ -6,6 +6,8 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -590,4 +592,56 @@ public class GrafTest {
             Assert.assertTrue(SA[i] == SACheck[i]);
         }
     }
+
+    @Test(expected = IOException.class)
+    public void testImportDotFileDoesNotExist() throws IOException, NodeAlreadyExist {
+        Graf g = new Graf("jexistepas.dot");
+
+    }
+
+    @Test
+    public void testImportDotFile() throws IOException, NodeAlreadyExist {
+        Graf grafFromFile = new Graf("src/main/resources/exempleProf.dot");
+
+        grafFromFile.printMap();
+
+        Assert.assertEquals(grafFromFile.getAllEdges().size(),11);
+        Assert.assertEquals(grafFromFile.getAllNodes().size(),8);
+
+        Assert.assertTrue(grafFromFile.existsNode(1));
+        Assert.assertTrue(grafFromFile.existsNode(5));
+
+        Assert.assertTrue(grafFromFile.existsEdge(1,4));
+        Assert.assertTrue(grafFromFile.existsEdge(6,7));
+
+    }
+
+    @Test
+    public void testExportDotFile() throws IOException {
+        g2Esport.toDotFile("exportGrafTest.dot");
+
+        File f = new File("exportGrafTest.dot");
+        Assert.assertNotNull(f);
+        Assert.assertTrue(f.exists());
+
+    }
+
+    @Test
+    public void testImportDotFileThenImport() throws IOException, NodeAlreadyExist {
+        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+
+        grafFromExample.toDotFile("grafFromExample.dot");
+
+        Graf grafFromFile = new Graf("grafFromExample.dot");
+        Assert.assertEquals(grafFromFile.getAllEdges().size(),11);
+        Assert.assertEquals(grafFromFile.getAllNodes().size(),8);
+
+        Assert.assertTrue(grafFromFile.existsNode(1));
+        Assert.assertTrue(grafFromFile.existsNode(5));
+
+        Assert.assertTrue(grafFromFile.existsEdge(1,4));
+        Assert.assertTrue(grafFromFile.existsEdge(6,7));
+
+    }
+
 }
