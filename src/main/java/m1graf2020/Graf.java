@@ -28,7 +28,7 @@ public class Graf {
             }
         }
 
-        adjList = adjList.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1,e2) -> e1, HashMap::new));
+        adjList = adjList.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, HashMap::new));
 
     }
 
@@ -77,7 +77,7 @@ public class Graf {
     }
 
 
-    public void printPoubelle(){
+    public void printPoubelle() {
         for (int i : poubelle) {
             System.out.println("elem : " + i);
         }
@@ -124,14 +124,14 @@ public class Graf {
     }
 
     public void addNode(int id) throws NodeAlreadyExist {
-        if(existsNode(id)) {
+        if (existsNode(id)) {
             throw new NodeAlreadyExist();
         }
         adjList.put(new Node(id), new ArrayList<>());
     }
 
     public void removeNode(Node n) {
-        if(!existsNode(n)){
+        if (!existsNode(n)) {
             return;
         }
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
@@ -144,7 +144,7 @@ public class Graf {
     }
 
     public void removeNode(int id) {
-        if(!existsNode(id)){
+        if (!existsNode(id)) {
             return;
         }
         Node toRemove = new Node(id);
@@ -164,7 +164,6 @@ public class Graf {
 
     /**
      * Si inexistant ???
-     *
      */
     public List<Node> getSuccessors(int id) {
         for (Node myNode : adjList.keySet()) {
@@ -193,7 +192,6 @@ public class Graf {
 
     /**
      * Ordre définie entre u et v ?
-     *
      */
     public boolean existsEdge(Node u, Node v) {
         for (Edge e : edges) {
@@ -279,24 +277,64 @@ public class Graf {
         }
     }
 
-    public List<Edge> getOutEdges(Node n){
+    public List<Edge> getOutEdges(Node n) {
         List<Edge> le = new ArrayList<>();
-        adjList.get(n);
-        for(Node myNode : adjList.get(getNode(n.getId()))){
-            System.out.println(n.getId() + " / " + myNode.getId());
+        for (Node myNode : adjList.get(getNode(n.getId()))) {
             le.add(new Edge(n.getId(), myNode.getId()));
         }
         return le;
     }
 
-    public List<Edge> getOutEdges(int n){
+    public List<Edge> getOutEdges(int id) {
         List<Edge> le = new ArrayList<>();
-        for(Node myNode : adjList.get(getNode(n))){
-            System.out.println(n + " / " + myNode.getId());
-            le.add(new Edge(n, myNode.getId()));
+        for (Node myNode : adjList.get(getNode(id))) {
+            le.add(new Edge(id, myNode.getId()));
         }
         return le;
     }
+
+    public List<Edge> getInEdges(Node n) {
+        List<Edge> le = new ArrayList<>();
+
+        for (Edge e : edges) {
+            if (e.getTo() == n.getId()) {
+                le.add(e);
+            }
+        }
+
+        return le;
+    }
+
+    public List<Edge> getInEdges(int id) {
+        List<Edge> le = new ArrayList<>();
+
+        for (Edge e : edges) {
+            if (e.getTo() == id) {
+                le.add(e);
+            }
+        }
+
+        return le;
+    }
+
+    public List<Edge> getIncidentEdges(Node n) {
+        List<Edge> le = new ArrayList<>();
+        le.addAll(getInEdges(n));
+        le.addAll(getOutEdges(n));
+        return le;
+    }
+
+    public List<Edge> getIncidentEdges(int id) {
+        List<Edge> le = new ArrayList<>();
+        le.addAll(getInEdges(id));
+        le.addAll(getOutEdges(id));
+        return le;
+    }
+
+    public List<Edge> getAllEdges() {
+        return edges;
+    }
+
 
 }
 

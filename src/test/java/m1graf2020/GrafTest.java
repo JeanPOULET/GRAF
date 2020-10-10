@@ -81,10 +81,10 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetNodeWithInt()throws NodeAlreadyExist {
+    public void testGetNodeWithInt() throws NodeAlreadyExist {
         g.addNode(n1);
         Node newNode = g.getNode(1);
-        Assert.assertTrue(newNode == n1);
+        Assert.assertSame(newNode, n1);
 
     }
 
@@ -458,7 +458,7 @@ public class GrafTest {
         g.addNode(n2);
         g.addNode(n3);
 
-        Edge ed12 = new Edge(1,2);
+        Edge ed12 = new Edge(1, 2);
         g.addEdge(ed12);
 
         //g.printMap();
@@ -473,12 +473,74 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetOutEdgeWithNode() throws NodeAlreadyExist {
+    public void testGetOutEdgeWithNode() {
+        //g2Esport.printMap();
+        List<Edge> le2 = g2Esport.getOutEdges(n2);
 
-        g2Esport.printMap();
-        List<Edge> le1 = g2Esport.getOutEdges(n2);
-        for(Edge e : le1){
-            System.out.print("{" + e.getFrom() + ", " + e.getTo() + "}");
+        Assert.assertTrue(le2.contains(new Edge(2, 3)));
+        Assert.assertTrue(le2.contains(new Edge(2, 5)));
+    }
+
+    @Test
+    public void testGetOutEdgeWithInt() {
+        //g2Esport.printMap();
+        List<Edge> le2 = g2Esport.getOutEdges(2);
+
+        Assert.assertTrue(le2.contains(new Edge(2, 3)));
+        Assert.assertTrue(le2.contains(new Edge(2, 5)));
+    }
+
+    @Test
+    public void testGetInEdgeWithNode() {
+        //g2Esport.printMap();
+        List<Edge> le3 = g2Esport.getInEdges(n3);
+
+        Assert.assertTrue(le3.contains(new Edge(1, 3)));
+        Assert.assertTrue(le3.contains(new Edge(2, 3)));
+    }
+
+    @Test
+    public void testGetInEdgeWithInt() {
+        //g2Esport.printMap();
+        List<Edge> le3 = g2Esport.getInEdges(3);
+
+        Assert.assertTrue(le3.contains(new Edge(1, 3)));
+        Assert.assertTrue(le3.contains(new Edge(2, 3)));
+    }
+
+    @Test
+    public void testGetIndicentEdgesWithNode() {
+        List<Edge> le3 = g2Esport.getIncidentEdges(n3);
+        for (Edge e : le3) {
+            System.out.println("{" + e.getFrom() + ", " + e.getTo() + "}");
         }
+        Assert.assertTrue(le3.contains(new Edge(1, 3)));
+        Assert.assertTrue(le3.contains(new Edge(2, 3)));
+        Assert.assertTrue(le3.contains(new Edge(3, 4)));
+    }
+
+    @Test
+    public void testGetIndicentEdgesWithInt() {
+        List<Edge> le3 = g2Esport.getIncidentEdges(3);
+        for (Edge e : le3) {
+            System.out.println("{" + e.getFrom() + ", " + e.getTo() + "}");
+        }
+        Assert.assertTrue(le3.contains(new Edge(1, 3)));
+        Assert.assertTrue(le3.contains(new Edge(2, 3)));
+        Assert.assertTrue(le3.contains(new Edge(3, 4)));
+    }
+
+    @Test
+    public void testGetAllEdges(){
+        List<Edge> le = g2Esport.getAllEdges();
+
+        Assert.assertTrue(le.contains(new Edge(1, 2)));
+        Assert.assertTrue(le.contains(new Edge(1, 3)));
+        Assert.assertTrue(le.contains(new Edge(2, 3)));
+        Assert.assertTrue(le.contains(new Edge(2, 5)));
+        Assert.assertTrue(le.contains(new Edge(3, 4)));
+        Assert.assertTrue(le.contains(new Edge(4, 1)));
+        Assert.assertTrue(le.contains(new Edge(4, 5)));
+        Assert.assertTrue(le.contains(new Edge(5, 5)));
     }
 }
