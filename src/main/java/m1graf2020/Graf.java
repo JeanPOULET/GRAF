@@ -374,10 +374,11 @@ public class Graf {
      ****************************************************/
 
     public int[] toSuccessorArray(){
-        int SALength = edges.size()+getAllNodes().size();
+        int SALength = edges.size()+getAllNodes().size()-1; //-1 car on ajoute un 0 entre chaque noeud 1-2-3-4-5
         int[] SA = new int[SALength];
         for (int i = 0; i < adjList.keySet().size(); i++) {
             for(int j = 0; j < adjList.get(new Node(i)).size(); j++){
+
             }
 
         }
