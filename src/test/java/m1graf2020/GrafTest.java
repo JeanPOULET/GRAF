@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.print.attribute.standard.PresentationDirection;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -278,7 +279,6 @@ public class GrafTest {
         //g.printMap();
 
         Assert.assertTrue(g.adjacent(1, 3));
-        Assert.assertTrue(g.adjacent(3, 1));
     }
 
     @Test
@@ -718,12 +718,41 @@ public class GrafTest {
         lsWaited.add(new Node(5));
         lsWaited.add(new Node(6));
         lsWaited.add(new Node(7));
-        grafFromExample.getBFS().forEach(System.out::println);
         List<Node> fromBfs = grafFromExample.getBFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
             Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
         }
+    }
+
+    @Test
+    public void testReverseGraf() throws IOException, NodeAlreadyExist {
+        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
+        Graf reversedGraf = grafFromExample.getReverse();
+        reversedGraf.printMap();
+        reversedGraf.toDotFile("oui.dot");
+        Assert.assertTrue(reversedGraf.existsEdge(2,1));
+        Assert.assertTrue(reversedGraf.existsEdge(3,1));
+        Assert.assertTrue(reversedGraf.existsEdge(4,2));
+        Assert.assertTrue(reversedGraf.existsEdge(5,2));
+        Assert.assertTrue(reversedGraf.existsEdge(5,4));
+        Assert.assertTrue(reversedGraf.existsEdge(6,5));
+        Assert.assertTrue(reversedGraf.existsEdge(7,5));
+        Assert.assertTrue(reversedGraf.existsEdge(6,7));
+        Assert.assertTrue(reversedGraf.existsEdge(7,8));
+
+        Assert.assertFalse(reversedGraf.existsEdge(8,7));
+
+        Assert.assertTrue(reversedGraf.existsNode(1));
+        Assert.assertTrue(reversedGraf.existsNode(2));
+        Assert.assertTrue(reversedGraf.existsNode(3));
+        Assert.assertTrue(reversedGraf.existsNode(4));
+        Assert.assertTrue(reversedGraf.existsNode(5));
+        Assert.assertTrue(reversedGraf.existsNode(6));
+        Assert.assertTrue(reversedGraf.existsNode(7));
+        Assert.assertTrue(reversedGraf.existsNode(8));
+
+
     }
 
 }

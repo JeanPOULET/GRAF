@@ -265,8 +265,7 @@ public class Graf {
      */
     public boolean existsEdge(Node u, Node v) {
         for (Edge e : edges) {
-            if (u.getId() == e.getFrom() && v.getId() == e.getTo()
-                    || u.getId() == e.getTo() && v.getId() == e.getFrom()) {
+            if (u.getId() == e.getFrom() && v.getId() == e.getTo()) {
                 return true;
             }
         }
@@ -275,8 +274,7 @@ public class Graf {
 
     public boolean existsEdge(int u, int v) {
         for (Edge e : edges) {
-            if (u == e.getFrom() && v == e.getTo()
-                    || u == e.getTo() && v == e.getFrom()) {
+            if (u == e.getFrom() && v == e.getTo()) {
                 return true;
             }
         }
@@ -491,6 +489,20 @@ public class Graf {
 //    }
 
     /****************************************************
+     *               GRAPH TRANSFORMATION               *
+     ****************************************************/
+
+    public Graf getReverse() throws NodeAlreadyExist {
+        Graf reversedGraf = new Graf();
+        for(Edge e : this.edges ){
+            reversedGraf.addEdge(e.getTo(),e.getFrom());
+        }
+        return reversedGraf;
+    }
+
+
+
+    /****************************************************
      *               GRAPH TRAVERSAL                    *
      ****************************************************/
 
@@ -529,9 +541,9 @@ public class Graf {
     }
 
     /**
-     * Will do the dfs traversal of the graph in a recursive way
+     * Will do the BFS traversal of the graph in a recursive way
      *
-     * @return list of parcoured nodes in the DFS order
+     * @return list of parcoured nodes in the BFS order
      */
     public List<Node> getBFS() {
         List<Node> ls = new ArrayList<>();
@@ -540,6 +552,11 @@ public class Graf {
         return ls;
     }
 
+    /**
+     * Will do the bfs traversal of the graph
+     * @param actualNode actualNode to visit
+     * @param ls list of the parcoured nodes
+     */
     public void bfs(Node actualNode, List<Node> ls) {
         boolean[] visited = new boolean[256];
 
