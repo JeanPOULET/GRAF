@@ -2,9 +2,7 @@ package m1graf2020;
 
 import m1graf2020.Exceptions.NodeAlreadyExist;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,15 +20,66 @@ public class Graf {
     public Graf(int... SA) throws NodeAlreadyExist {
         int actualNode = 1;
         addNode(1);
-        for (int indice : SA) {
-            if (indice != 0) {
-                addEdge(actualNode, indice);
+        for (int index = 0; index < SA.length; index++) {
+            if (SA[index] != 0) {
+                addEdge(actualNode, SA[index]);
             } else {
-                addNode(actualNode + 1);
-                actualNode++;
+                if (index != SA.length - 1) {
+                    addNode(actualNode + 1);
+                    actualNode++;
+                }
             }
         }
 
+    }
+
+    public Graf(String fileName) throws IOException, NodeAlreadyExist {
+
+        File file = new File(fileName);
+        FileReader fileReader = new FileReader(file);
+        int fileRes;
+        int actualNode = 0;
+        boolean canParse = false;
+        boolean newNode = true;
+        boolean isEdge = false;
+
+        while ((fileRes = fileReader.read()) > 0) {
+
+            if ((fileRes >= 'a' && fileRes <= 'z') || (fileRes >= 'A' && fileRes <= 'Z') || fileRes == '\n'
+                    || fileRes == '\t' || fileRes == ' ' || fileRes == '}') {
+                continue;
+            }
+            if (fileRes == '{') {
+                canParse = true;
+            }
+
+            if (fileRes == ';') {
+                newNode = true;
+                continue;
+            }
+
+            if (fileRes == '>') {
+                isEdge = true;
+                continue;
+            }
+            int resI = fileRes - 48;
+
+            if (canParse) {
+                if (newNode) {
+                    newNode = false;
+                    if (resI == actualNode) {
+                        continue;
+                    }
+                    actualNode++;
+                    addNode(actualNode);
+
+                }
+                if (isEdge) {
+                    addEdge(actualNode, resI);
+                    isEdge = false;
+                }
+            }
+        }
     }
 
     /************************************ FONCTIONS A NOUS ************************************/
@@ -77,8 +126,8 @@ public class Graf {
         System.out.println();
     }
 
-    public void printEdges(){
-        for(Edge e : edges){
+    public void printEdges() {
+        for (Edge e : edges) {
             System.out.print("(" + e.getFrom() + "," + e.getTo() + ")  ");
         }
     }
@@ -354,27 +403,27 @@ public class Graf {
      *                      DEGREES                     *
      ****************************************************/
 
-    public int inDegree(Node n){
+    public int inDegree(Node n) {
         return getInEdges(n).size();
     }
 
-    public int inDegree(int id){
+    public int inDegree(int id) {
         return getInEdges(id).size();
     }
 
-    public int outDegree(Node n){
+    public int outDegree(Node n) {
         return getOutEdges(n).size();
     }
 
-    public int outDegree(int id){
+    public int outDegree(int id) {
         return getOutEdges(id).size();
     }
 
-    public int degree(Node n){
+    public int degree(Node n) {
         return outDegree(n) + inDegree(n);
     }
 
-    public int degree(int id){
+    public int degree(int id) {
         return outDegree(id) + inDegree(id);
     }
 
@@ -383,11 +432,11 @@ public class Graf {
      ****************************************************/
 
 
-    public int[] toSuccessorArray(){
-        int SALength = edges.size()+getAllNodes().size()-1; //-1 car on ajoute un 0 entre chaque noeud 1-2-3-4-5
+    public int[] toSuccessorArray() {
+        int SALength = edges.size() + getAllNodes().size() - 1; //-1 car on ajoute un 0 entre chaque noeud 1-2-3-4-5
         int[] SA = new int[SALength];
         for (int i = 0; i < adjList.keySet().size(); i++) {
-            for(int j = 0; j < adjList.get(new Node(i)).size(); j++){
+            for (int j = 0; j < adjList.get(new Node(i)).size(); j++) {
 
             }
 
@@ -396,21 +445,33 @@ public class Graf {
     }
 
     /****************************************************
+     *               GRAPH IMPORT              *
+     ****************************************************/
+
+
+    /****************************************************
      *               GRAPH EXPORT               *
      ****************************************************/
 
 
     /**
      * the dot representation in a string of the graf
+     *
      * @return the dot representation in a string of the graf
      */
-    public String toDotString(){
-        String dot = "# DOT Representation for the graph" ;
+    public String toDotString() {
+        String dot = "# DOT Representation for the graph";
         dot += "\n\n digraph graf {\n";
 
-        for(Edge e : edges){
-            dot += "\t" + e.getFrom() + " -> " + e.getTo() + ";\n";
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            if (entry.getValue().isEmpty()) {
+                dot += "\t" + entry.getKey() + ";\n";
+            }
+            for (Node edgeNode : entry.getValue()) {
+                dot += "\t" + entry.getKey() + " -> " + edgeNode.getId() + ";\n";
+            }
         }
+
         dot += "}";
 
         return dot;
@@ -418,6 +479,7 @@ public class Graf {
 
     /**
      * Will write into the specified file the dot representation of the graf
+     *
      * @param fileName file to write the dot representation
      * @throws IOException possible I/O exception with file
      */
