@@ -7,7 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class Graf {
-    private HashMap<Node, List<Node>> adjList = new HashMap<>();
+    private TreeMap<Node, List<Node>> adjList = new TreeMap<>();
     private TreeSet<Integer> poubelle = new TreeSet<>();
     private List<Edge> edges = new ArrayList<>();
 
@@ -28,8 +28,6 @@ public class Graf {
             }
         }
 
-        adjList = adjList.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, HashMap::new));
-
     }
 
     /************************************ FONCTIONS A NOUS ************************************/
@@ -46,7 +44,7 @@ public class Graf {
         return poubelle;
     }
 
-    public HashMap<Node, List<Node>> getMap() {
+    public TreeMap<Node, List<Node>> getMap() {
         return adjList;
     }
 

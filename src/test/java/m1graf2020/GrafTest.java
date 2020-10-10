@@ -548,31 +548,31 @@ public class GrafTest {
 
     @Test
     public void testInDegreeWithNode(){
-        Assert.assertTrue(g2Esport.inDegree(n5) == 3);
+        Assert.assertEquals(3, g2Esport.inDegree(n5));
     }
 
     @Test
     public void testInDegreeWithInt(){
-        Assert.assertTrue(g2Esport.inDegree(5) == 3);
+        Assert.assertEquals(3, g2Esport.inDegree(5));
     }
 
     @Test
     public void testOutDegreeWithNode(){
-        Assert.assertTrue(g2Esport.outDegree(n5) == 1);
+        Assert.assertEquals(1, g2Esport.outDegree(n5));
     }
 
     @Test
     public void testOutDegreeWithInt(){
-        Assert.assertTrue(g2Esport.outDegree(5) == 1);
+        Assert.assertEquals(1, g2Esport.outDegree(5));
     }
 
     @Test
     public void testDegreeWithNode(){
-        Assert.assertTrue(g2Esport.degree(n5) == 4);
+        Assert.assertEquals(4, g2Esport.degree(n5));
     }
 
     @Test
     public void testDegreeWithInt(){
-        Assert.assertTrue(g2Esport.degree(5) == 4);
+        Assert.assertEquals(4, g2Esport.degree(5));
     }
 }
