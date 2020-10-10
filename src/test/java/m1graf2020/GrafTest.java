@@ -538,7 +538,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetAllEdges(){
+    public void testGetAllEdges() {
         List<Edge> le = g2Esport.getAllEdges();
 
         Assert.assertTrue(le.contains(new Edge(1, 2)));
@@ -552,43 +552,43 @@ public class GrafTest {
     }
 
     @Test
-    public void testInDegreeWithNode(){
+    public void testInDegreeWithNode() {
         Assert.assertEquals(3, g2Esport.inDegree(n5));
     }
 
     @Test
-    public void testInDegreeWithInt(){
+    public void testInDegreeWithInt() {
         Assert.assertEquals(3, g2Esport.inDegree(5));
     }
 
     @Test
-    public void testOutDegreeWithNode(){
+    public void testOutDegreeWithNode() {
         Assert.assertEquals(1, g2Esport.outDegree(n5));
     }
 
     @Test
-    public void testOutDegreeWithInt(){
+    public void testOutDegreeWithInt() {
         Assert.assertEquals(1, g2Esport.outDegree(5));
     }
 
     @Test
-    public void testDegreeWithNode(){
+    public void testDegreeWithNode() {
         Assert.assertEquals(4, g2Esport.degree(n5));
     }
 
     @Test
-    public void testDegreeWithInt(){
+    public void testDegreeWithInt() {
         Assert.assertEquals(4, g2Esport.degree(5));
     }
 
     @Test
-    public void testSuccessorArray(){
+    public void testSuccessorArray() {
         int[] SA = g2Esport.toSuccessorArray();
-        int[] SACheck = {2,3,0,3,5,0,4,0,1,5,0,5};
+        int[] SACheck = {2, 3, 0, 3, 5, 0, 4, 0, 1, 5, 0, 5};
 //        for(int i = 0; i < SA.length; i++){
 //            System.out.print("[" + SA[i] + "]");
 //        }
-        for(int i = 0; i < SA.length; i++){
+        for (int i = 0; i < SA.length; i++) {
             Assert.assertEquals(SA[i], SACheck[i]);
         }
     }
@@ -605,14 +605,14 @@ public class GrafTest {
 
         grafFromFile.printMap();
 
-        Assert.assertEquals(grafFromFile.getAllEdges().size(),11);
-        Assert.assertEquals(grafFromFile.getAllNodes().size(),8);
+        Assert.assertEquals(grafFromFile.getAllEdges().size(), 11);
+        Assert.assertEquals(grafFromFile.getAllNodes().size(), 8);
 
         Assert.assertTrue(grafFromFile.existsNode(1));
         Assert.assertTrue(grafFromFile.existsNode(5));
 
-        Assert.assertTrue(grafFromFile.existsEdge(1,4));
-        Assert.assertTrue(grafFromFile.existsEdge(6,7));
+        Assert.assertTrue(grafFromFile.existsEdge(1, 4));
+        Assert.assertTrue(grafFromFile.existsEdge(6, 7));
 
     }
 
@@ -633,14 +633,14 @@ public class GrafTest {
         grafFromExample.toDotFile("grafFromExample.dot");
 
         Graf grafFromFile = new Graf("grafFromExample.dot");
-        Assert.assertEquals(grafFromFile.getAllEdges().size(),11);
-        Assert.assertEquals(grafFromFile.getAllNodes().size(),8);
+        Assert.assertEquals(grafFromFile.getAllEdges().size(), 11);
+        Assert.assertEquals(grafFromFile.getAllNodes().size(), 8);
 
         Assert.assertTrue(grafFromFile.existsNode(1));
         Assert.assertTrue(grafFromFile.existsNode(5));
 
-        Assert.assertTrue(grafFromFile.existsEdge(1,4));
-        Assert.assertTrue(grafFromFile.existsEdge(6,7));
+        Assert.assertTrue(grafFromFile.existsEdge(1, 4));
+        Assert.assertTrue(grafFromFile.existsEdge(6, 7));
 
     }
 
@@ -648,24 +648,82 @@ public class GrafTest {
     public void testDFS() throws NodeAlreadyExist {
         Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
         grafFromExample.getDFS().forEach(System.out::println);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(3));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(8));
+
+        List<Node> fromBfs = grafFromExample.getDFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
     }
 
     @Test
     public void testDFSfromTD() throws NodeAlreadyExist, IOException {
         Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
         grafFromExample.getDFS().forEach(System.out::println);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
+        lsWaited.add(new Node(3));
+        List<Node> fromBfs = grafFromExample.getDFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
+
     }
 
     @Test
     public void testBFS() throws NodeAlreadyExist {
         Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(3));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(8));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
         grafFromExample.getBFS().forEach(System.out::println);
+        List<Node> fromBfs = grafFromExample.getBFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
+
     }
 
     @Test
     public void testBFSfromTD() throws NodeAlreadyExist, IOException {
         Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
         grafFromExample.getBFS().forEach(System.out::println);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(3));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
+        grafFromExample.getBFS().forEach(System.out::println);
+        List<Node> fromBfs = grafFromExample.getBFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
     }
 
 }
