@@ -371,6 +371,19 @@ public class Graf {
         return outDegree(id) + inDegree(id);
     }
 
+    /****************************************************
+     *               GRAPH REPRESENTATION               *
+     ****************************************************/
 
+    public int[] toSuccessorArray(){
+        int SALength = edges.size()+getAllNodes().size();
+        int[] SA = new int[SALength];
+        for (int i = 0; i < adjList.keySet().size(); i++) {
+            for(int j = 0; j < adjList.get(new Node(i)).size(); j++){
+            }
+
+        }
+        return SA;
+    }
 }
 
