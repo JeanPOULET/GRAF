@@ -74,6 +74,12 @@ public class Graf {
         System.out.println();
     }
 
+    public void printEdges(){
+        for(Edge e : edges){
+            System.out.print("(" + e.getFrom() + "," + e.getTo() + ")  ");
+        }
+    }
+
 
     public void printPoubelle() {
         for (int i : poubelle) {
@@ -369,6 +375,18 @@ public class Graf {
         return outDegree(id) + inDegree(id);
     }
 
+
+    public String toDotString(){
+        String dot = "# DOT Representation for the graph" ;
+        dot += "\n\n diagraph graf {\n";
+
+        for(Edge e : edges){
+            dot += "\t" + e.getFrom() + " -> " + e.getTo() + ";\n";
+        }
+        dot += "}";
+
+        return dot;
+    }
 
 }
 
