@@ -85,6 +85,10 @@ public class Graf {
 
     /************************************ FONCTIONS A PAS NOUS ************************************/
 
+    /****************************************************
+     *                       NODES                      *
+     ****************************************************/
+
     public int nbNodes() {
         return adjList.keySet().size();
     }
@@ -185,6 +189,10 @@ public class Graf {
     public List<Node> getAllNodes() {
         return new ArrayList<>(adjList.keySet());
     }
+
+    /****************************************************
+     *                       EDGES                      *
+     ****************************************************/
 
     public int nbEdges() {
         return edges.size();
@@ -333,6 +341,34 @@ public class Graf {
 
     public List<Edge> getAllEdges() {
         return edges;
+    }
+
+    /****************************************************
+     *                      DEGREES                     *
+     ****************************************************/
+
+    public int inDegree(Node n){
+        return getInEdges(n).size();
+    }
+
+    public int inDegree(int id){
+        return getInEdges(id).size();
+    }
+
+    public int outDegree(Node n){
+        return getOutEdges(n).size();
+    }
+
+    public int outDegree(int id){
+        return getOutEdges(id).size();
+    }
+
+    public int degree(Node n){
+        return outDegree(n) + inDegree(n);
+    }
+
+    public int degree(int id){
+        return outDegree(id) + inDegree(id);
     }
 
 

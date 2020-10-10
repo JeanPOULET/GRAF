@@ -21,6 +21,8 @@ public class GrafTest {
     Node n1;
     Node n2;
     Node n3;
+    Node n4;
+    Node n5;
 
     Graf g2Esport;
 
@@ -31,6 +33,8 @@ public class GrafTest {
         n1 = new Node(1);
         n2 = new Node(2);
         n3 = new Node(3);
+        n4 = new Node(4);
+        n5 = new Node(5);
 
         g2Esport = new Graf();
         g2Esport.addNode(1);
@@ -521,10 +525,8 @@ public class GrafTest {
 
     @Test
     public void testGetIndicentEdgesWithInt() {
-        List<Edge> le3 = g2Esport.getIncidentEdges(3);
-        for (Edge e : le3) {
-            System.out.println("{" + e.getFrom() + ", " + e.getTo() + "}");
-        }
+        List<Edge> le3 = g2Esport.getIncidentEdges(5);
+
         Assert.assertTrue(le3.contains(new Edge(1, 3)));
         Assert.assertTrue(le3.contains(new Edge(2, 3)));
         Assert.assertTrue(le3.contains(new Edge(3, 4)));
@@ -542,5 +544,35 @@ public class GrafTest {
         Assert.assertTrue(le.contains(new Edge(4, 1)));
         Assert.assertTrue(le.contains(new Edge(4, 5)));
         Assert.assertTrue(le.contains(new Edge(5, 5)));
+    }
+
+    @Test
+    public void testInDegreeWithNode(){
+        Assert.assertTrue(g2Esport.inDegree(n5) == 3);
+    }
+
+    @Test
+    public void testInDegreeWithInt(){
+        Assert.assertTrue(g2Esport.inDegree(5) == 3);
+    }
+
+    @Test
+    public void testOutDegreeWithNode(){
+        Assert.assertTrue(g2Esport.outDegree(n5) == 1);
+    }
+
+    @Test
+    public void testOutDegreeWithInt(){
+        Assert.assertTrue(g2Esport.outDegree(5) == 1);
+    }
+
+    @Test
+    public void testDegreeWithNode(){
+        Assert.assertTrue(g2Esport.degree(n5) == 4);
+    }
+
+    @Test
+    public void testDegreeWithInt(){
+        Assert.assertTrue(g2Esport.degree(5) == 4);
     }
 }
