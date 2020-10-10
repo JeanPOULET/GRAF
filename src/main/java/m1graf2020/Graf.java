@@ -2,6 +2,9 @@ package m1graf2020;
 
 import m1graf2020.Exceptions.NodeAlreadyExist;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -375,10 +378,35 @@ public class Graf {
         return outDegree(id) + inDegree(id);
     }
 
+    /****************************************************
+     *               GRAPH REPRESENTATION               *
+     ****************************************************/
 
+
+    public int[] toSuccessorArray(){
+        int SALength = edges.size()+getAllNodes().size()-1; //-1 car on ajoute un 0 entre chaque noeud 1-2-3-4-5
+        int[] SA = new int[SALength];
+        for (int i = 0; i < adjList.keySet().size(); i++) {
+            for(int j = 0; j < adjList.get(new Node(i)).size(); j++){
+
+            }
+
+        }
+        return SA;
+    }
+
+    /****************************************************
+     *               GRAPH EXPORT               *
+     ****************************************************/
+
+
+    /**
+     * the dot representation in a string of the graf
+     * @return the dot representation in a string of the graf
+     */
     public String toDotString(){
         String dot = "# DOT Representation for the graph" ;
-        dot += "\n\n diagraph graf {\n";
+        dot += "\n\n digraph graf {\n";
 
         for(Edge e : edges){
             dot += "\t" + e.getFrom() + " -> " + e.getTo() + ";\n";
@@ -388,5 +416,20 @@ public class Graf {
         return dot;
     }
 
+    /**
+     * Will write into the specified file the dot representation of the graf
+     * @param fileName file to write the dot representation
+     * @throws IOException possible I/O exception with file
+     */
+    public void toDotFile(String fileName) throws IOException {
+        File file = new File(fileName);
+
+        FileWriter fWriter = new FileWriter(file);
+        fWriter.write(toDotString());
+        fWriter.close();
+    }
+
+
 }
+
 
