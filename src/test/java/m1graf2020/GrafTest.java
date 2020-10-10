@@ -33,7 +33,7 @@ public class GrafTest {
         n3 = new Node(3);
 
         g2Esport = new Graf();
-        g2Esport.addNode(n1);
+        g2Esport.addNode();
         g2Esport.addNode();
         g2Esport.addNode();
         g2Esport.addNode();
@@ -78,6 +78,14 @@ public class GrafTest {
         for (Node myNode : g.getNodes()) {
             Assert.assertTrue(myNode.getId() == 1 == g.existsNode(1));
         }
+    }
+
+    @Test
+    public void testGetNodeWithInt()throws NodeAlreadyExist {
+        g.addNode(n1);
+        Node newNode = g.getNode(1);
+        Assert.assertTrue(newNode == n1);
+
     }
 
     @Test
@@ -471,6 +479,5 @@ public class GrafTest {
         for(Edge e : le1){
             System.out.print("{" + e.getFrom() + ", " + e.getTo() + "}");
         }
-        //g.printMap();
     }
 }
