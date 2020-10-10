@@ -35,7 +35,7 @@ public class GrafTest {
         g2Esport = new Graf();
         g2Esport.addNode(1);
         g2Esport.addNode();
-        g2Esport.addNode();
+        g2Esport.addNode(n3);
         g2Esport.addNode();
         g2Esport.addNode();
 
@@ -474,8 +474,9 @@ public class GrafTest {
 
     @Test
     public void testGetOutEdgeWithNode() throws NodeAlreadyExist {
-        //g2Esport.printMap();
-        List<Edge> le1 = g2Esport.getOutEdges(n1);
+
+        g2Esport.printMap();
+        List<Edge> le1 = g2Esport.getOutEdges(n2);
         for(Edge e : le1){
             System.out.print("{" + e.getFrom() + ", " + e.getTo() + "}");
         }

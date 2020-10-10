@@ -131,6 +131,9 @@ public class Graf {
     }
 
     public void removeNode(Node n) {
+        if(!existsNode(n)){
+            return;
+        }
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
             entry.getValue().removeIf(node -> node.equals(n));
         }
@@ -141,6 +144,9 @@ public class Graf {
     }
 
     public void removeNode(int id) {
+        if(!existsNode(id)){
+            return;
+        }
         Node toRemove = new Node(id);
         edges.removeIf(e -> (e.getFrom() == id || e.getTo() == id));
 
@@ -275,9 +281,19 @@ public class Graf {
 
     public List<Edge> getOutEdges(Node n){
         List<Edge> le = new ArrayList<>();
-        for(Node myNode : adjList.get(n)){
+        adjList.get(n);
+        for(Node myNode : adjList.get(getNode(n.getId()))){
             System.out.println(n.getId() + " / " + myNode.getId());
             le.add(new Edge(n.getId(), myNode.getId()));
+        }
+        return le;
+    }
+
+    public List<Edge> getOutEdges(int n){
+        List<Edge> le = new ArrayList<>();
+        for(Node myNode : adjList.get(getNode(n))){
+            System.out.println(n + " / " + myNode.getId());
+            le.add(new Edge(n, myNode.getId()));
         }
         return le;
     }
