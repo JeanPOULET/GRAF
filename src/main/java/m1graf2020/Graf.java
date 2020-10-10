@@ -478,7 +478,7 @@ public class Graf {
                 SA[cptIndex] = vNode.getId();
                 cptIndex++;
             }
-            if(cptIndex != SALength){
+            if (cptIndex != SALength) {
                 SA[cptIndex] = 0;
                 cptIndex++;
             }
@@ -490,9 +490,82 @@ public class Graf {
 //        int
 //    }
 
+    /****************************************************
+     *               GRAPH TRAVERSAL                    *
+     ****************************************************/
+
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @return list of parcoured nodes in the DFS order
+     */
+    public List<Node> getDFS() {
+        boolean[] visited = new boolean[256];
+        List<Node> ls = new ArrayList<>();
+        ls.add(adjList.firstKey());
+        dfs(adjList.firstKey(), visited, ls);
+        return ls;
+    }
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @param actualNode actualNode to visit
+     * @param visited    tab of visited nodes
+     * @param ls         list of the parcoured nodes
+     */
+    public void dfs(Node actualNode, boolean[] visited, List<Node> ls) {
+        visited[actualNode.getId()] = true;
+
+        Iterator<Node> node = adjList.get(actualNode).listIterator();
+        while (node.hasNext()) {
+            Node n = node.next();
+            if (!visited[n.getId()]) {
+                ls.add(n);
+                dfs(n, visited, ls);
+            }
+        }
+    }
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @return list of parcoured nodes in the DFS order
+     */
+    public List<Node> getBFS() {
+        List<Node> ls = new ArrayList<>();
+        ls.add(adjList.firstKey());
+        bfs(adjList.firstKey(), ls);
+        return ls;
+    }
+
+    public void bfs(Node actualNode, List<Node> ls) {
+        boolean[] visited = new boolean[256];
+
+        LinkedList<Node> queue = new LinkedList<>();
+
+        visited[actualNode.getId()] = true;
+        queue.add(actualNode);
+
+        while (queue.size() != 0) {
+            actualNode = queue.poll();
+
+            Iterator<Node> node = adjList.get(actualNode).listIterator();
+            while (node.hasNext()) {
+                Node n = node.next();
+                if (!visited[n.getId()]) {
+                    visited[n.getId()] = true;
+                    queue.add(n);
+                    ls.add(n);
+                }
+            }
+        }
+    }
+
 
     /****************************************************
-     *               GRAPH EXPORT               *
+     *               GRAPH EXPORT                       *
      ****************************************************/
 
 

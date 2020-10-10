@@ -532,9 +532,9 @@ public class GrafTest {
     public void testGetIndicentEdgesWithInt() {
         List<Edge> le3 = g2Esport.getIncidentEdges(5);
 
-        Assert.assertTrue(le3.contains(new Edge(1, 3)));
-        Assert.assertTrue(le3.contains(new Edge(2, 3)));
-        Assert.assertTrue(le3.contains(new Edge(3, 4)));
+        Assert.assertTrue(le3.contains(new Edge(2, 5)));
+        Assert.assertTrue(le3.contains(new Edge(4, 5)));
+        Assert.assertTrue(le3.contains(new Edge(5, 5)));
     }
 
     @Test
@@ -589,14 +589,14 @@ public class GrafTest {
 //            System.out.print("[" + SA[i] + "]");
 //        }
         for(int i = 0; i < SA.length; i++){
-            Assert.assertTrue(SA[i] == SACheck[i]);
+            Assert.assertEquals(SA[i], SACheck[i]);
         }
     }
 
     @Test(expected = IOException.class)
     public void testImportDotFileDoesNotExist() throws IOException, NodeAlreadyExist {
         Graf g = new Graf("jexistepas.dot");
-
+        g.printMap();
     }
 
     @Test
@@ -642,6 +642,30 @@ public class GrafTest {
         Assert.assertTrue(grafFromFile.existsEdge(1,4));
         Assert.assertTrue(grafFromFile.existsEdge(6,7));
 
+    }
+
+    @Test
+    public void testDFS() throws NodeAlreadyExist {
+        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        grafFromExample.getDFS().forEach(System.out::println);
+    }
+
+    @Test
+    public void testDFSfromTD() throws NodeAlreadyExist, IOException {
+        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
+        grafFromExample.getDFS().forEach(System.out::println);
+    }
+
+    @Test
+    public void testBFS() throws NodeAlreadyExist {
+        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        grafFromExample.getBFS().forEach(System.out::println);
+    }
+
+    @Test
+    public void testBFSfromTD() throws NodeAlreadyExist, IOException {
+        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
+        grafFromExample.getBFS().forEach(System.out::println);
     }
 
 }
