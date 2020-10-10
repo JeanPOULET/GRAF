@@ -273,6 +273,14 @@ public class Graf {
         }
     }
 
+    public List<Edge> getOutEdges(Node n){
+        List<Edge> le = new ArrayList<>();
+        for(Node myNode : adjList.get(n)){
+            System.out.println(n.getId() + " / " + myNode.getId());
+            le.add(new Edge(n.getId(), myNode.getId()));
+        }
+        return le;
+    }
 
 }
 

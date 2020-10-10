@@ -22,12 +22,31 @@ public class GrafTest {
     Node n2;
     Node n3;
 
+    Graf g2Esport;
+
+
     @Before
-    public void setup() {
+    public void setup() throws NodeAlreadyExist {
         g = new Graf();
         n1 = new Node(1);
         n2 = new Node(2);
         n3 = new Node(3);
+
+        g2Esport = new Graf();
+        g2Esport.addNode(n1);
+        g2Esport.addNode();
+        g2Esport.addNode();
+        g2Esport.addNode();
+        g2Esport.addNode();
+
+        g2Esport.addEdge(1, 2);
+        g2Esport.addEdge(1, 3);
+        g2Esport.addEdge(2, 3);
+        g2Esport.addEdge(2, 5);
+        g2Esport.addEdge(3, 4);
+        g2Esport.addEdge(4, 1);
+        g2Esport.addEdge(4, 5);
+        g2Esport.addEdge(5, 5);
     }
 
 
@@ -443,5 +462,15 @@ public class GrafTest {
         //g.printMap();
 
         Assert.assertFalse(g.getEdges().contains(ed12));
+    }
+
+    @Test
+    public void testGetOutEdgeWithNode() throws NodeAlreadyExist {
+        g2Esport.printMap();
+        List<Edge> le1 = g2Esport.getOutEdges(n1);
+        for(Edge e : le1){
+            System.out.print("{" + e.getFrom() + ", " + e.getTo() + "}");
+        }
+        //g.printMap();
     }
 }
