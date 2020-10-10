@@ -178,14 +178,16 @@ public class Graf {
 
     public void addNode(Node n) throws NodeAlreadyExist {
         if (existsNode(n)) {
-            throw new NodeAlreadyExist();
+            return;
+            //throw new NodeAlreadyExist();
         }
         adjList.put(n, new ArrayList<>());
     }
 
     public void addNode(int id) throws NodeAlreadyExist {
         if (existsNode(id)) {
-            throw new NodeAlreadyExist();
+            return;
+            //throw new NodeAlreadyExist();
         }
         adjList.put(new Node(id), new ArrayList<>());
     }
@@ -281,54 +283,83 @@ public class Graf {
         return edges.contains(e);
     }
 
-    public void addEdge(Node from, Node to) {
+    public void addEdge(Node from, Node to) throws NodeAlreadyExist {
         Edge ed = new Edge(from.getId(), to.getId());
         if (!edges.contains(ed)) {
             adjList.get(from).add(to);
             edges.add(new Edge(from.getId(), to.getId()));
+
+            if (!existsNode(from)) {
+                addNode(from);
+            }
+            if (!existsNode(to)) {
+                addNode(to);
+            }
         }
     }
 
-    public void addEdge(int from, int to) {
+    public void addEdge(int from, int to) throws NodeAlreadyExist {
         Edge ed = new Edge(from, to);
         if (!edges.contains(ed)) {
             for (Node n : adjList.keySet()) {
                 if (n.getId() == ed.getFrom()) {
                     adjList.get(n).add(new Node(ed.getTo()));
                     edges.add(ed);
+                    if (!existsNode(to)) {
+                        addNode(to);
+                    }
+                    return;
                 }
+            }
+            addNode(from);
+            adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
+            edges.add(ed);
+            if (!existsNode(to)) {
+                addNode(to);
             }
         }
     }
 
-    public void addEdge(Edge ed) {
+    public void addEdge(Edge ed) throws NodeAlreadyExist {
         if (!edges.contains(ed)) {
             for (Node n : adjList.keySet()) {
                 if (n.getId() == ed.getFrom()) {
                     adjList.get(n).add(new Node(ed.getTo()));
                     edges.add(ed);
+                    if (!existsNode(ed.getTo())) {
+                        addNode(ed.getTo());
+                    }
+                    return;
                 }
+            }
+            addNode(ed.getFrom());
+            adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
+            edges.add(ed);
+            if (!existsNode(ed.getTo())) {
+                addNode(ed.getTo());
             }
         }
     }
 
     public void removeEdge(Node from, Node to) {
-        edges.removeIf(e -> (e.getFrom() == from.getId() || e.getTo() == to.getId()));
+        edges.removeIf(e -> (e.getFrom() == from.getId() && e.getTo() == to.getId()));
 
-        adjList.get(from).remove(to);
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            entry.getValue().removeIf(node -> node.equals(to));
+            Collections.sort(entry.getValue());
+        }
     }
 
     public void removeEdge(int from, int to) {
-        edges.removeIf(e -> (e.getFrom() == from || e.getTo() == to));
+        edges.removeIf(e -> (e.getFrom() == from && e.getTo() == to));
 
-        Node nodeToDelete = null;
-        for (Node myNode : adjList.keySet()) {
-            if (myNode.getId() == from) {
-                nodeToDelete = myNode;
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            if (from == entry.getKey().getId()) {
+                entry.getValue().removeIf(node -> node.getId() == to);
             }
+            Collections.sort(entry.getValue());
         }
 
-        adjList.get(nodeToDelete).remove(new Node(to));
     }
 
     public void removeEdge(Edge e) {
@@ -338,6 +369,7 @@ public class Graf {
 
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
             entry.getValue().removeIf(node -> node.equals(nodeToDelete));
+            Collections.sort(entry.getValue());
         }
     }
 
@@ -443,11 +475,6 @@ public class Graf {
         }
         return SA;
     }
-
-    /****************************************************
-     *               GRAPH IMPORT              *
-     ****************************************************/
-
 
     /****************************************************
      *               GRAPH EXPORT               *

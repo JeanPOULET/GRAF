@@ -46,4 +46,9 @@ public class Edge implements Comparable<Edge> {
         Edge e = (Edge)o;
         return e.from == this.from && e.to == this.to;
     }
+
+    @Override
+    public String toString(){
+        return "(" + from  + ")" + "->" + '(' + to  + ')';
+    }
 }
