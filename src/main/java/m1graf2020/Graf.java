@@ -435,14 +435,25 @@ public class Graf {
     public int[] toSuccessorArray() {
         int SALength = edges.size() + getAllNodes().size() - 1; //-1 car on ajoute un 0 entre chaque noeud 1-2-3-4-5
         int[] SA = new int[SALength];
-        for (int i = 0; i < adjList.keySet().size(); i++) {
-            for (int j = 0; j < adjList.get(new Node(i)).size(); j++) {
-
+        int cptIndex = 0;
+        for (Node key : adjList.keySet()) {
+            List<Node> value = adjList.get(key);
+            for (Node vNode : value) {
+                SA[cptIndex] = vNode.getId();
+                cptIndex++;
             }
-
+            if(cptIndex != SALength){
+                SA[cptIndex] = 0;
+                cptIndex++;
+            }
         }
         return SA;
     }
+
+//    public int[][] toAdjMatrix(){
+//        int
+//    }
+
 
     /****************************************************
      *               GRAPH IMPORT              *
