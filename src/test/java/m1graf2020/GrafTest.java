@@ -587,4 +587,15 @@ public class GrafTest {
             Assert.assertTrue(SA[i] == SACheck[i]);
         }
     }
+
+    @Test
+    public void testMatrix(){
+        int[][] M = g2Esport.toAdjMatrix();
+        int[][] MCheck = {{0,1,1,0,0},{0,0,1,0,1},{0,0,0,1,0},{1,0,0,0,1},{0,0,0,0,1}};
+        for(int i = 0; i < MCheck.length; i++){
+            for(int j = 0; j < MCheck.length; j++){
+                Assert.assertTrue(M[i][j] == MCheck[i][j]);
+            }
+        }
+    }
 }
