@@ -593,7 +593,6 @@ public class GrafTest {
         }
     }
 
-<<<<<<< HEAD
     @Test
     public void testMatrix(){
         int[][] M = g2Esport.toAdjMatrix();
@@ -604,7 +603,7 @@ public class GrafTest {
             }
         }
     }
-=======
+
     @Test(expected = IOException.class)
     public void testImportDotFileDoesNotExist() throws IOException, NodeAlreadyExist {
         Graf g = new Graf("jexistepas.dot");
