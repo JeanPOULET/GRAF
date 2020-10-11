@@ -14,6 +14,21 @@ import java.util.stream.Collectors;
 /**
  * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
  */
+
+/**
+ * RemoveEdge : Remove cb de edges si plusieurs identiques ?
+ */
+
+/**
+ * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
+ * si plusieurs edge identique
+ */
+
+
+/****************************************************
+ *                   IMPLEMENTATION                 *
+ ****************************************************/
+
 public class Graf {
     private TreeMap<Node, List<Node>> adjList = new TreeMap<>();
     private TreeSet<Integer> poubelle = new TreeSet<>();
@@ -343,7 +358,7 @@ public class Graf {
         }
 
     }
-    //Remove cb de edges si plusieurs identiques ?
+
     public void removeEdge(Node from, Node to) {
         edges.removeIf(e -> (e.getFrom() == from.getId() && e.getTo() == to.getId()));
 
