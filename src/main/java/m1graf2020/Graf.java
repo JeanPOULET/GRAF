@@ -286,61 +286,60 @@ public class Graf {
     }
 
     public void addEdge(Node from, Node to) throws NodeAlreadyExist {
-        Edge ed = new Edge(from.getId(), to.getId());
-        if (!edges.contains(ed)) {
-            adjList.get(from).add(to);
-            edges.add(new Edge(from.getId(), to.getId()));
 
-            if (!existsNode(from)) {
-                addNode(from);
-            }
-            if (!existsNode(to)) {
-                addNode(to);
-            }
+        adjList.get(from).add(to);
+        edges.add(new Edge(from.getId(), to.getId()));
+
+        if (!existsNode(from)) {
+            addNode(from);
         }
+        if (!existsNode(to)) {
+            addNode(to);
+        }
+
     }
 
     public void addEdge(int from, int to) throws NodeAlreadyExist {
         Edge ed = new Edge(from, to);
-        if (!edges.contains(ed)) {
-            for (Node n : adjList.keySet()) {
-                if (n.getId() == ed.getFrom()) {
-                    adjList.get(n).add(new Node(ed.getTo()));
-                    edges.add(ed);
-                    if (!existsNode(to)) {
-                        addNode(to);
-                    }
-                    return;
+
+        for (Node n : adjList.keySet()) {
+            if (n.getId() == ed.getFrom()) {
+                adjList.get(n).add(new Node(ed.getTo()));
+                edges.add(ed);
+                if (!existsNode(to)) {
+                    addNode(to);
                 }
-            }
-            addNode(from);
-            adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
-            edges.add(ed);
-            if (!existsNode(to)) {
-                addNode(to);
+                return;
             }
         }
+        addNode(from);
+        adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
+        edges.add(ed);
+        if (!existsNode(to)) {
+            addNode(to);
+        }
+
     }
 
     public void addEdge(Edge ed) throws NodeAlreadyExist {
-        if (!edges.contains(ed)) {
-            for (Node n : adjList.keySet()) {
-                if (n.getId() == ed.getFrom()) {
-                    adjList.get(n).add(new Node(ed.getTo()));
-                    edges.add(ed);
-                    if (!existsNode(ed.getTo())) {
-                        addNode(ed.getTo());
-                    }
-                    return;
+
+        for (Node n : adjList.keySet()) {
+            if (n.getId() == ed.getFrom()) {
+                adjList.get(n).add(new Node(ed.getTo()));
+                edges.add(ed);
+                if (!existsNode(ed.getTo())) {
+                    addNode(ed.getTo());
                 }
-            }
-            addNode(ed.getFrom());
-            adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
-            edges.add(ed);
-            if (!existsNode(ed.getTo())) {
-                addNode(ed.getTo());
+                return;
             }
         }
+        addNode(ed.getFrom());
+        adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
+        edges.add(ed);
+        if (!existsNode(ed.getTo())) {
+            addNode(ed.getTo());
+        }
+
     }
 
     public void removeEdge(Node from, Node to) {
@@ -517,12 +516,11 @@ public class Graf {
 
     public Graf getReverse() throws NodeAlreadyExist {
         Graf reversedGraf = new Graf();
-        for(Edge e : this.edges ){
-            reversedGraf.addEdge(e.getTo(),e.getFrom());
+        for (Edge e : this.edges) {
+            reversedGraf.addEdge(e.getTo(), e.getFrom());
         }
         return reversedGraf;
     }
-
 
 
     /****************************************************
@@ -577,8 +575,9 @@ public class Graf {
 
     /**
      * Will do the bfs traversal of the graph
+     *
      * @param actualNode actualNode to visit
-     * @param ls list of the parcoured nodes
+     * @param ls         list of the parcoured nodes
      */
     public void bfs(Node actualNode, List<Node> ls) {
         boolean[] visited = new boolean[256];
