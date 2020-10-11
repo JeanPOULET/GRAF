@@ -7,6 +7,13 @@ import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/****************************************************
+ *                     QUESTIONS                    *
+ ****************************************************/
+
+/**
+ * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
+ */
 public class Graf {
     private TreeMap<Node, List<Node>> adjList = new TreeMap<>();
     private TreeSet<Integer> poubelle = new TreeSet<>();
@@ -228,9 +235,7 @@ public class Graf {
         return adjList.get(n);
     }
 
-    /**
-     * Si inexistant ???
-     */
+
     public List<Node> getSuccessors(int id) {
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == id) {
@@ -260,9 +265,6 @@ public class Graf {
         return edges.size();
     }
 
-    /**
-     * Ordre définie entre u et v ?
-     */
     public boolean existsEdge(Node u, Node v) {
         for (Edge e : edges) {
             if (u.getId() == e.getFrom() && v.getId() == e.getTo()) {
