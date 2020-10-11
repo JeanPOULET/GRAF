@@ -46,11 +46,14 @@ public class Graf {
         while ((fileRes = fileReader.read()) > 0) {
 
             if ((fileRes >= 'a' && fileRes <= 'z') || (fileRes >= 'A' && fileRes <= 'Z') || fileRes == '\n'
-                    || fileRes == '\t' || fileRes == ' ' || fileRes == '}') {
+                    || fileRes == '\t' || fileRes == ' ' || Character.isWhitespace(fileRes)) {
                 continue;
             }
             if (fileRes == '{') {
                 canParse = true;
+            }
+            if (fileRes == '}') {
+                break;
             }
 
             if (fileRes == ';') {
@@ -80,6 +83,7 @@ public class Graf {
                 }
             }
         }
+        fileReader.close();
     }
 
     /************************************ FONCTIONS A NOUS ************************************/
@@ -261,8 +265,7 @@ public class Graf {
      */
     public boolean existsEdge(Node u, Node v) {
         for (Edge e : edges) {
-            if (u.getId() == e.getFrom() && v.getId() == e.getTo()
-                    || u.getId() == e.getTo() && v.getId() == e.getFrom()) {
+            if (u.getId() == e.getFrom() && v.getId() == e.getTo()) {
                 return true;
             }
         }
@@ -271,8 +274,7 @@ public class Graf {
 
     public boolean existsEdge(int u, int v) {
         for (Edge e : edges) {
-            if (u == e.getFrom() && v == e.getTo()
-                    || u == e.getTo() && v == e.getFrom()) {
+            if (u == e.getFrom() && v == e.getTo()) {
                 return true;
             }
         }
@@ -502,9 +504,101 @@ public class Graf {
         return ADJM;
     }
 
+    /****************************************************
+     *               GRAPH TRANSFORMATION               *
+     ****************************************************/
+
+    public Graf getReverse() throws NodeAlreadyExist {
+        Graf reversedGraf = new Graf();
+        for(Edge e : this.edges ){
+            reversedGraf.addEdge(e.getTo(),e.getFrom());
+        }
+        return reversedGraf;
+    }
+
+
 
     /****************************************************
-     *               GRAPH EXPORT               *
+     *               GRAPH TRAVERSAL                    *
+     ****************************************************/
+
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @return list of parcoured nodes in the DFS order
+     */
+    public List<Node> getDFS() {
+        boolean[] visited = new boolean[256];
+        List<Node> ls = new ArrayList<>();
+        ls.add(adjList.firstKey());
+        dfs(adjList.firstKey(), visited, ls);
+        return ls;
+    }
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @param actualNode actualNode to visit
+     * @param visited    tab of visited nodes
+     * @param ls         list of the parcoured nodes
+     */
+    public void dfs(Node actualNode, boolean[] visited, List<Node> ls) {
+        visited[actualNode.getId()] = true;
+
+        Iterator<Node> node = adjList.get(actualNode).listIterator();
+        while (node.hasNext()) {
+            Node n = node.next();
+            if (!visited[n.getId()]) {
+                ls.add(n);
+                dfs(n, visited, ls);
+            }
+        }
+    }
+
+    /**
+     * Will do the BFS traversal of the graph in a recursive way
+     *
+     * @return list of parcoured nodes in the BFS order
+     */
+    public List<Node> getBFS() {
+        List<Node> ls = new ArrayList<>();
+        ls.add(adjList.firstKey());
+        bfs(adjList.firstKey(), ls);
+        return ls;
+    }
+
+    /**
+     * Will do the bfs traversal of the graph
+     * @param actualNode actualNode to visit
+     * @param ls list of the parcoured nodes
+     */
+    public void bfs(Node actualNode, List<Node> ls) {
+        boolean[] visited = new boolean[256];
+
+        LinkedList<Node> queue = new LinkedList<>();
+
+        visited[actualNode.getId()] = true;
+        queue.add(actualNode);
+
+        while (queue.size() != 0) {
+            actualNode = queue.poll();
+
+            Iterator<Node> node = adjList.get(actualNode).listIterator();
+            while (node.hasNext()) {
+                Node n = node.next();
+                if (!visited[n.getId()]) {
+                    visited[n.getId()] = true;
+                    queue.add(n);
+                    ls.add(n);
+                }
+            }
+        }
+    }
+
+
+    /****************************************************
+     *               GRAPH EXPORT                       *
      ****************************************************/
 
 

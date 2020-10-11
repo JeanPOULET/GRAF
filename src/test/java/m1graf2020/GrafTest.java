@@ -3,8 +3,12 @@ package m1graf2020;
 import m1graf2020.Exceptions.NodeAlreadyExist;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
+import javax.print.attribute.standard.PresentationDirection;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -111,6 +115,7 @@ public class GrafTest {
     }
 
     @Test(expected = NodeAlreadyExist.class)
+    @Ignore
     public void testAddNodeExceptionWithInt() throws NodeAlreadyExist {
         g.addNode(2);
         g.addNode(2);
@@ -118,6 +123,7 @@ public class GrafTest {
     }
 
     @Test(expected = NodeAlreadyExist.class)
+    @Ignore
     public void testAddNodeExceptionWithNode() throws NodeAlreadyExist {
         g.addNode(n1);
         g.addNode(n1);
@@ -273,7 +279,6 @@ public class GrafTest {
         //g.printMap();
 
         Assert.assertTrue(g.adjacent(1, 3));
-        Assert.assertTrue(g.adjacent(3, 1));
     }
 
     @Test
@@ -527,13 +532,13 @@ public class GrafTest {
     public void testGetIndicentEdgesWithInt() {
         List<Edge> le3 = g2Esport.getIncidentEdges(5);
 
-        Assert.assertTrue(le3.contains(new Edge(1, 3)));
-        Assert.assertTrue(le3.contains(new Edge(2, 3)));
-        Assert.assertTrue(le3.contains(new Edge(3, 4)));
+        Assert.assertTrue(le3.contains(new Edge(2, 5)));
+        Assert.assertTrue(le3.contains(new Edge(4, 5)));
+        Assert.assertTrue(le3.contains(new Edge(5, 5)));
     }
 
     @Test
-    public void testGetAllEdges(){
+    public void testGetAllEdges() {
         List<Edge> le = g2Esport.getAllEdges();
 
         Assert.assertTrue(le.contains(new Edge(1, 2)));
@@ -547,47 +552,48 @@ public class GrafTest {
     }
 
     @Test
-    public void testInDegreeWithNode(){
+    public void testInDegreeWithNode() {
         Assert.assertEquals(3, g2Esport.inDegree(n5));
     }
 
     @Test
-    public void testInDegreeWithInt(){
+    public void testInDegreeWithInt() {
         Assert.assertEquals(3, g2Esport.inDegree(5));
     }
 
     @Test
-    public void testOutDegreeWithNode(){
+    public void testOutDegreeWithNode() {
         Assert.assertEquals(1, g2Esport.outDegree(n5));
     }
 
     @Test
-    public void testOutDegreeWithInt(){
+    public void testOutDegreeWithInt() {
         Assert.assertEquals(1, g2Esport.outDegree(5));
     }
 
     @Test
-    public void testDegreeWithNode(){
+    public void testDegreeWithNode() {
         Assert.assertEquals(4, g2Esport.degree(n5));
     }
 
     @Test
-    public void testDegreeWithInt(){
+    public void testDegreeWithInt() {
         Assert.assertEquals(4, g2Esport.degree(5));
     }
 
     @Test
-    public void testSuccessorArray(){
+    public void testSuccessorArray() {
         int[] SA = g2Esport.toSuccessorArray();
-        int[] SACheck = {2,3,0,3,5,0,4,0,1,5,0,5};
+        int[] SACheck = {2, 3, 0, 3, 5, 0, 4, 0, 1, 5, 0, 5};
 //        for(int i = 0; i < SA.length; i++){
 //            System.out.print("[" + SA[i] + "]");
 //        }
-        for(int i = 0; i < SA.length; i++){
-            Assert.assertTrue(SA[i] == SACheck[i]);
+        for (int i = 0; i < SA.length; i++) {
+            Assert.assertEquals(SA[i], SACheck[i]);
         }
     }
 
+<<<<<<< HEAD
     @Test
     public void testMatrix(){
         int[][] M = g2Esport.toAdjMatrix();
@@ -598,4 +604,168 @@ public class GrafTest {
             }
         }
     }
+=======
+    @Test(expected = IOException.class)
+    public void testImportDotFileDoesNotExist() throws IOException, NodeAlreadyExist {
+        Graf g = new Graf("jexistepas.dot");
+        g.printMap();
+    }
+
+    @Test
+    public void testImportDotFile() throws IOException, NodeAlreadyExist {
+        Graf grafFromFile = new Graf("src/main/resources/exempleProf.dot");
+
+        grafFromFile.printMap();
+
+        Assert.assertEquals(grafFromFile.getAllEdges().size(), 11);
+        Assert.assertEquals(grafFromFile.getAllNodes().size(), 8);
+
+        Assert.assertTrue(grafFromFile.existsNode(1));
+        Assert.assertTrue(grafFromFile.existsNode(5));
+
+        Assert.assertTrue(grafFromFile.existsEdge(1, 4));
+        Assert.assertTrue(grafFromFile.existsEdge(6, 7));
+
+    }
+
+    @Test
+    public void testExportDotFile() throws IOException {
+        g2Esport.toDotFile("exportGrafTest.dot");
+
+        File f = new File("exportGrafTest.dot");
+        Assert.assertNotNull(f);
+        Assert.assertTrue(f.exists());
+
+    }
+
+    @Test
+    public void testImportDotFileThenImport() throws IOException, NodeAlreadyExist {
+        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+
+        grafFromExample.toDotFile("grafFromExample.dot");
+
+        Graf grafFromFile = new Graf("grafFromExample.dot");
+        Assert.assertEquals(grafFromFile.getAllEdges().size(), 11);
+        Assert.assertEquals(grafFromFile.getAllNodes().size(), 8);
+
+        Assert.assertTrue(grafFromFile.existsNode(1));
+        Assert.assertTrue(grafFromFile.existsNode(5));
+
+        Assert.assertTrue(grafFromFile.existsEdge(1, 4));
+        Assert.assertTrue(grafFromFile.existsEdge(6, 7));
+
+    }
+
+    @Test
+    public void testDFS() throws NodeAlreadyExist {
+        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        grafFromExample.getDFS().forEach(System.out::println);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(3));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(8));
+
+        List<Node> fromBfs = grafFromExample.getDFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
+    }
+
+    @Test
+    public void testDFSfromTD() throws NodeAlreadyExist, IOException {
+        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
+        grafFromExample.getDFS().forEach(System.out::println);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
+        lsWaited.add(new Node(3));
+        List<Node> fromBfs = grafFromExample.getDFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
+
+    }
+
+    @Test
+    public void testBFS() throws NodeAlreadyExist {
+        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(3));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(8));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
+        grafFromExample.getBFS().forEach(System.out::println);
+        List<Node> fromBfs = grafFromExample.getBFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
+
+    }
+
+    @Test
+    public void testBFSfromTD() throws NodeAlreadyExist, IOException {
+        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
+        grafFromExample.getBFS().forEach(System.out::println);
+        List<Node> lsWaited = new ArrayList<>();
+        lsWaited.add(new Node(1));
+        lsWaited.add(new Node(2));
+        lsWaited.add(new Node(3));
+        lsWaited.add(new Node(4));
+        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(6));
+        lsWaited.add(new Node(7));
+        List<Node> fromBfs = grafFromExample.getBFS();
+        Assert.assertEquals(lsWaited.size(), fromBfs.size());
+        for (int index = 0; index < fromBfs.size(); index++) {
+            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+        }
+    }
+
+    @Test
+    public void testReverseGraf() throws IOException, NodeAlreadyExist {
+        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
+        Graf reversedGraf = grafFromExample.getReverse();
+        reversedGraf.printMap();
+        reversedGraf.toDotFile("oui.dot");
+        Assert.assertTrue(reversedGraf.existsEdge(2,1));
+        Assert.assertTrue(reversedGraf.existsEdge(3,1));
+        Assert.assertTrue(reversedGraf.existsEdge(4,2));
+        Assert.assertTrue(reversedGraf.existsEdge(5,2));
+        Assert.assertTrue(reversedGraf.existsEdge(5,4));
+        Assert.assertTrue(reversedGraf.existsEdge(6,5));
+        Assert.assertTrue(reversedGraf.existsEdge(7,5));
+        Assert.assertTrue(reversedGraf.existsEdge(6,7));
+        Assert.assertTrue(reversedGraf.existsEdge(7,8));
+
+        Assert.assertFalse(reversedGraf.existsEdge(8,7));
+
+        Assert.assertTrue(reversedGraf.existsNode(1));
+        Assert.assertTrue(reversedGraf.existsNode(2));
+        Assert.assertTrue(reversedGraf.existsNode(3));
+        Assert.assertTrue(reversedGraf.existsNode(4));
+        Assert.assertTrue(reversedGraf.existsNode(5));
+        Assert.assertTrue(reversedGraf.existsNode(6));
+        Assert.assertTrue(reversedGraf.existsNode(7));
+        Assert.assertTrue(reversedGraf.existsNode(8));
+
+
+    }
+
+>>>>>>> f67b379af89e5cb0798e9dfd332bfb360bc1b2e2
 }

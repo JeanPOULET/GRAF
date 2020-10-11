@@ -134,10 +134,10 @@ public class monsieur {
             System.out.println("" + n + ": " + edges);
         }
 
-        /*System.out.println(">>>>>>>>>>    Reverse graph");
+        System.out.println(">>>>>>>>>>    Reverse graph");
         System.out.println(g.getReverse().toDotString());
 
-        System.out.println(">>>>>>>>>>    Transitive Closure");
+        /*System.out.println(">>>>>>>>>>    Transitive Closure");
         System.out.println(g.getTransitiveClosure().toDotString());*/
 
         System.out.println(">>>>>>>>>>    Emptying the graph by removing all its nodes");
