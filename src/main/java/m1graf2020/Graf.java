@@ -475,7 +475,7 @@ public class Graf {
                 SA[cptIndex] = vNode.getId();
                 cptIndex++;
             }
-            if (cptIndex != SALength) {
+            if(cptIndex < SALength){
                 SA[cptIndex] = 0;
                 cptIndex++;
             }
@@ -483,9 +483,25 @@ public class Graf {
         return SA;
     }
 
-//    public int[][] toAdjMatrix(){
-//        int
-//    }
+    public int[][] toAdjMatrix(){
+        int lnMatrix = getAllNodes().size();
+        int[][] ADJM = new int[lnMatrix][lnMatrix];
+        int ADJMHeight = 0;
+
+        int[] SA = toSuccessorArray();
+        for(int SAindex = 0; SAindex < SA.length; SAindex++){
+            for(int ADJMwidth = 0; ADJMwidth < ADJM[ADJMHeight].length; ADJMwidth++){
+                if(ADJMwidth+1 == SA[SAindex]){ //+1 car on veut commencer a 1
+                    ADJM[ADJMHeight][ADJMwidth]++;
+                }
+            }
+            if(SA[SAindex] == 0) {
+                ADJMHeight++;
+            }
+        }
+
+        return ADJM;
+    }
 
     /****************************************************
      *               GRAPH TRANSFORMATION               *
