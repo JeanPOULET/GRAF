@@ -472,7 +472,6 @@ public class Graf {
         for (Node key : adjList.keySet()) {
             List<Node> value = adjList.get(key);
             for (Node vNode : value) {
-                System.out.print("{" + vNode.getId() + "}");
                 SA[cptIndex] = vNode.getId();
                 cptIndex++;
             }
@@ -490,20 +489,15 @@ public class Graf {
         int ADJMHeight = 0;
 
         int[] SA = toSuccessorArray();
-        for(int i = 0; i < SA.length; i++){
-            System.out.print("[" + SA[i] + "]");
-        }
+
         for(int SAindex = 0; SAindex < SA.length; SAindex++){
             for(int ADJMwidth = 0; ADJMwidth < ADJM[ADJMHeight].length; ADJMwidth++){
-                System.out.println("adjmW : " + ADJMwidth + " - adjmH : " + ADJMHeight + " - saIndex : " + SAindex);
                 if(ADJMwidth+1 == SA[SAindex]){ //+1 car on veut commencer a 1
                     ADJM[ADJMHeight][ADJMwidth]++;
-                    System.out.println("J'ajoute 1 à la case : " + ADJMHeight + "/"+ ADJMwidth);
                 }
             }
             if(SA[SAindex] == 0) {
                 ADJMHeight++;
-                System.out.println();
             }
         }
 

@@ -585,7 +585,6 @@ public class GrafTest {
 
     @Test
     public void testSuccessorArray() {
-        g2Esport.printMap();
         int[] SA = g2Esport.toSuccessorArray();
         int[] SACheck = {2, 3, 0, 3, 5, 0, 4, 0, 1, 5, 0, 5};
 
@@ -600,13 +599,11 @@ public class GrafTest {
     @Test
     public void testMatrix(){
         int[][] M = g2Esport.toAdjMatrix();
-        int[][] MCheck = {{0,1,1,0,0},{0,0,1,0,1},{0,0,0,1,0},{1,0,0,0,1},{0,0,0,0,1}};
+        int[][] MCheck = {{0,1,1,0,0},{0,0,1,0,1},{0,0,0,1,0},{1,0,0,0,2},{0,0,0,0,1}};
         for(int i = 0; i < MCheck.length; i++){
             for(int j = 0; j < MCheck.length; j++){
-                System.out.print("[" + M[i][j] + "]");
                 Assert.assertTrue(M[i][j] == MCheck[i][j]);
             }
-        System.out.println();
         }
     }
 
