@@ -54,7 +54,9 @@ public class GrafTest {
         g2Esport.addEdge(3, 4);
         g2Esport.addEdge(4, 1);
         g2Esport.addEdge(4, 5);
+        g2Esport.addEdge(4, 5);
         g2Esport.addEdge(5, 5);
+
     }
 
 
@@ -765,6 +767,4 @@ public class GrafTest {
 
 
     }
-
->>>>>>> f67b379af89e5cb0798e9dfd332bfb360bc1b2e2
 }
