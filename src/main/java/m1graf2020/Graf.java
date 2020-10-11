@@ -341,7 +341,7 @@ public class Graf {
         }
 
     }
-
+    //Remove cb de edges si plusieurs identiques ?
     public void removeEdge(Node from, Node to) {
         edges.removeIf(e -> (e.getFrom() == from.getId() && e.getTo() == to.getId()));
 
