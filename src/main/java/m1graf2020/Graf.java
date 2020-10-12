@@ -37,49 +37,26 @@ public class Graf {
 
         File file = new File(fileName);
         FileReader fileReader = new FileReader(file);
-        int fileRes;
+        BufferedReader bufRead = new BufferedReader(fileReader);
+        String myLine;
         int actualNode = 0;
-        boolean canParse = false;
-        boolean newNode = true;
-        boolean isEdge = false;
 
-        while ((fileRes = fileReader.read()) > 0) {
-
-            if ((fileRes >= 'a' && fileRes <= 'z') || (fileRes >= 'A' && fileRes <= 'Z') || fileRes == '\n'
-                    || fileRes == '\t' || fileRes == ' ' || Character.isWhitespace(fileRes)) {
-                continue;
-            }
-            if (fileRes == '{') {
-                canParse = true;
-            }
-            if (fileRes == '}') {
-                break;
-            }
-
-            if (fileRes == ';') {
-                newNode = true;
-                continue;
-            }
-
-            if (fileRes == '>') {
-                isEdge = true;
-                continue;
-            }
-            int resI = fileRes - 48;
-
-            if (canParse) {
-                if (newNode) {
-                    newNode = false;
-                    if (resI == actualNode) {
-                        continue;
+        while ((myLine = bufRead.readLine()) != null) {
+            if (myLine.isEmpty()) continue;
+            if (!myLine.contains("{") && !myLine.contains("}") && !myLine.contains("#")) {
+                if (myLine.contains("->")) {
+                    String[] line = myLine.trim().split("->");
+                    if (actualNode != Integer.parseInt(line[0].trim())) {
+                        actualNode++;
+                        addNode(actualNode);
                     }
-                    actualNode++;
-                    addNode(actualNode);
-
-                }
-                if (isEdge) {
-                    addEdge(actualNode, resI);
-                    isEdge = false;
+                    addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()));
+                } else {
+                    String line = myLine.replaceAll(";", "").trim();
+                    if (actualNode != Integer.parseInt(line)) {
+                        actualNode++;
+                        addNode(actualNode);
+                    }
                 }
             }
         }
@@ -341,6 +318,7 @@ public class Graf {
         }
 
     }
+
     //Remove cb de edges si plusieurs identiques ?
     public void removeEdge(Node from, Node to) {
         edges.removeIf(e -> (e.getFrom() == from.getId() && e.getTo() == to.getId()));
@@ -475,7 +453,7 @@ public class Graf {
                 SA[cptIndex] = vNode.getId();
                 cptIndex++;
             }
-            if(cptIndex < SALength){
+            if (cptIndex < SALength) {
                 SA[cptIndex] = 0;
                 cptIndex++;
             }
@@ -483,20 +461,20 @@ public class Graf {
         return SA;
     }
 
-    public int[][] toAdjMatrix(){
+    public int[][] toAdjMatrix() {
         int lnMatrix = getAllNodes().size();
         int[][] ADJM = new int[lnMatrix][lnMatrix];
         int ADJMHeight = 0;
 
         int[] SA = toSuccessorArray();
 
-        for(int SAindex = 0; SAindex < SA.length; SAindex++){
-            for(int ADJMwidth = 0; ADJMwidth < ADJM[ADJMHeight].length; ADJMwidth++){
-                if(ADJMwidth+1 == SA[SAindex]){ //+1 car on veut commencer a 1
+        for (int SAindex = 0; SAindex < SA.length; SAindex++) {
+            for (int ADJMwidth = 0; ADJMwidth < ADJM[ADJMHeight].length; ADJMwidth++) {
+                if (ADJMwidth + 1 == SA[SAindex]) { //+1 car on veut commencer a 1
                     ADJM[ADJMHeight][ADJMwidth]++;
                 }
             }
-            if(SA[SAindex] == 0) {
+            if (SA[SAindex] == 0) {
                 ADJMHeight++;
             }
         }
