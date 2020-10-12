@@ -10,19 +10,20 @@ public class Node implements Comparable<Node> {
 
     @Override
     public boolean equals(Object o) {
+        if (!(o instanceof Node)) {
+            return false;
+        }
         Node i = (Node) o;
         return i.getId() == this.id;
     }
-
-
 
     public int getId() {
         return this.id;
     }
 
     @Override
-    public String toString(){
-        return id +" ";
+    public String toString() {
+        return id + " ";
     }
 
     @Override

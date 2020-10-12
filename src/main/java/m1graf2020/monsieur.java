@@ -1,37 +1,39 @@
+package m1graf2020;
+
 import java.util.Collections;
 import java.util.List;
 
-import m1graf2020.*;
-/*
+import m1graf2020.Exceptions.NodeAlreadyExist;
+
 public class monsieur {
 
-    public static void main2(String[] args) {
+    public static void main(String[] args) throws NodeAlreadyExist {
         System.out.println(">>>>>>>> Creating the subject example graph in G");
         Graf g = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
         System.out.println(">>>> Graph information");
-        System.out.println(">> DOT representation\n"+g.toDotString());
-        System.out.println(""+g.nbNodes()+" nodes, "+g.nbEdges()+" edges");
+        System.out.println(">> DOT representation\n" + g.toDotString());
+        System.out.println("" + g.nbNodes() + " nodes, " + g.nbEdges() + " edges");
         System.out.println(">> Nodes: ");
         List<Node> nodes = g.getAllNodes();
         Collections.sort(nodes);
-        for (Node n: nodes)
-            System.out.println("Node "+n+": degree "+g.degree(n)+" (in: "+g.inDegree(n)+", out: "+g.outDegree(n)+")");
+        for (Node n : nodes)
+            System.out.println("Node " + n + ": degree " + g.degree(n) + " (in: " + g.inDegree(n) + ", out: " + g.outDegree(n) + ")");
 
         List<Edge> edges;
         System.out.println(">> Edges: ");
         System.out.println("---------------------------");
         System.out.println("As out-edges");
-        for (Node n: nodes) {
+        for (Node n : nodes) {
             edges = g.getOutEdges(n);
             Collections.sort(edges);
-            System.out.println(""+n+": "+edges);
+            System.out.println("" + n + ": " + edges);
         }
 
         System.out.println("As in-edges");
-        for (Node n: nodes) {
+        for (Node n : nodes) {
             edges = g.getInEdges(n);
             Collections.sort(edges);
-            System.out.println(""+n+": "+edges);
+            System.out.println("" + n + ": " + edges);
         }
 
         /////////////////////////////////////////////////////
@@ -40,34 +42,34 @@ public class monsieur {
         g.addNode(12);
         System.out.println("Graph now:");
         System.out.println(g.toDotString());
-        System.out.println(""+g.nbNodes()+" nodes, "+g.nbEdges()+" edges");
+        System.out.println("" + g.nbNodes() + " nodes, " + g.nbEdges() + " edges");
         nodes = g.getAllNodes();
         Collections.sort(nodes);
-        System.out.println("Nodes list: "+nodes);
+        System.out.println("Nodes list: " + nodes);
 
         System.out.println("\n>>>>>>>> Removing node 3");
         g.removeNode(3);
         System.out.println("Graph now:");
         System.out.println(g.toDotString());
-        System.out.println(""+g.nbNodes()+" nodes, "+g.nbEdges()+" edges");
+        System.out.println("" + g.nbNodes() + " nodes, " + g.nbEdges() + " edges");
         nodes = g.getAllNodes();
         Collections.sort(nodes);
-        System.out.println("Nodes list: "+nodes);
+        System.out.println("Nodes list: " + nodes);
 
         System.out.println(">> Edges: ");
         System.out.println("---------------------------");
         System.out.println("As out-edges");
-        for (Node n: nodes) {
+        for (Node n : nodes) {
             edges = g.getOutEdges(n);
             Collections.sort(edges);
-            System.out.println(""+n+": "+edges);
+            System.out.println("" + n + ": " + edges);
         }
 
         System.out.println("As in-edges");
-        for (Node n: nodes) {
+        for (Node n : nodes) {
             edges = g.getInEdges(n);
             Collections.sort(edges);
-            System.out.println(""+n+": "+edges);
+            System.out.println("" + n + ": " + edges);
         }
 
         System.out.println("\n>>>>>>>> Recreating edges (4, 3), (3, 6), (7, 3), adding edge (12, 3), creating edge (3, 25)");
@@ -78,10 +80,10 @@ public class monsieur {
         g.addEdge(3, 25);
         System.out.println("Graph now:");
         System.out.println(g.toDotString());
-        System.out.println(""+g.nbNodes()+" nodes, "+g.nbEdges()+" edges");
+        System.out.println("" + g.nbNodes() + " nodes, " + g.nbEdges() + " edges");
         nodes = g.getAllNodes();
         Collections.sort(nodes);
-        System.out.println("Nodes list: "+nodes);
+        System.out.println("Nodes list: " + nodes);
 
         System.out.println("");
         System.out.println("\n>>>>>>>>  Edges removal");
@@ -100,47 +102,47 @@ public class monsieur {
 
         System.out.println("Graph now:");
         System.out.println(g.toDotString());
-        System.out.println(""+g.nbNodes()+" nodes, "+g.nbEdges()+" edges");
+        System.out.println("" + g.nbNodes() + " nodes, " + g.nbEdges() + " edges");
         nodes = g.getAllNodes();
         Collections.sort(nodes);
-        System.out.println("Nodes list: "+nodes);
+        System.out.println("Nodes list: " + nodes);
 
         System.out.println("\\n>>>>>>>> adding a self-loop on node 6, and a second edge (1, 4)\"");
         g.addEdge(6, 6);
         g.addEdge(1, 4);
         System.out.println("Graph now:");
-        System.out.println(g.toDotStringtoDotString());
-        System.out.println(""+g.nbNodes()+" nodes, "+g.nbEdges()+" edges");
+        System.out.println(g.toDotString());
+        System.out.println("" + g.nbNodes() + " nodes, " + g.nbEdges() + " edges");
         nodes = g.getAllNodes();
         Collections.sort(nodes);
-        System.out.println("Nodes list: "+nodes);
-        System.out.println("Degree of node 6: "+g.degree(6)+" (in: "+g.inDegree(6)+", out: "+g.outDegree(6)+")");
+        System.out.println("Nodes list: " + nodes);
+        System.out.println("Degree of node 6: " + g.degree(6) + " (in: " + g.inDegree(6) + ", out: " + g.outDegree(6) + ")");
 
         System.out.println(">> Edges: ");
         System.out.println("---------------------------");
         System.out.println("As out-edges");
-        for (Node n: nodes) {
+        for (Node n : nodes) {
             edges = g.getOutEdges(n);
             Collections.sort(edges);
-            System.out.println(""+n+": "+edges);
+            System.out.println("" + n + ": " + edges);
         }
 
         System.out.println("As in-edges");
-        for (Node n: nodes) {
+        for (Node n : nodes) {
             edges = g.getInEdges(n);
             Collections.sort(edges);
-            System.out.println(""+n+": "+edges);
+            System.out.println("" + n + ": " + edges);
         }
 
         System.out.println(">>>>>>>>>>    Reverse graph");
         System.out.println(g.getReverse().toDotString());
 
-        System.out.println(">>>>>>>>>>    Transitive Closure");
-        System.out.println(g.getTransitiveClosure().toDotString());
+        /*System.out.println(">>>>>>>>>>    Transitive Closure");
+        System.out.println(g.getTransitiveClosure().toDotString());*/
 
         System.out.println(">>>>>>>>>>    Emptying the graph by removing all its nodes");
         nodes = g.getAllNodes();
-        for (Node u: nodes)
+        for (Node u : nodes)
             g.removeNode(u);
         System.out.println("Graph now:");
         System.out.println(g.toDotString());
@@ -159,4 +161,3 @@ public class monsieur {
     }
 
 }
-*/

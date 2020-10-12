@@ -2,12 +2,35 @@ package m1graf2020;
 
 import m1graf2020.Exceptions.NodeAlreadyExist;
 
+import java.io.*;
 import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/****************************************************
+ *                     QUESTIONS                    *
+ ****************************************************/
+
+/**
+ * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
+ */
+
+/**
+ * RemoveEdge : Remove cb de edges si plusieurs identiques ?
+ */
+
+/**
+ * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
+ * si plusieurs edge identique
+ */
+
+
+/****************************************************
+ *                   IMPLEMENTATION                 *
+ ****************************************************/
+
 public class Graf {
-    private HashMap<Node, List<Node>> adjList = new HashMap<>();
+    private TreeMap<Node, List<Node>> adjList = new TreeMap<>();
     private TreeSet<Integer> poubelle = new TreeSet<>();
     private List<Edge> edges = new ArrayList<>();
 
@@ -19,17 +42,47 @@ public class Graf {
     public Graf(int... SA) throws NodeAlreadyExist {
         int actualNode = 1;
         addNode(1);
-        for (int indice : SA) {
-            if (indice != 0) {
-                addEdge(actualNode, indice);
+        for (int index = 0; index < SA.length; index++) {
+            if (SA[index] != 0) {
+                addEdge(actualNode, SA[index]);
             } else {
-                addNode(actualNode + 1);
-                actualNode++;
+                if (index != SA.length - 1) {
+                    addNode(actualNode + 1);
+                    actualNode++;
+                }
             }
         }
 
-        adjList = adjList.entrySet().stream().sorted(Map.Entry.comparingByKey()).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1,e2) -> e1, HashMap::new));
+    }
 
+    public Graf(String fileName) throws IOException, NodeAlreadyExist {
+
+        File file = new File(fileName);
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufRead = new BufferedReader(fileReader);
+        String myLine;
+        int actualNode = 0;
+
+        while ((myLine = bufRead.readLine()) != null) {
+            if (myLine.isEmpty()) continue;
+            if (!myLine.contains("{") && !myLine.contains("}") && !myLine.contains("#")) {
+                if (myLine.contains("->")) {
+                    String[] line = myLine.trim().split("->");
+                    if (actualNode != Integer.parseInt(line[0].trim())) {
+                        actualNode++;
+                        addNode(actualNode);
+                    }
+                    addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()));
+                } else {
+                    String line = myLine.replaceAll(";", "").trim();
+                    if (actualNode != Integer.parseInt(line)) {
+                        actualNode++;
+                        addNode(actualNode);
+                    }
+                }
+            }
+        }
+        fileReader.close();
     }
 
     /************************************ FONCTIONS A NOUS ************************************/
@@ -46,7 +99,7 @@ public class Graf {
         return poubelle;
     }
 
-    public HashMap<Node, List<Node>> getMap() {
+    public TreeMap<Node, List<Node>> getMap() {
         return adjList;
     }
 
@@ -76,14 +129,24 @@ public class Graf {
         System.out.println();
     }
 
+    public void printEdges() {
+        for (Edge e : edges) {
+            System.out.print("(" + e.getFrom() + "," + e.getTo() + ")  ");
+        }
+    }
 
-    public void printPoubelle(){
+
+    public void printPoubelle() {
         for (int i : poubelle) {
             System.out.println("elem : " + i);
         }
     }
 
     /************************************ FONCTIONS A PAS NOUS ************************************/
+
+    /****************************************************
+     *                       NODES                      *
+     ****************************************************/
 
     public int nbNodes() {
         return adjList.keySet().size();
@@ -118,19 +181,24 @@ public class Graf {
 
     public void addNode(Node n) throws NodeAlreadyExist {
         if (existsNode(n)) {
-            throw new NodeAlreadyExist();
+            return;
+            //throw new NodeAlreadyExist();
         }
         adjList.put(n, new ArrayList<>());
     }
 
     public void addNode(int id) throws NodeAlreadyExist {
-        if(existsNode(id)) {
-            throw new NodeAlreadyExist();
+        if (existsNode(id)) {
+            return;
+            //throw new NodeAlreadyExist();
         }
         adjList.put(new Node(id), new ArrayList<>());
     }
 
     public void removeNode(Node n) {
+        if (!existsNode(n)) {
+            return;
+        }
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
             entry.getValue().removeIf(node -> node.equals(n));
         }
@@ -141,6 +209,9 @@ public class Graf {
     }
 
     public void removeNode(int id) {
+        if (!existsNode(id)) {
+            return;
+        }
         Node toRemove = new Node(id);
         edges.removeIf(e -> (e.getFrom() == id || e.getTo() == id));
 
@@ -156,19 +227,14 @@ public class Graf {
         return adjList.get(n);
     }
 
-    /**
-     * Si inexistant ???
-     *
-     * @param id
-     * @return
-     */
+
     public List<Node> getSuccessors(int id) {
         for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == id) {
                 return adjList.get(myNode);
             }
         }
-        return adjList.get(new Node(id));
+        return new ArrayList<>();
     }
 
     public boolean adjacent(Node u, Node v) {
@@ -180,25 +246,20 @@ public class Graf {
     }
 
     public List<Node> getAllNodes() {
-        List<Node> ln = new ArrayList<>(adjList.keySet());
-        return ln;
+        return new ArrayList<>(adjList.keySet());
     }
+
+    /****************************************************
+     *                       EDGES                      *
+     ****************************************************/
 
     public int nbEdges() {
         return edges.size();
     }
 
-    /**
-     * Ordre définie entre u et v ?
-     *
-     * @param u
-     * @param v
-     * @return
-     */
     public boolean existsEdge(Node u, Node v) {
         for (Edge e : edges) {
-            if (u.getId() == e.getFrom() && v.getId() == e.getTo()
-                    || u.getId() == e.getTo() && v.getId() == e.getFrom()) {
+            if (u.getId() == e.getFrom() && v.getId() == e.getTo()) {
                 return true;
             }
         }
@@ -207,8 +268,7 @@ public class Graf {
 
     public boolean existsEdge(int u, int v) {
         for (Edge e : edges) {
-            if (u == e.getFrom() && v == e.getTo()
-                    || u == e.getTo() && v == e.getFrom()) {
+            if (u == e.getFrom() && v == e.getTo()) {
                 return true;
             }
         }
@@ -219,54 +279,82 @@ public class Graf {
         return edges.contains(e);
     }
 
-    public void addEdge(Node from, Node to) {
-        Edge ed = new Edge(from.getId(), to.getId());
-        if (!edges.contains(ed)) {
-            adjList.get(from).add(to);
-            edges.add(new Edge(from.getId(), to.getId()));
+    public void addEdge(Node from, Node to) throws NodeAlreadyExist {
+
+        adjList.get(from).add(to);
+        edges.add(new Edge(from.getId(), to.getId()));
+
+        if (!existsNode(from)) {
+            addNode(from);
         }
+        if (!existsNode(to)) {
+            addNode(to);
+        }
+
     }
 
-    public void addEdge(int from, int to) {
+    public void addEdge(int from, int to) throws NodeAlreadyExist {
         Edge ed = new Edge(from, to);
-        if (!edges.contains(ed)) {
-            for (Node n : adjList.keySet()) {
-                if (n.getId() == ed.getFrom()) {
-                    adjList.get(n).add(new Node(ed.getTo()));
-                    edges.add(ed);
+
+        for (Node n : adjList.keySet()) {
+            if (n.getId() == ed.getFrom()) {
+                adjList.get(n).add(new Node(ed.getTo()));
+                edges.add(ed);
+                if (!existsNode(to)) {
+                    addNode(to);
                 }
+                return;
             }
         }
+        addNode(from);
+        adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
+        edges.add(ed);
+        if (!existsNode(to)) {
+            addNode(to);
+        }
+
     }
 
-    public void addEdge(Edge ed) {
-        if (!edges.contains(ed)) {
-            for (Node n : adjList.keySet()) {
-                if (n.getId() == ed.getFrom()) {
-                    adjList.get(n).add(new Node(ed.getTo()));
-                    edges.add(ed);
+    public void addEdge(Edge ed) throws NodeAlreadyExist {
+
+        for (Node n : adjList.keySet()) {
+            if (n.getId() == ed.getFrom()) {
+                adjList.get(n).add(new Node(ed.getTo()));
+                edges.add(ed);
+                if (!existsNode(ed.getTo())) {
+                    addNode(ed.getTo());
                 }
+                return;
             }
         }
+        addNode(ed.getFrom());
+        adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
+        edges.add(ed);
+        if (!existsNode(ed.getTo())) {
+            addNode(ed.getTo());
+        }
+
     }
 
     public void removeEdge(Node from, Node to) {
-        edges.removeIf(e -> (e.getFrom() == from.getId() || e.getTo() == to.getId()));
+        edges.removeIf(e -> (e.getFrom() == from.getId() && e.getTo() == to.getId()));
 
-        adjList.get(from).remove(to);
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            entry.getValue().removeIf(node -> node.equals(to));
+            Collections.sort(entry.getValue());
+        }
     }
 
     public void removeEdge(int from, int to) {
-        edges.removeIf(e -> (e.getFrom() == from || e.getTo() == to));
+        edges.removeIf(e -> (e.getFrom() == from && e.getTo() == to));
 
-        Node nodeToDelete = null;
-        for (Node myNode : adjList.keySet()) {
-            if (myNode.getId() == from) {
-                nodeToDelete = myNode;
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            if (from == entry.getKey().getId()) {
+                entry.getValue().removeIf(node -> node.getId() == to);
             }
+            Collections.sort(entry.getValue());
         }
 
-        adjList.get(nodeToDelete).remove(new Node(to));
     }
 
     public void removeEdge(Edge e) {
@@ -276,9 +364,276 @@ public class Graf {
 
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
             entry.getValue().removeIf(node -> node.equals(nodeToDelete));
+            Collections.sort(entry.getValue());
+        }
+    }
+
+    public List<Edge> getOutEdges(Node n) {
+        List<Edge> le = new ArrayList<>();
+        for (Node myNode : adjList.get(getNode(n.getId()))) {
+            le.add(new Edge(n.getId(), myNode.getId()));
+        }
+        return le;
+    }
+
+    public List<Edge> getOutEdges(int id) {
+        List<Edge> le = new ArrayList<>();
+        for (Node myNode : adjList.get(getNode(id))) {
+            le.add(new Edge(id, myNode.getId()));
+        }
+        return le;
+    }
+
+    public List<Edge> getInEdges(Node n) {
+        List<Edge> le = new ArrayList<>();
+
+        for (Edge e : edges) {
+            if (e.getTo() == n.getId()) {
+                le.add(e);
+            }
+        }
+
+        return le;
+    }
+
+    public List<Edge> getInEdges(int id) {
+        List<Edge> le = new ArrayList<>();
+
+        for (Edge e : edges) {
+            if (e.getTo() == id) {
+                le.add(e);
+            }
+        }
+
+        return le;
+    }
+
+    public List<Edge> getIncidentEdges(Node n) {
+        List<Edge> le = new ArrayList<>();
+        le.addAll(getInEdges(n));
+        le.addAll(getOutEdges(n));
+        return le;
+    }
+
+    public List<Edge> getIncidentEdges(int id) {
+        List<Edge> le = new ArrayList<>();
+        le.addAll(getInEdges(id));
+        le.addAll(getOutEdges(id));
+        return le;
+    }
+
+    public List<Edge> getAllEdges() {
+        return edges;
+    }
+
+    /****************************************************
+     *                      DEGREES                     *
+     ****************************************************/
+
+    public int inDegree(Node n) {
+        return getInEdges(n).size();
+    }
+
+    public int inDegree(int id) {
+        return getInEdges(id).size();
+    }
+
+    public int outDegree(Node n) {
+        return getOutEdges(n).size();
+    }
+
+    public int outDegree(int id) {
+        return getOutEdges(id).size();
+    }
+
+    public int degree(Node n) {
+        return outDegree(n) + inDegree(n);
+    }
+
+    public int degree(int id) {
+        return outDegree(id) + inDegree(id);
+    }
+
+    /****************************************************
+     *               GRAPH REPRESENTATION               *
+     ****************************************************/
+
+
+    public int[] toSuccessorArray() {
+        int SALength = edges.size() + getAllNodes().size() - 1; //-1 car on ajoute un 0 entre chaque noeud 1-2-3-4-5
+        int[] SA = new int[SALength];
+        int cptIndex = 0;
+        for (Node key : adjList.keySet()) {
+            List<Node> value = adjList.get(key);
+            for (Node vNode : value) {
+                SA[cptIndex] = vNode.getId();
+                cptIndex++;
+            }
+            if (cptIndex < SALength) {
+                SA[cptIndex] = 0;
+                cptIndex++;
+            }
+        }
+        return SA;
+    }
+
+    public int[][] toAdjMatrix() {
+        int lnMatrix = getAllNodes().size();
+        int[][] ADJM = new int[lnMatrix][lnMatrix];
+        int ADJMHeight = 0;
+
+        int[] SA = toSuccessorArray();
+
+        for (int SAindex = 0; SAindex < SA.length; SAindex++) {
+            for (int ADJMwidth = 0; ADJMwidth < ADJM[ADJMHeight].length; ADJMwidth++) {
+                if (ADJMwidth + 1 == SA[SAindex]) { //+1 car on veut commencer a 1
+                    ADJM[ADJMHeight][ADJMwidth]++;
+                }
+            }
+            if (SA[SAindex] == 0) {
+                ADJMHeight++;
+            }
+        }
+
+        return ADJM;
+    }
+
+    /****************************************************
+     *               GRAPH TRANSFORMATION               *
+     ****************************************************/
+
+    public Graf getReverse() throws NodeAlreadyExist {
+        Graf reversedGraf = new Graf();
+        for (Edge e : this.edges) {
+            reversedGraf.addEdge(e.getTo(), e.getFrom());
+        }
+        return reversedGraf;
+    }
+
+
+    /****************************************************
+     *               GRAPH TRAVERSAL                    *
+     ****************************************************/
+
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @return list of parcoured nodes in the DFS order
+     */
+    public List<Node> getDFS() {
+        boolean[] visited = new boolean[256];
+        List<Node> ls = new ArrayList<>();
+        ls.add(adjList.firstKey());
+        dfs(adjList.firstKey(), visited, ls);
+        return ls;
+    }
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @param actualNode actualNode to visit
+     * @param visited    tab of visited nodes
+     * @param ls         list of the parcoured nodes
+     */
+    public void dfs(Node actualNode, boolean[] visited, List<Node> ls) {
+        visited[actualNode.getId()] = true;
+
+        Iterator<Node> node = adjList.get(actualNode).listIterator();
+        while (node.hasNext()) {
+            Node n = node.next();
+            if (!visited[n.getId()]) {
+                ls.add(n);
+                dfs(n, visited, ls);
+            }
+        }
+    }
+
+    /**
+     * Will do the BFS traversal of the graph in a recursive way
+     *
+     * @return list of parcoured nodes in the BFS order
+     */
+    public List<Node> getBFS() {
+        List<Node> ls = new ArrayList<>();
+        ls.add(adjList.firstKey());
+        bfs(adjList.firstKey(), ls);
+        return ls;
+    }
+
+    /**
+     * Will do the bfs traversal of the graph
+     *
+     * @param actualNode actualNode to visit
+     * @param ls         list of the parcoured nodes
+     */
+    public void bfs(Node actualNode, List<Node> ls) {
+        boolean[] visited = new boolean[256];
+
+        LinkedList<Node> queue = new LinkedList<>();
+
+        visited[actualNode.getId()] = true;
+        queue.add(actualNode);
+
+        while (queue.size() != 0) {
+            actualNode = queue.poll();
+
+            Iterator<Node> node = adjList.get(actualNode).listIterator();
+            while (node.hasNext()) {
+                Node n = node.next();
+                if (!visited[n.getId()]) {
+                    visited[n.getId()] = true;
+                    queue.add(n);
+                    ls.add(n);
+                }
+            }
         }
     }
 
 
+    /****************************************************
+     *               GRAPH EXPORT                       *
+     ****************************************************/
+
+
+    /**
+     * the dot representation in a string of the graf
+     *
+     * @return the dot representation in a string of the graf
+     */
+    public String toDotString() {
+        String dot = "# DOT Representation for the graph";
+        dot += "\n\n digraph graf {\n";
+
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            if (entry.getValue().isEmpty()) {
+                dot += "\t" + entry.getKey() + ";\n";
+            }
+            for (Node edgeNode : entry.getValue()) {
+                dot += "\t" + entry.getKey() + " -> " + edgeNode.getId() + ";\n";
+            }
+        }
+
+        dot += "}";
+
+        return dot;
+    }
+
+    /**
+     * Will write into the specified file the dot representation of the graf
+     *
+     * @param fileName file to write the dot representation
+     * @throws IOException possible I/O exception with file
+     */
+    public void toDotFile(String fileName) throws IOException {
+        File file = new File(fileName);
+
+        FileWriter fWriter = new FileWriter(file);
+        fWriter.write(toDotString());
+        fWriter.close();
+    }
+
+
 }
+
 
