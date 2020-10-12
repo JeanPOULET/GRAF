@@ -58,7 +58,7 @@ public class GrafTest
 
     @Test
     public void testExistsNodeWithInt() throws NodeAlreadyExist {
-        g.addNode(n1);
+        g.addNode(1);
         for (Node myNode : g.getNodes()){
             Assert.assertTrue((myNode.getId() == n1.getId()) == g.existsNode(1));
         }
