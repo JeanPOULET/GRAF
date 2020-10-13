@@ -498,7 +498,11 @@ public class Graf {
     /****************************************************
      *               GRAPH TRANSFORMATION               *
      ****************************************************/
-
+    /**
+     *
+     * @return
+     * @throws NodeAlreadyExist
+     */
     public Graf getReverse() throws NodeAlreadyExist {
         Graf reversedGraf = new Graf();
         for (Edge e : this.edges) {
@@ -507,6 +511,11 @@ public class Graf {
         return reversedGraf;
     }
 
+    /**
+     *
+     * @return
+     * @throws NodeAlreadyExist
+     */
     public Graf getTransitiveClosure() throws NodeAlreadyExist {
         Graf transitiveClosureGraph = new Graf();
         for (Edge e : this.edges){
