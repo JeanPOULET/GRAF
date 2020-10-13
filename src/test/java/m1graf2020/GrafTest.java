@@ -29,6 +29,7 @@ public class GrafTest {
     Node n5;
 
     Graf g2Esport;
+    Graf g3PasEsport;
 
 
     @Before
@@ -56,6 +57,22 @@ public class GrafTest {
         g2Esport.addEdge(4, 5);
         g2Esport.addEdge(4, 5);
         g2Esport.addEdge(5, 5);
+
+        g3PasEsport = new Graf();
+
+        g3PasEsport.addNode(n1);
+        g3PasEsport.addNode(n2);
+        g3PasEsport.addNode(n3);
+        g3PasEsport.addNode(n4);
+        g3PasEsport.addNode(n5);
+        g3PasEsport.addNode(6);
+
+        g3PasEsport.addEdge(1, 2);
+        g3PasEsport.addEdge(1, 3);
+        g3PasEsport.addEdge(2, 4);
+        g3PasEsport.addEdge(3, 4);
+        g3PasEsport.addEdge(4, 5);
+        g3PasEsport.addEdge(4, 6);
 
     }
 
@@ -598,11 +615,11 @@ public class GrafTest {
     }
 
     @Test
-    public void testMatrix(){
+    public void testMatrix() {
         int[][] M = g2Esport.toAdjMatrix();
-        int[][] MCheck = {{0,1,1,0,0},{0,0,1,0,1},{0,0,0,1,0},{1,0,0,0,2},{0,0,0,0,1}};
-        for(int i = 0; i < MCheck.length; i++){
-            for(int j = 0; j < MCheck.length; j++){
+        int[][] MCheck = {{0, 1, 1, 0, 0}, {0, 0, 1, 0, 1}, {0, 0, 0, 1, 0}, {1, 0, 0, 0, 2}, {0, 0, 0, 0, 1}};
+        for (int i = 0; i < MCheck.length; i++) {
+            for (int j = 0; j < MCheck.length; j++) {
                 Assert.assertTrue(M[i][j] == MCheck[i][j]);
             }
         }
@@ -676,7 +693,7 @@ public class GrafTest {
         List<Node> fromBfs = grafFromExample.getDFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
-            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+            Assert.assertEquals(fromBfs.get(index), lsWaited.get(index));
         }
     }
 
@@ -695,9 +712,8 @@ public class GrafTest {
         List<Node> fromBfs = grafFromExample.getDFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
-            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+            Assert.assertEquals(fromBfs.get(index), lsWaited.get(index));
         }
-
     }
 
     @Test
@@ -716,9 +732,8 @@ public class GrafTest {
         List<Node> fromBfs = grafFromExample.getBFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
-            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+            Assert.assertEquals(fromBfs.get(index), lsWaited.get(index));
         }
-
     }
 
     @Test
@@ -736,7 +751,7 @@ public class GrafTest {
         List<Node> fromBfs = grafFromExample.getBFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
-            Assert.assertEquals(fromBfs.get(index),lsWaited.get(index));
+            Assert.assertEquals(fromBfs.get(index), lsWaited.get(index));
         }
     }
 
@@ -746,17 +761,17 @@ public class GrafTest {
         Graf reversedGraf = grafFromExample.getReverse();
         reversedGraf.printMap();
         reversedGraf.toDotFile("oui.dot");
-        Assert.assertTrue(reversedGraf.existsEdge(2,1));
-        Assert.assertTrue(reversedGraf.existsEdge(3,1));
-        Assert.assertTrue(reversedGraf.existsEdge(4,2));
-        Assert.assertTrue(reversedGraf.existsEdge(5,2));
-        Assert.assertTrue(reversedGraf.existsEdge(5,4));
-        Assert.assertTrue(reversedGraf.existsEdge(6,5));
-        Assert.assertTrue(reversedGraf.existsEdge(7,5));
-        Assert.assertTrue(reversedGraf.existsEdge(6,7));
-        Assert.assertTrue(reversedGraf.existsEdge(7,8));
+        Assert.assertTrue(reversedGraf.existsEdge(2, 1));
+        Assert.assertTrue(reversedGraf.existsEdge(3, 1));
+        Assert.assertTrue(reversedGraf.existsEdge(4, 2));
+        Assert.assertTrue(reversedGraf.existsEdge(5, 2));
+        Assert.assertTrue(reversedGraf.existsEdge(5, 4));
+        Assert.assertTrue(reversedGraf.existsEdge(6, 5));
+        Assert.assertTrue(reversedGraf.existsEdge(7, 5));
+        Assert.assertTrue(reversedGraf.existsEdge(6, 7));
+        Assert.assertTrue(reversedGraf.existsEdge(7, 8));
 
-        Assert.assertFalse(reversedGraf.existsEdge(8,7));
+        Assert.assertFalse(reversedGraf.existsEdge(8, 7));
 
         Assert.assertTrue(reversedGraf.existsNode(1));
         Assert.assertTrue(reversedGraf.existsNode(2));
@@ -766,7 +781,35 @@ public class GrafTest {
         Assert.assertTrue(reversedGraf.existsNode(6));
         Assert.assertTrue(reversedGraf.existsNode(7));
         Assert.assertTrue(reversedGraf.existsNode(8));
+    }
 
+    @Test
+    public void testGetTransitiveClosur() throws NodeAlreadyExist {
+        //g3PasEsport.printMap();
+        Graf gTransi = g3PasEsport.getTransitiveClosure();
 
+        //gTransi.printMap();
+
+        Assert.assertTrue(gTransi.existsNode(1));
+        Assert.assertTrue(gTransi.existsNode(2));
+        Assert.assertTrue(gTransi.existsNode(3));
+        Assert.assertTrue(gTransi.existsNode(4));
+        Assert.assertTrue(gTransi.existsNode(5));
+        Assert.assertTrue(gTransi.existsNode(6));
+
+        Assert.assertTrue(gTransi.existsEdge(1, 2));
+        Assert.assertTrue(gTransi.existsEdge(1, 3));
+        Assert.assertTrue(gTransi.existsEdge(1, 4));
+        Assert.assertTrue(gTransi.existsEdge(1, 4));
+        Assert.assertTrue(gTransi.existsEdge(1, 5));
+        Assert.assertTrue(gTransi.existsEdge(1, 6));
+        Assert.assertTrue(gTransi.existsEdge(2, 4));
+        Assert.assertTrue(gTransi.existsEdge(2, 5));
+        Assert.assertTrue(gTransi.existsEdge(2, 6));
+        Assert.assertTrue(gTransi.existsEdge(3, 4));
+        Assert.assertTrue(gTransi.existsEdge(3, 5));
+        Assert.assertTrue(gTransi.existsEdge(3, 6));
+        Assert.assertTrue(gTransi.existsEdge(4, 5));
+        Assert.assertTrue(gTransi.existsEdge(4, 6));
     }
 }

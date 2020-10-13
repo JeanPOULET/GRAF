@@ -24,6 +24,11 @@ import java.util.stream.Collectors;
  * si plusieurs edge identique
  */
 
+/**
+ * Multi-graph avec Transitive Closure ?
+ *
+ */
+
 
 /****************************************************
  *                   IMPLEMENTATION                 *
@@ -280,7 +285,6 @@ public class Graf {
     }
 
     public void addEdge(Node from, Node to) throws NodeAlreadyExist {
-
         adjList.get(from).add(to);
         edges.add(new Edge(from.getId(), to.getId()));
 
@@ -290,7 +294,6 @@ public class Graf {
         if (!existsNode(to)) {
             addNode(to);
         }
-
     }
 
     public void addEdge(int from, int to) throws NodeAlreadyExist {
@@ -312,11 +315,9 @@ public class Graf {
         if (!existsNode(to)) {
             addNode(to);
         }
-
     }
 
     public void addEdge(Edge ed) throws NodeAlreadyExist {
-
         for (Node n : adjList.keySet()) {
             if (n.getId() == ed.getFrom()) {
                 adjList.get(n).add(new Node(ed.getTo()));
@@ -333,7 +334,6 @@ public class Graf {
         if (!existsNode(ed.getTo())) {
             addNode(ed.getTo());
         }
-
     }
 
     public void removeEdge(Node from, Node to) {
@@ -354,7 +354,6 @@ public class Graf {
             }
             Collections.sort(entry.getValue());
         }
-
     }
 
     public void removeEdge(Edge e) {
@@ -392,7 +391,6 @@ public class Graf {
                 le.add(e);
             }
         }
-
         return le;
     }
 
@@ -404,7 +402,6 @@ public class Graf {
                 le.add(e);
             }
         }
-
         return le;
     }
 
@@ -508,6 +505,27 @@ public class Graf {
             reversedGraf.addEdge(e.getTo(), e.getFrom());
         }
         return reversedGraf;
+    }
+
+    public Graf getTransitiveClosure() throws NodeAlreadyExist {
+        Graf transitiveClosureGraph = new Graf();
+        for (Edge e : this.edges){
+            transitiveClosureGraph.addEdge(e.getFrom(), e.getTo());
+        }
+
+        for(Node u : transitiveClosureGraph.getNodes()){
+            for(Node p : transitiveClosureGraph.getNodes()){
+                if(transitiveClosureGraph.existsEdge(p, u)){
+                    for(Node s : transitiveClosureGraph.getNodes()){
+                        if(transitiveClosureGraph.existsEdge(u, s) && s != p){
+                            transitiveClosureGraph.addEdge(p, s);
+
+                        }
+                    }
+                }
+            }
+        }
+        return transitiveClosureGraph;
     }
 
 
