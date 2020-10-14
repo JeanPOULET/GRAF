@@ -859,6 +859,5 @@ public class GrafTest {
         graf.addEdge(1, 2);
         graf.removeEdge(1, 2);
         Assert.assertTrue(graf.existsEdge(1, 2));
-
     }
 }
