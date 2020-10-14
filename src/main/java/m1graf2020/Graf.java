@@ -4,6 +4,10 @@ package m1graf2020;
 import java.io.*;
 import java.util.*;
 
+/****************************************************
+ *                      QUESTIONS                   *
+ ****************************************************/
+
 
 /****************************************************
  *                   IMPLEMENTATION                 *
@@ -19,7 +23,7 @@ public class Graf {
 
     }
 
-    public Graf(int... SA)  {
+    public Graf(int... SA) {
         int actualNode = 1;
         addNode(1);
         for (int index = 0; index < SA.length; index++) {
@@ -160,7 +164,6 @@ public class Graf {
     }
 
     public void addNode(Node n) {
-
         if (existsNode(n)) {
             return;
         }
@@ -168,11 +171,7 @@ public class Graf {
     }
 
     public void addNode(int id) {
-
-        if (existsNode(id)) {
-            return;
-        }
-        adjList.put(new Node(id), new ArrayList<>());
+        addNode(new Node(id));
     }
 
     public void removeNode(Node n) {
@@ -189,18 +188,7 @@ public class Graf {
     }
 
     public void removeNode(int id) {
-        if (!existsNode(id)) {
-            return;
-        }
-        Node toRemove = new Node(id);
-        edges.removeIf(e -> (e.getFrom() == id || e.getTo() == id));
-
-        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            entry.getValue().removeIf(node -> node.equals(toRemove));
-        }
-
-        adjList.keySet().removeIf(e -> (e.getId() == id));
-        poubelle.add(id);
+        removeNode(new Node(id));
     }
 
     public List<Node> getSuccessors(Node n) {
@@ -209,13 +197,7 @@ public class Graf {
 
 
     public List<Node> getSuccessors(int id) {
-        for (Node myNode : adjList.keySet()) {
-            if (myNode.getId() == id) {
-                return adjList.get(myNode);
-            }
-        }
-
-        return null;
+        return getSuccessors(new Node(id));
     }
 
     public boolean adjacent(Node u, Node v) {
@@ -239,27 +221,16 @@ public class Graf {
     }
 
     public boolean existsEdge(Node u, Node v) {
-        for (Edge e : edges) {
-            if (u.getId() == e.getFrom() && v.getId() == e.getTo()) {
-                return true;
-            }
-        }
-        return false;
+        return existsEdge(new Edge(u, v));
     }
 
     public boolean existsEdge(int u, int v) {
-        for (Edge e : edges) {
-            if (u == e.getFrom() && v == e.getTo()) {
-                return true;
-            }
-        }
-        return false;
+        return existsEdge(new Edge(u, v));
     }
 
     public boolean existsEdge(Edge e) {
         return edges.contains(e);
     }
-
 
     public void addEdge(Node from, Node to) {
         addEdge(new Edge(from.getId(), to.getId()));
@@ -270,7 +241,6 @@ public class Graf {
     }
 
     public void addEdge(Edge ed) {
-
         for (Node n : adjList.keySet()) {
             if (n.getId() == ed.getFrom()) {
                 adjList.get(n).add(new Node(ed.getTo()));
@@ -281,6 +251,7 @@ public class Graf {
                 return;
             }
         }
+
         addNode(ed.getFrom());
         adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
         edges.add(ed);
@@ -316,6 +287,7 @@ public class Graf {
 
     public List<Edge> getOutEdges(Node n) {
         List<Edge> le = new ArrayList<>();
+
         for (Node myNode : adjList.get(getNode(n.getId()))) {
             le.add(new Edge(n.getId(), myNode.getId()));
         }
@@ -324,6 +296,7 @@ public class Graf {
 
     public List<Edge> getOutEdges(int id) {
         List<Edge> le = new ArrayList<>();
+
         for (Node myNode : adjList.get(getNode(id))) {
             le.add(new Edge(id, myNode.getId()));
         }
@@ -354,15 +327,19 @@ public class Graf {
 
     public List<Edge> getIncidentEdges(Node n) {
         List<Edge> le = new ArrayList<>();
+
         le.addAll(getInEdges(n));
         le.addAll(getOutEdges(n));
+
         return le;
     }
 
     public List<Edge> getIncidentEdges(int id) {
         List<Edge> le = new ArrayList<>();
+
         le.addAll(getInEdges(id));
         le.addAll(getOutEdges(id));
+
         return le;
     }
 
@@ -404,9 +381,10 @@ public class Graf {
 
 
     public int[] toSuccessorArray() {
-        int SALength = edges.size() + getAllNodes().size() - 1; //-1 car on ajoute un 0 entre chaque noeud 1-2-3-4-5
+        int SALength = edges.size() + getAllNodes().size() - 1; //-1 because we add a 0 between each node 1-2-3-4-5
         int[] SA = new int[SALength];
         int cptIndex = 0;
+
         for (Node key : adjList.keySet()) {
             List<Node> value = adjList.get(key);
             for (Node vNode : value) {
@@ -430,7 +408,7 @@ public class Graf {
 
         for (int SAindex = 0; SAindex < SA.length; SAindex++) {
             for (int ADJMwidth = 0; ADJMwidth < ADJM[ADJMHeight].length; ADJMwidth++) {
-                if (ADJMwidth + 1 == SA[SAindex]) { //+1 car on veut commencer a 1
+                if (ADJMwidth + 1 == SA[SAindex]) { //+1 because we're starting at index 1
                     ADJM[ADJMHeight][ADJMwidth]++;
                 }
             }
@@ -446,12 +424,12 @@ public class Graf {
      *               GRAPH TRANSFORMATION               *
      ****************************************************/
     /**
-     *
      * @return
      * @
      */
-    public Graf getReverse()  {
+    public Graf getReverse() {
         Graf reversedGraf = new Graf();
+
         for (Edge e : this.edges) {
             reversedGraf.addEdge(e.getTo(), e.getFrom());
         }
@@ -459,12 +437,12 @@ public class Graf {
     }
 
     /**
-     *
      * @return
      * @
      */
-    public Graf getTransitiveClosure()  {
+    public Graf getTransitiveClosure() {
         Graf transitiveClosureGraph = new Graf();
+
         for (Edge e : this.edges) {
             transitiveClosureGraph.addEdge(e.getFrom(), e.getTo());
         }
@@ -499,6 +477,7 @@ public class Graf {
     public List<Node> getDFS() {
         boolean[] visited = new boolean[256];
         List<Node> ls = new ArrayList<>();
+
         ls.add(adjList.firstKey());
         dfs(adjList.firstKey(), visited, ls);
         return ls;
