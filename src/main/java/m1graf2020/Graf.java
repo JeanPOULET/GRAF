@@ -9,6 +9,7 @@ import java.util.*;
  ****************************************************/
 
 
+
 /****************************************************
  *                   IMPLEMENTATION                 *
  ****************************************************/
@@ -141,13 +142,12 @@ public class Graf {
     }
 
     public boolean existsNode(int id) {
-        /*for (Node adjNode : adjList.keySet()) {
+        for (Node adjNode : adjList.keySet()) {
             if (adjNode.getId() == id) {
                 return true;
             }
         }
-        return false;*/
-        return existsNode(new Node(id));
+        return false;
     }
 
     public Node getNode(int id) {
@@ -164,7 +164,8 @@ public class Graf {
         adjList.put(n, new ArrayList<>());
     }
 
-    public void addNode(Node n)  {
+    public void addNode(Node n) {
+
         if (existsNode(n)) {
             return;
         }
@@ -173,6 +174,8 @@ public class Graf {
 
     public void addNode(int id)  {
         /*if (existsNode(id)) {
+
+        if (existsNode(id)) {
             return;
         }
         adjList.put(new Node(id), new ArrayList<>());*/
@@ -268,40 +271,17 @@ public class Graf {
         return edges.contains(e);
     }
 
-    public void addEdge(Node from, Node to)  {
-        adjList.get(from).add(to);
-        edges.add(new Edge(from.getId(), to.getId()));
 
-        if (!existsNode(from)) {
-            addNode(from);
-        }
-        if (!existsNode(to)) {
-            addNode(to);
-        }
+    public void addEdge(Node from, Node to) {
+        addEdge(new Edge(from.getId(), to.getId()));
     }
 
-    public void addEdge(int from, int to)  {
-        Edge ed = new Edge(from, to);
-
-        for (Node n : adjList.keySet()) {
-            if (n.getId() == ed.getFrom()) {
-                adjList.get(n).add(new Node(ed.getTo()));
-                edges.add(ed);
-                if (!existsNode(to)) {
-                    addNode(to);
-                }
-                return;
-            }
-        }
-        addNode(from);
-        adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
-        edges.add(ed);
-        if (!existsNode(to)) {
-            addNode(to);
-        }
+    public void addEdge(int from, int to) {
+        addEdge(new Edge(from, to));
     }
 
-    public void addEdge(Edge ed)  {
+    public void addEdge(Edge ed) {
+
         for (Node n : adjList.keySet()) {
             if (n.getId() == ed.getFrom()) {
                 adjList.get(n).add(new Node(ed.getTo()));
@@ -321,23 +301,11 @@ public class Graf {
     }
 
     public void removeEdge(Node from, Node to) {
-        edges.removeIf(e -> (e.getFrom() == from.getId() && e.getTo() == to.getId()));
-
-        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            entry.getValue().removeIf(node -> node.equals(to));
-            Collections.sort(entry.getValue());
-        }
+        removeEdge(new Edge(from.getId(), to.getId()));
     }
 
     public void removeEdge(int from, int to) {
-        edges.removeIf(e -> (e.getFrom() == from && e.getTo() == to));
-
-        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            if (from == entry.getKey().getId()) {
-                entry.getValue().removeIf(node -> node.getId() == to);
-            }
-            Collections.sort(entry.getValue());
-        }
+        removeEdge(new Edge(from, to));
     }
 
     public void removeEdge(Edge e) {
@@ -346,8 +314,14 @@ public class Graf {
         Node nodeToDelete = new Node(e.getTo());
 
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            entry.getValue().removeIf(node -> node.equals(nodeToDelete));
-            Collections.sort(entry.getValue());
+            for (Node nodeEdge : entry.getValue()) {
+                if (nodeEdge.equals(nodeToDelete) && entry.getKey().getId() == e.getFrom()) {
+                    entry.getValue().remove(nodeEdge);
+                    Collections.sort(entry.getValue());
+                    return;
+                }
+            }
+
         }
     }
 
