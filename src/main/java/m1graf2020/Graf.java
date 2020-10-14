@@ -4,9 +4,18 @@ package m1graf2020;
 import java.io.*;
 import java.util.*;
 
-/****************************************************
- *                     QUESTIONS                    *
- ****************************************************/
+/**
+ * QUESTIONS                    *
+ * <p>
+ * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
+ * <p>
+ * RemoveEdge : Remove cb de edges si plusieurs identiques ?
+ * <p>
+ * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
+ * si plusieurs edge identique
+ * <p>
+ * Multi-graph avec Transitive Closure ?
+ */
 
 
 /**
@@ -501,17 +510,18 @@ public class Graf {
      */
     public Graf getTransitiveClosure()  {
         Graf transitiveClosureGraph = new Graf();
-        for (Edge e : this.edges){
+        for (Edge e : this.edges) {
             transitiveClosureGraph.addEdge(e.getFrom(), e.getTo());
         }
 
-        for(Node u : transitiveClosureGraph.getNodes()){
-            for(Node p : transitiveClosureGraph.getNodes()){
-                if(transitiveClosureGraph.existsEdge(p, u)){
-                    for(Node s : transitiveClosureGraph.getNodes()){
-                        if(transitiveClosureGraph.existsEdge(u, s) && s != p){
-                            transitiveClosureGraph.addEdge(p, s);
-
+        for (Node u : transitiveClosureGraph.getNodes()) {
+            for (Node p : transitiveClosureGraph.getNodes()) {
+                if (transitiveClosureGraph.existsEdge(p, u)) {
+                    for (Node s : transitiveClosureGraph.getNodes()) {
+                        if (transitiveClosureGraph.existsEdge(u, s) && s != p) {
+                            if (!transitiveClosureGraph.existsEdge(p, s)) {
+                                transitiveClosureGraph.addEdge(p, s);
+                            }
                         }
                     }
                 }
