@@ -391,8 +391,8 @@ public class Graf {
     }
 
     /**
-     * 
-     * @param e
+     * Will remove a edge if it exists
+     * @param e edge to remove
      */
     public void removeEdge(Edge e) {
         edges.remove(e);
