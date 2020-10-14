@@ -857,11 +857,8 @@ public class GrafTest {
         Graf graf = new Graf();
         graf.addEdge(1, 2);
         graf.addEdge(1, 2);
-        graf.printMap();
         graf.removeEdge(1, 2);
-        graf.printEdges();
-       /* graf.printMap();
-        Assert.assertTrue(graf.existsEdge(1, 2));*/
+        Assert.assertTrue(graf.existsEdge(1, 2));
 
     }
 }
