@@ -146,8 +146,8 @@ public class Graf {
 
     
     /**
-     * 
-     * @return
+     * Give the number of node contain in the graf
+     * @return the number of node contain in the graf
      */
     public int nbNodes() {
         return adjList.keySet().size();
