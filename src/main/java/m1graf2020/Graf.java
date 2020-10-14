@@ -15,7 +15,7 @@ import java.util.*;
 
 public class Graf {
     private TreeMap<Node, List<Node>> adjList = new TreeMap<>();
-    private TreeSet<Integer> poubelle = new TreeSet<>();
+    private TreeSet<Integer> trash = new TreeSet<>();
     private List<Edge> edges = new ArrayList<>();
 
 
@@ -70,32 +70,39 @@ public class Graf {
     }
 
     /************************************ FUNCTIONS OF US ************************************/
-
+    
+    /**
+     * 
+     * @return
+     */
     public Set<Node> getNodes() {
         return adjList.keySet();
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<Edge> getEdges() {
         return edges;
     }
 
-    public TreeSet<Integer> getPoubelle() {
-        return poubelle;
-    }
-
-    public TreeMap<Node, List<Node>> getMap() {
-        return adjList;
-    }
-
+    /**
+     * 
+     * @return
+     */
     public int indexToUse() {
-        if (poubelle.isEmpty()) {
+        if (trash.isEmpty()) {
             return adjList.keySet().size() + 1;
         }
-        int i = poubelle.first();
-        poubelle.remove(i);
+        int i = trash.first();
+        trash.remove(i);
         return i;
     }
 
+    /**
+     * 
+     */
     public void printMap() {
         for (Node key : adjList.keySet()) {
             List<Node> value = adjList.get(key);
@@ -113,15 +120,20 @@ public class Graf {
         System.out.println();
     }
 
+    /**
+     * 
+     */
     public void printEdges() {
         for (Edge e : edges) {
             System.out.print("(" + e.getFrom() + "," + e.getTo() + ")  ");
         }
     }
 
-
-    public void printPoubelle() {
-        for (int i : poubelle) {
+    /**
+     * 
+     */
+    public void printTrash() {
+        for (int i : trash) {
             System.out.println("elem : " + i);
         }
     }
@@ -132,14 +144,29 @@ public class Graf {
      *                       NODES                      *
      ****************************************************/
 
+    
+    /**
+     * 
+     * @return
+     */
     public int nbNodes() {
         return adjList.keySet().size();
     }
 
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public boolean existsNode(Node n) {
         return existsNode(n.getId());
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public boolean existsNode(int id) {
         for (Node adjNode : adjList.keySet()) {
             if (adjNode.getId() == id) {
@@ -149,6 +176,11 @@ public class Graf {
         return false;
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public Node getNode(int id) {
         for (Node adjNode : adjList.keySet()) {
             if (adjNode.getId() == id) {
@@ -158,11 +190,18 @@ public class Graf {
         return null;
     }
 
+    /**
+     * 
+     */
     public void addNode() {
         Node n = new Node(indexToUse());
         adjList.put(n, new ArrayList<>());
     }
 
+    /**
+     * 
+     * @param n
+     */
     public void addNode(Node n) {
         if (existsNode(n)) {
             return;
@@ -170,10 +209,18 @@ public class Graf {
         adjList.put(n, new ArrayList<>());
     }
 
+    /**
+     * 
+     * @param id
+     */
     public void addNode(int id) {
         addNode(new Node(id));
     }
 
+    /**
+     * 
+     * @param n
+     */
     public void removeNode(Node n) {
         if (!existsNode(n)) {
             return;
@@ -184,30 +231,59 @@ public class Graf {
         edges.removeIf(e -> (e.getFrom() == n.getId() || e.getTo() == n.getId()));
 
         adjList.keySet().removeIf(e -> (e.getId() == n.getId()));
-        poubelle.add(n.getId());
+        trash.add(n.getId());
     }
 
+    /**
+     * 
+     * @param id
+     */
     public void removeNode(int id) {
         removeNode(new Node(id));
     }
 
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public List<Node> getSuccessors(Node n) {
         return adjList.get(n);
     }
 
-
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public List<Node> getSuccessors(int id) {
         return getSuccessors(new Node(id));
     }
 
+    /**
+     * 
+     * @param u
+     * @param v
+     * @return
+     */
     public boolean adjacent(Node u, Node v) {
         return existsEdge(u, v);
     }
 
+    /**
+     * 
+     * @param u
+     * @param v
+     * @return
+     */
     public boolean adjacent(int u, int v) {
         return existsEdge(u, v);
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<Node> getAllNodes() {
         return new ArrayList<>(adjList.keySet());
     }
@@ -215,31 +291,67 @@ public class Graf {
     /****************************************************
      *                       EDGES                      *
      ****************************************************/
-
+   
+   
+    /**
+     * 
+     * @return
+     */
     public int nbEdges() {
         return edges.size();
     }
 
+    /**
+     * 
+     * @param u
+     * @param v
+     * @return
+     */
     public boolean existsEdge(Node u, Node v) {
         return existsEdge(new Edge(u, v));
     }
 
+    /**
+     * 
+     * @param u
+     * @param v
+     * @return
+     */
     public boolean existsEdge(int u, int v) {
         return existsEdge(new Edge(u, v));
     }
 
+    /**
+     * 
+     * @param e
+     * @return
+     */
     public boolean existsEdge(Edge e) {
         return edges.contains(e);
     }
 
+    /**
+     * 
+     * @param from
+     * @param to
+     */
     public void addEdge(Node from, Node to) {
         addEdge(new Edge(from.getId(), to.getId()));
     }
 
+    /**
+     * 
+     * @param from
+     * @param to
+     */
     public void addEdge(int from, int to) {
         addEdge(new Edge(from, to));
     }
 
+    /**
+     * 
+     * @param ed
+     */
     public void addEdge(Edge ed) {
         for (Node n : adjList.keySet()) {
             if (n.getId() == ed.getFrom()) {
@@ -260,14 +372,28 @@ public class Graf {
         }
     }
 
+    /**
+     * 
+     * @param from
+     * @param to
+     */
     public void removeEdge(Node from, Node to) {
         removeEdge(new Edge(from.getId(), to.getId()));
     }
 
+    /**
+     * 
+     * @param from
+     * @param to
+     */
     public void removeEdge(int from, int to) {
         removeEdge(new Edge(from, to));
     }
 
+    /**
+     * 
+     * @param e
+     */
     public void removeEdge(Edge e) {
         edges.remove(e);
 
@@ -285,6 +411,11 @@ public class Graf {
         }
     }
 
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public List<Edge> getOutEdges(Node n) {
         List<Edge> le = new ArrayList<>();
 
@@ -294,6 +425,11 @@ public class Graf {
         return le;
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public List<Edge> getOutEdges(int id) {
         List<Edge> le = new ArrayList<>();
 
@@ -303,6 +439,11 @@ public class Graf {
         return le;
     }
 
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public List<Edge> getInEdges(Node n) {
         List<Edge> le = new ArrayList<>();
 
@@ -314,6 +455,11 @@ public class Graf {
         return le;
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public List<Edge> getInEdges(int id) {
         List<Edge> le = new ArrayList<>();
 
@@ -325,6 +471,11 @@ public class Graf {
         return le;
     }
 
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public List<Edge> getIncidentEdges(Node n) {
         List<Edge> le = new ArrayList<>();
 
@@ -334,6 +485,11 @@ public class Graf {
         return le;
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public List<Edge> getIncidentEdges(int id) {
         List<Edge> le = new ArrayList<>();
 
@@ -343,6 +499,10 @@ public class Graf {
         return le;
     }
 
+    /**
+     * 
+     * @return
+     */
     public List<Edge> getAllEdges() {
         return edges;
     }
@@ -350,27 +510,58 @@ public class Graf {
     /****************************************************
      *                      DEGREES                     *
      ****************************************************/
-
+   
+   
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public int inDegree(Node n) {
         return getInEdges(n).size();
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public int inDegree(int id) {
         return getInEdges(id).size();
     }
 
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public int outDegree(Node n) {
         return getOutEdges(n).size();
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public int outDegree(int id) {
         return getOutEdges(id).size();
     }
 
+    /**
+     * 
+     * @param n
+     * @return
+     */
     public int degree(Node n) {
         return outDegree(n) + inDegree(n);
     }
 
+    /**
+     * 
+     * @param id
+     * @return
+     */
     public int degree(int id) {
         return outDegree(id) + inDegree(id);
     }
@@ -379,7 +570,11 @@ public class Graf {
      *               GRAPH REPRESENTATION               *
      ****************************************************/
 
-
+    
+    /**
+     * 
+     * @return
+     */
     public int[] toSuccessorArray() {
         int SALength = edges.size() + getAllNodes().size() - 1; //-1 because we add a 0 between each node 1-2-3-4-5
         int[] SA = new int[SALength];
@@ -399,6 +594,10 @@ public class Graf {
         return SA;
     }
 
+    /**
+     * 
+     * @return
+     */
     public int[][] toAdjMatrix() {
         int lnMatrix = getAllNodes().size();
         int[][] ADJM = new int[lnMatrix][lnMatrix];
@@ -423,6 +622,8 @@ public class Graf {
     /****************************************************
      *               GRAPH TRANSFORMATION               *
      ****************************************************/
+    
+    
     /**
      * @return
      * @
@@ -548,8 +749,8 @@ public class Graf {
     /****************************************************
      *               GRAPH EXPORT                       *
      ****************************************************/
-
-
+    
+    
     /**
      * the dot representation in a string of the graf
      *
