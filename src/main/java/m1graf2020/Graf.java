@@ -18,6 +18,33 @@ import java.util.stream.Collectors;
  * si plusieurs edge identique
  * <p>
  * Multi-graph avec Transitive Closure ?
+ * <p>
+ * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
+ * <p>
+ * RemoveEdge : Remove cb de edges si plusieurs identiques ?
+ * <p>
+ * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
+ * si plusieurs edge identique
+ * <p>
+ * Multi-graph avec Transitive Closure ?
+ * <p>
+ * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
+ * <p>
+ * RemoveEdge : Remove cb de edges si plusieurs identiques ?
+ * <p>
+ * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
+ * si plusieurs edge identique
+ * <p>
+ * Multi-graph avec Transitive Closure ?
+ * <p>
+ * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
+ * <p>
+ * RemoveEdge : Remove cb de edges si plusieurs identiques ?
+ * <p>
+ * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
+ * si plusieurs edge identique
+ * <p>
+ * Multi-graph avec Transitive Closure ?
  */
 
 /**
@@ -193,7 +220,7 @@ public class Graf {
         adjList.put(n, new ArrayList<>());
     }
 
-    public void addNode(Node n) throws NodeAlreadyExist {
+    public void addNode(Node n) {
         if (existsNode(n)) {
             return;
             //throw new NodeAlreadyExist();
@@ -201,7 +228,7 @@ public class Graf {
         adjList.put(n, new ArrayList<>());
     }
 
-    public void addNode(int id) throws NodeAlreadyExist {
+    public void addNode(int id) {
         if (existsNode(id)) {
             return;
             //throw new NodeAlreadyExist();
@@ -293,8 +320,9 @@ public class Graf {
         return edges.contains(e);
     }
 
-    public void addEdge(Node from, Node to) throws NodeAlreadyExist {
-        adjList.get(from).add(to);
+    public void addEdge(Node from, Node to) {
+        addEdge(new Edge(from.getId(), to.getId()));
+        /*adjList.get(from).add(to);
         edges.add(new Edge(from.getId(), to.getId()));
 
         if (!existsNode(from)) {
@@ -302,11 +330,13 @@ public class Graf {
         }
         if (!existsNode(to)) {
             addNode(to);
-        }
+        }*/
     }
 
-    public void addEdge(int from, int to) throws NodeAlreadyExist {
-        Edge ed = new Edge(from, to);
+    public void addEdge(int from, int to) {
+        addEdge(new Edge(from, to));
+
+        /*Edge ed = new Edge(from, to);
 
         for (Node n : adjList.keySet()) {
             if (n.getId() == ed.getFrom()) {
@@ -323,10 +353,10 @@ public class Graf {
         edges.add(ed);
         if (!existsNode(to)) {
             addNode(to);
-        }
+        }*/
     }
 
-    public void addEdge(Edge ed) throws NodeAlreadyExist {
+    public void addEdge(Edge ed) {
         for (Node n : adjList.keySet()) {
             if (n.getId() == ed.getFrom()) {
                 adjList.get(n).add(new Node(ed.getTo()));
@@ -346,23 +376,11 @@ public class Graf {
     }
 
     public void removeEdge(Node from, Node to) {
-        edges.removeIf(e -> (e.getFrom() == from.getId() && e.getTo() == to.getId()));
-
-        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            entry.getValue().removeIf(node -> node.equals(to));
-            Collections.sort(entry.getValue());
-        }
+        removeEdge(new Edge(from.getId(), to.getId()));
     }
 
     public void removeEdge(int from, int to) {
-        edges.removeIf(e -> (e.getFrom() == from && e.getTo() == to));
-
-        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            if (from == entry.getKey().getId()) {
-                entry.getValue().removeIf(node -> node.getId() == to);
-            }
-            Collections.sort(entry.getValue());
-        }
+        removeEdge(new Edge(from, to));
     }
 
     public void removeEdge(Edge e) {
@@ -371,8 +389,14 @@ public class Graf {
         Node nodeToDelete = new Node(e.getTo());
 
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            entry.getValue().removeIf(node -> node.equals(nodeToDelete));
-            Collections.sort(entry.getValue());
+            for (Node nodeEdge : entry.getValue()) {
+                if (nodeEdge.equals(nodeToDelete) && entry.getKey().getId() == e.getFrom()) {
+                    entry.getValue().remove(nodeEdge);
+                    Collections.sort(entry.getValue());
+                    return;
+                }
+            }
+
         }
     }
 
