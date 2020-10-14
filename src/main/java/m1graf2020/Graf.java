@@ -4,23 +4,9 @@ package m1graf2020;
 import java.io.*;
 import java.util.*;
 
-/**
- * QUESTIONS                    *
- * <p>
- * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
- * <p>
- * RemoveEdge : Remove cb de edges si plusieurs identiques ?
- * <p>
- * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
- * si plusieurs edge identique
- * <p>
- * Multi-graph avec Transitive Closure ?
- */
-
-
-/**
- * RemoveEdge : Remove cb de edges si plusieurs identiques ? un seul
- */
+/****************************************************
+ *                      QUESTIONS                   *
+ ****************************************************/
 
 
 /****************************************************
@@ -155,12 +141,13 @@ public class Graf {
     }
 
     public boolean existsNode(int id) {
-        for (Node adjNode : adjList.keySet()) {
+        /*for (Node adjNode : adjList.keySet()) {
             if (adjNode.getId() == id) {
                 return true;
             }
         }
-        return false;
+        return false;*/
+        return existsNode(new Node(id));
     }
 
     public Node getNode(int id) {
@@ -185,10 +172,11 @@ public class Graf {
     }
 
     public void addNode(int id)  {
-        if (existsNode(id)) {
+        /*if (existsNode(id)) {
             return;
         }
-        adjList.put(new Node(id), new ArrayList<>());
+        adjList.put(new Node(id), new ArrayList<>());*/
+        addNode(new Node(id));
     }
 
     public void removeNode(Node n) {
@@ -205,7 +193,7 @@ public class Graf {
     }
 
     public void removeNode(int id) {
-        if (!existsNode(id)) {
+        /*if (!existsNode(id)) {
             return;
         }
         Node toRemove = new Node(id);
@@ -216,7 +204,8 @@ public class Graf {
         }
 
         adjList.keySet().removeIf(e -> (e.getId() == id));
-        poubelle.add(id);
+        poubelle.add(id);*/
+        removeNode(new Node(id));
     }
 
     public List<Node> getSuccessors(Node n) {
@@ -225,13 +214,14 @@ public class Graf {
 
 
     public List<Node> getSuccessors(int id) {
-        for (Node myNode : adjList.keySet()) {
+        /*for (Node myNode : adjList.keySet()) {
             if (myNode.getId() == id) {
                 return adjList.get(myNode);
             }
         }
 
-        return null;
+        return null;*/
+        return getSuccessors(new Node(id));
     }
 
     public boolean adjacent(Node u, Node v) {
@@ -255,21 +245,23 @@ public class Graf {
     }
 
     public boolean existsEdge(Node u, Node v) {
-        for (Edge e : edges) {
+        return existsEdge(new Edge(u, v));
+        /*for (Edge e : edges) {
             if (u.getId() == e.getFrom() && v.getId() == e.getTo()) {
                 return true;
             }
         }
-        return false;
+        return false;*/
     }
 
     public boolean existsEdge(int u, int v) {
-        for (Edge e : edges) {
+        return existsEdge(new Edge(u, v));
+        /*for (Edge e : edges) {
             if (u == e.getFrom() && v == e.getTo()) {
                 return true;
             }
         }
-        return false;
+        return false;*/
     }
 
     public boolean existsEdge(Edge e) {
