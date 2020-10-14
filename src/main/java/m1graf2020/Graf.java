@@ -4,51 +4,6 @@ package m1graf2020;
 import java.io.*;
 import java.util.*;
 
-/**
- * QUESTIONS                    *
- * <p>
- * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
- * <p>
- * RemoveEdge : Remove cb de edges si plusieurs identiques ?
- * <p>
- * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
- * si plusieurs edge identique
- * <p>
- * Multi-graph avec Transitive Closure ?
- * <p>
- * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
- * <p>
- * RemoveEdge : Remove cb de edges si plusieurs identiques ?
- * <p>
- * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
- * si plusieurs edge identique
- * <p>
- * Multi-graph avec Transitive Closure ?
- * <p>
- * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
- * <p>
- * RemoveEdge : Remove cb de edges si plusieurs identiques ?
- * <p>
- * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
- * si plusieurs edge identique
- * <p>
- * Multi-graph avec Transitive Closure ?
- * <p>
- * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
- * <p>
- * RemoveEdge : Remove cb de edges si plusieurs identiques ?
- * <p>
- * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
- * si plusieurs edge identique
- * <p>
- * Multi-graph avec Transitive Closure ?
- */
-
-
-/**
- * RemoveEdge : Remove cb de edges si plusieurs identiques ? un seul
- */
-
 
 /****************************************************
  *                   IMPLEMENTATION                 *
@@ -110,7 +65,7 @@ public class Graf {
         fileReader.close();
     }
 
-    /************************************ FONCTIONS A NOUS ************************************/
+    /************************************ FUNCTIONS OF US ************************************/
 
     public Set<Node> getNodes() {
         return adjList.keySet();
@@ -167,7 +122,7 @@ public class Graf {
         }
     }
 
-    /************************************ FONCTIONS A PAS NOUS ************************************/
+    /************************************ FUNCTIONS NOT OF US ************************************/
 
     /****************************************************
      *                       NODES                      *
