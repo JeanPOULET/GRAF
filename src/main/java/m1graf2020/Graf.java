@@ -1,11 +1,8 @@
 package m1graf2020;
 
-import m1graf2020.Exceptions.NodeAlreadyExist;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * QUESTIONS                    *
@@ -47,22 +44,9 @@ import java.util.stream.Collectors;
  * Multi-graph avec Transitive Closure ?
  */
 
-/**
- * GetSuccessor : qu'est-ce qu'on renvoit si inexistant ???
- */
 
 /**
- * RemoveEdge : Remove cb de edges si plusieurs identiques ?
- */
-
-/**
- * ToSuccessorArray : Est-ce qu'on fait apparaitre plusieurs fois le edge
- * si plusieurs edge identique
- */
-
-/**
- * Multi-graph avec Transitive Closure ?
- *
+ * RemoveEdge : Remove cb de edges si plusieurs identiques ? un seul
  */
 
 
@@ -80,7 +64,7 @@ public class Graf {
 
     }
 
-    public Graf(int... SA) throws NodeAlreadyExist {
+    public Graf(int... SA)  {
         int actualNode = 1;
         addNode(1);
         for (int index = 0; index < SA.length; index++) {
@@ -96,7 +80,7 @@ public class Graf {
 
     }
 
-    public Graf(String fileName) throws IOException, NodeAlreadyExist {
+    public Graf(String fileName) throws IOException {
 
         File file = new File(fileName);
         FileReader fileReader = new FileReader(file);
@@ -221,17 +205,17 @@ public class Graf {
     }
 
     public void addNode(Node n) {
+
         if (existsNode(n)) {
             return;
-            //throw new NodeAlreadyExist();
         }
         adjList.put(n, new ArrayList<>());
     }
 
     public void addNode(int id) {
+
         if (existsNode(id)) {
             return;
-            //throw new NodeAlreadyExist();
         }
         adjList.put(new Node(id), new ArrayList<>());
     }
@@ -275,7 +259,8 @@ public class Graf {
                 return adjList.get(myNode);
             }
         }
-        return new ArrayList<>();
+
+        return null;
     }
 
     public boolean adjacent(Node u, Node v) {
@@ -320,43 +305,17 @@ public class Graf {
         return edges.contains(e);
     }
 
+
     public void addEdge(Node from, Node to) {
         addEdge(new Edge(from.getId(), to.getId()));
-        /*adjList.get(from).add(to);
-        edges.add(new Edge(from.getId(), to.getId()));
-
-        if (!existsNode(from)) {
-            addNode(from);
-        }
-        if (!existsNode(to)) {
-            addNode(to);
-        }*/
     }
 
     public void addEdge(int from, int to) {
         addEdge(new Edge(from, to));
-
-        /*Edge ed = new Edge(from, to);
-
-        for (Node n : adjList.keySet()) {
-            if (n.getId() == ed.getFrom()) {
-                adjList.get(n).add(new Node(ed.getTo()));
-                edges.add(ed);
-                if (!existsNode(to)) {
-                    addNode(to);
-                }
-                return;
-            }
-        }
-        addNode(from);
-        adjList.get(getNode(ed.getFrom())).add(new Node(ed.getTo()));
-        edges.add(ed);
-        if (!existsNode(to)) {
-            addNode(to);
-        }*/
     }
 
     public void addEdge(Edge ed) {
+
         for (Node n : adjList.keySet()) {
             if (n.getId() == ed.getFrom()) {
                 adjList.get(n).add(new Node(ed.getTo()));
@@ -534,9 +493,9 @@ public class Graf {
     /**
      *
      * @return
-     * @throws NodeAlreadyExist
+     * @
      */
-    public Graf getReverse() throws NodeAlreadyExist {
+    public Graf getReverse()  {
         Graf reversedGraf = new Graf();
         for (Edge e : this.edges) {
             reversedGraf.addEdge(e.getTo(), e.getFrom());
@@ -547,9 +506,9 @@ public class Graf {
     /**
      *
      * @return
-     * @throws NodeAlreadyExist
+     * @
      */
-    public Graf getTransitiveClosure() throws NodeAlreadyExist {
+    public Graf getTransitiveClosure()  {
         Graf transitiveClosureGraph = new Graf();
         for (Edge e : this.edges) {
             transitiveClosureGraph.addEdge(e.getFrom(), e.getTo());
