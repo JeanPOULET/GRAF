@@ -1,12 +1,10 @@
 package m1graf2020;
 
-import m1graf2020.Exceptions.NodeAlreadyExist;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import javax.print.attribute.standard.PresentationDirection;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,10 +28,12 @@ public class GrafTest {
 
     Graf g2Esport;
     Graf g3PasEsport;
+    Graf gTest;
 
 
     @Before
-    public void setup() throws NodeAlreadyExist {
+    public void setup()  {
+        gTest = new Graf(2, 3, 0, 4, 5, 0, 0, 3, 5, 0, 6, 7, 0, 0, 6, 0, 7, 0);
         g = new Graf();
         n1 = new Node(1);
         n2 = new Node(2);
@@ -92,7 +92,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsNodeWithNode() throws NodeAlreadyExist {
+    public void testExistsNodeWithNode()  {
         g.addNode(n1);
         for (Node myNode : g.getNodes()) {
             Assert.assertEquals((myNode.getId() == n1.getId()), g.existsNode(n1));
@@ -100,7 +100,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsNodeWithInt() throws NodeAlreadyExist {
+    public void testExistsNodeWithInt()  {
         g.addNode(1);
 
         for (Node myNode : g.getNodes()) {
@@ -109,7 +109,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetNodeWithInt() throws NodeAlreadyExist {
+    public void testGetNodeWithInt()  {
         g.addNode(n1);
         Node newNode = g.getNode(1);
         Assert.assertSame(newNode, n1);
@@ -117,7 +117,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddNodeWithInt() throws NodeAlreadyExist {
+    public void testAddNodeWithInt()  {
         g.addNode(1);
         Assert.assertEquals(1, g.nbNodes());
         Assert.assertTrue(g.existsNode(n1));
@@ -126,7 +126,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddNodeWithNode() throws NodeAlreadyExist {
+    public void testAddNodeWithNode()  {
         g.addNode(n1);
         Assert.assertEquals(1, g.nbNodes());
         Assert.assertTrue(g.existsNode(n1));
@@ -134,17 +134,17 @@ public class GrafTest {
         //g.printMap();
     }
 
-    @Test(expected = NodeAlreadyExist.class)
+    @Test
     @Ignore
-    public void testAddNodeExceptionWithInt() throws NodeAlreadyExist {
+    public void testAddNodeExceptionWithInt()  {
         g.addNode(2);
         g.addNode(2);
         //g.printMap();
     }
 
-    @Test(expected = NodeAlreadyExist.class)
+    @Test
     @Ignore
-    public void testAddNodeExceptionWithNode() throws NodeAlreadyExist {
+    public void testAddNodeExceptionWithNode()  {
         g.addNode(n1);
         g.addNode(n1);
         //g.printMap();
@@ -159,7 +159,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithNode() throws NodeAlreadyExist {
+    public void testRemoveNodeWithNode()  {
         g.addNode(n1);
         Assert.assertTrue(g.existsNode(n1));
         g.removeNode(n1);
@@ -167,7 +167,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithNode2() throws NodeAlreadyExist {
+    public void testRemoveNodeWithNode2()  {
         g.addNode(1);
         Assert.assertTrue(g.existsNode(1));
         g.removeNode(n1);
@@ -175,7 +175,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithInt() throws NodeAlreadyExist {
+    public void testRemoveNodeWithInt()  {
         g.addNode(1);
         Assert.assertTrue(g.existsNode(1));
         g.removeNode(1);
@@ -183,7 +183,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithInt2() throws NodeAlreadyExist {
+    public void testRemoveNodeWithInt2()  {
         g.addNode(n1);
         Assert.assertTrue(g.existsNode(n1));
         g.removeNode(1);
@@ -191,7 +191,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNotExisting() throws NodeAlreadyExist {
+    public void testRemoveNotExisting()  {
         g.addNode(n1);
         //g.printMap();
         Assert.assertFalse(g.existsNode(n2));
@@ -202,7 +202,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetSuccessorWithNode() throws NodeAlreadyExist {
+    public void testGetSuccessorWithNode()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -223,7 +223,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetSuccessorWithInt() throws NodeAlreadyExist {
+    public void testGetSuccessorWithInt()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -244,7 +244,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetSuccessorInexistant() throws NodeAlreadyExist {
+    public void testGetSuccessorInexistantWithNode()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -253,12 +253,53 @@ public class GrafTest {
         g.addEdge(n1, n3);
         g.addEdge(n2, n3);
 
-        List<Node> ln = g.getSuccessors(4);
+        List<Node> ln = g.getSuccessors(n3);
         Assert.assertTrue(ln.isEmpty());
     }
 
     @Test
-    public void testAdjacentWithNode() throws NodeAlreadyExist {
+    public void testGetSuccessorInexistantWithInt()  {
+        g.addNode(n1);
+        g.addNode(n2);
+        g.addNode(n3);
+
+        g.addEdge(n1, n2);
+        g.addEdge(n1, n3);
+        g.addEdge(n2, n3);
+
+        List<Node> ln = g.getSuccessors(3);
+        Assert.assertTrue(ln.isEmpty());
+    }
+
+
+    @Test
+    public void testGetSuccessorNoNodeExistingWithNode() {
+        g.addNode(n1);
+        g.addNode(n2);
+        g.addNode(n3);
+
+        g.addEdge(n1, n2);
+        g.addEdge(n1, n3);
+        g.addEdge(n2, n3);
+
+        Assert.assertNull(g.getSuccessors(n4));
+    }
+
+    @Test
+    public void testGetSuccessorNoNodeExistingWithInt() {
+        g.addNode(n1);
+        g.addNode(n2);
+        g.addNode(n3);
+
+        g.addEdge(n1, n2);
+        g.addEdge(n1, n3);
+        g.addEdge(n2, n3);
+
+        Assert.assertNull(g.getSuccessors(4));
+    }
+
+    @Test
+    public void testAdjacentWithNode()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -273,7 +314,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAdjacentWithInt() throws NodeAlreadyExist {
+    public void testAdjacentWithInt()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -288,7 +329,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAdjacentWithNodeNonDirected() throws NodeAlreadyExist {
+    public void testAdjacentWithNodeNonDirected()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -302,7 +343,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetAllNodes() throws NodeAlreadyExist {
+    public void testGetAllNodes()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -319,7 +360,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testNbEdges() throws NodeAlreadyExist {
+    public void testNbEdges()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -339,7 +380,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgWitheNode() throws NodeAlreadyExist {
+    public void testExistsEdgWitheNode()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -354,7 +395,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgeWithInt() throws NodeAlreadyExist {
+    public void testExistsEdgeWithInt()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -369,7 +410,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgeWithEdge() throws NodeAlreadyExist {
+    public void testExistsEdgeWithEdge()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -385,7 +426,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgeWithEdgeAlreadyCreated() throws NodeAlreadyExist {
+    public void testExistsEdgeWithEdgeAlreadyCreated()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -403,7 +444,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddEdgesWithNode() throws NodeAlreadyExist {
+    public void testAddEdgesWithNode()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -416,7 +457,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddEdgesWithInt() throws NodeAlreadyExist {
+    public void testAddEdgesWithInt()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -430,7 +471,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddEdgesWithEdges() throws NodeAlreadyExist {
+    public void testAddEdgesWithEdges()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -444,7 +485,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveEdgeWithNode() throws NodeAlreadyExist {
+    public void testRemoveEdgeWithNode()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -463,7 +504,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveEdgeWithInt() throws NodeAlreadyExist {
+    public void testRemoveEdgeWithInt()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -482,7 +523,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveEdgeWithEdge() throws NodeAlreadyExist {
+    public void testRemoveEdgeWithEdge()  {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -540,9 +581,9 @@ public class GrafTest {
     @Test
     public void testGetIndicentEdgesWithNode() {
         List<Edge> le3 = g2Esport.getIncidentEdges(n3);
-        for (Edge e : le3) {
+        /*for (Edge e : le3) {
             System.out.println("{" + e.getFrom() + ", " + e.getTo() + "}");
-        }
+        }*/
         Assert.assertTrue(le3.contains(new Edge(1, 3)));
         Assert.assertTrue(le3.contains(new Edge(2, 3)));
         Assert.assertTrue(le3.contains(new Edge(3, 4)));
@@ -626,16 +667,16 @@ public class GrafTest {
     }
 
     @Test(expected = IOException.class)
-    public void testImportDotFileDoesNotExist() throws IOException, NodeAlreadyExist {
+    public void testImportDotFileDoesNotExist() throws IOException {
         Graf g = new Graf("jexistepas.dot");
-        g.printMap();
+        //g.printMap();
     }
 
     @Test
-    public void testImportDotFile() throws IOException, NodeAlreadyExist {
+    public void testImportDotFile() throws IOException {
         Graf grafFromFile = new Graf("src/main/resources/exempleProf.dot");
 
-        grafFromFile.printMap();
+        //grafFromFile.printMap();
 
         Assert.assertEquals(grafFromFile.getAllEdges().size(), 11);
         Assert.assertEquals(grafFromFile.getAllNodes().size(), 8);
@@ -659,7 +700,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testImportDotFileThenImport() throws IOException, NodeAlreadyExist {
+    public void testImportDotFileThenImport() throws IOException {
         Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
 
         grafFromExample.toDotFile("grafFromExample.dot");
@@ -677,9 +718,9 @@ public class GrafTest {
     }
 
     @Test
-    public void testDFS() throws NodeAlreadyExist {
+    public void testDFS()  {
         Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
-        grafFromExample.getDFS().forEach(System.out::println);
+        //grafFromExample.getDFS().forEach(System.out::println);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
         lsWaited.add(new Node(2));
@@ -698,9 +739,9 @@ public class GrafTest {
     }
 
     @Test
-    public void testDFSfromTD() throws NodeAlreadyExist, IOException {
+    public void testDFSfromTD() throws IOException {
         Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
-        grafFromExample.getDFS().forEach(System.out::println);
+        //grafFromExample.getDFS().forEach(System.out::println);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
         lsWaited.add(new Node(2));
@@ -717,7 +758,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testBFS() throws NodeAlreadyExist {
+    public void testBFS()  {
         Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
@@ -728,7 +769,8 @@ public class GrafTest {
         lsWaited.add(new Node(8));
         lsWaited.add(new Node(6));
         lsWaited.add(new Node(7));
-        grafFromExample.getBFS().forEach(System.out::println);
+        //grafFromExample.getBFS().forEach(System.out::println);
+        gTest.getBFS().forEach(System.out::println);
         List<Node> fromBfs = grafFromExample.getBFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
@@ -737,9 +779,9 @@ public class GrafTest {
     }
 
     @Test
-    public void testBFSfromTD() throws NodeAlreadyExist, IOException {
+    public void testBFSfromTD() throws IOException {
         Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
-        grafFromExample.getBFS().forEach(System.out::println);
+        //grafFromExample.getBFS().forEach(System.out::println);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
         lsWaited.add(new Node(2));
@@ -756,10 +798,10 @@ public class GrafTest {
     }
 
     @Test
-    public void testReverseGraf() throws IOException, NodeAlreadyExist {
+    public void testReverseGraf() throws IOException {
         Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
         Graf reversedGraf = grafFromExample.getReverse();
-        reversedGraf.printMap();
+        //reversedGraf.printMap();
         reversedGraf.toDotFile("oui.dot");
         Assert.assertTrue(reversedGraf.existsEdge(2, 1));
         Assert.assertTrue(reversedGraf.existsEdge(3, 1));
@@ -784,7 +826,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetTransitiveClosur() throws NodeAlreadyExist {
+    public void testGetTransitiveClosur()  {
         //g3PasEsport.printMap();
         Graf gTransi = g3PasEsport.getTransitiveClosure();
 
@@ -811,5 +853,14 @@ public class GrafTest {
         Assert.assertTrue(gTransi.existsEdge(3, 6));
         Assert.assertTrue(gTransi.existsEdge(4, 5));
         Assert.assertTrue(gTransi.existsEdge(4, 6));
+    }
+
+    @Test
+    public void testRemoveMultipleEdge() {
+        Graf graf = new Graf();
+        graf.addEdge(1, 2);
+        graf.addEdge(1, 2);
+        graf.removeEdge(1, 2);
+        Assert.assertTrue(graf.existsEdge(1, 2));
     }
 }
