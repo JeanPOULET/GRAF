@@ -72,24 +72,24 @@ public class Graf {
     /************************************ FUNCTIONS OF US ************************************/
     
     /**
-     * 
-     * @return
+     * It will return a set containing all the nodes
+     * @return a set containing all the nodes
      */
     public Set<Node> getNodes() {
         return adjList.keySet();
     }
 
     /**
-     * 
-     * @return
+     * It will return a list containing all the edges
+     * @return a list containing all the edges
      */
     public List<Edge> getEdges() {
         return edges;
     }
 
     /**
-     * 
-     * @return
+     * Select the number to assigne for the creation of a node with the function addNode without parameter
+     * @return the first element of the array trash
      */
     public int indexToUse() {
         if (trash.isEmpty()) {
@@ -101,7 +101,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Print the whole map like : Node -> Edges destination
      */
     public void printMap() {
         for (Node key : adjList.keySet()) {
@@ -121,7 +121,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Print all edges like : (edge start, edge end)
      */
     public void printEdges() {
         for (Edge e : edges) {
@@ -130,7 +130,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Print all the number that can be assigne to a node
      */
     public void printTrash() {
         for (int i : trash) {
@@ -154,18 +154,18 @@ public class Graf {
     }
 
     /**
-     * 
+     * Check if a node already exist
      * @param n
-     * @return
+     * @return true if the node exist otherwise return false
      */
     public boolean existsNode(Node n) {
         return existsNode(n.getId());
     }
 
     /**
-     * 
+     * Check if a node already exist
      * @param id
-     * @return
+     * @return true if the node exist otherwise return false
      */
     public boolean existsNode(int id) {
         for (Node adjNode : adjList.keySet()) {
@@ -177,9 +177,9 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give a node assiciate to an id
      * @param id
-     * @return
+     * @return null if the note doesn't exist otherwise return the node
      */
     public Node getNode(int id) {
         for (Node adjNode : adjList.keySet()) {
@@ -191,7 +191,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Add a node with automatic id
      */
     public void addNode() {
         Node n = new Node(indexToUse());
@@ -199,7 +199,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Add a node to the map if the node doesn't already exist
      * @param n
      */
     public void addNode(Node n) {
@@ -210,7 +210,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Add a node with the id given to the map if the node doesn't already exist
      * @param id
      */
     public void addNode(int id) {
@@ -218,7 +218,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Remove a node from the map and all the edges associate to him
      * @param n
      */
     public void removeNode(Node n) {
@@ -235,7 +235,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Remove a node associate to the id given from the map and all the edges associate to him
      * @param id
      */
     public void removeNode(int id) {
@@ -243,46 +243,46 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give the list of all the successor of a node n
      * @param n
-     * @return
+     * @return a list with all the successor of a given node
      */
     public List<Node> getSuccessors(Node n) {
         return adjList.get(n);
     }
 
     /**
-     * 
+     * Give the list of all the successor of a node associate to a given id
      * @param id
-     * @return
+     * @return a list with all the successor of a given node
      */
     public List<Node> getSuccessors(int id) {
         return getSuccessors(new Node(id));
     }
 
     /**
-     * 
+     * Check if both node u and v have an edge between them
      * @param u
      * @param v
-     * @return
+     * @return true if there is existing an edge between u and v otherwise return false
      */
     public boolean adjacent(Node u, Node v) {
         return existsEdge(u, v);
     }
 
     /**
-     * 
+     * Check if both node u and v have an edge between them
      * @param u
      * @param v
-     * @return
+     * @return true if there is existing an edge between u and v otherwise return false
      */
     public boolean adjacent(int u, int v) {
         return existsEdge(u, v);
     }
 
     /**
-     * 
-     * @return
+     * Give the list of all node in the map
+     * @return an arrayList with all the node
      */
     public List<Node> getAllNodes() {
         return new ArrayList<>(adjList.keySet());
@@ -294,44 +294,44 @@ public class Graf {
    
    
     /**
-     * 
-     * @return
+     * Give the number of edge
+     * @return the size of the list edges
      */
     public int nbEdges() {
         return edges.size();
     }
 
     /**
-     * 
+     * Check if an edge between u and v exist
      * @param u
      * @param v
-     * @return
+     * @return true if an edge between u and v exist otherwise return false
      */
     public boolean existsEdge(Node u, Node v) {
         return existsEdge(new Edge(u, v));
     }
 
     /**
-     * 
+     * Check if an edge between the node with the id u and the node with the id v exist
      * @param u
      * @param v
-     * @return
+     * @return true if an edge between the node with the id u and the node with the id v exist otherwise return false
      */
     public boolean existsEdge(int u, int v) {
         return existsEdge(new Edge(u, v));
     }
 
     /**
-     * 
+     * Check if an edge exist
      * @param e
-     * @return
+     * @return true if the edge given exist otherwise return false
      */
     public boolean existsEdge(Edge e) {
         return edges.contains(e);
     }
 
     /**
-     * 
+     * Add an edge to the map and to the list of edges, if the accosiate nodes doesn't exist they are create
      * @param from
      * @param to
      */
@@ -340,7 +340,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Add an edge to the map and to the list of edges the accosiate nodes doesn't exist they are create
      * @param from
      * @param to
      */
@@ -349,7 +349,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Add an edge to the map and to the list of edges the accosiate nodes doesn't exist they are create
      * @param ed
      */
     public void addEdge(Edge ed) {
@@ -373,7 +373,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Remove an edge from the map and the list edges
      * @param from
      * @param to
      */
@@ -382,7 +382,7 @@ public class Graf {
     }
 
     /**
-     * 
+     * Remove an edge from the map and the list edges
      * @param from
      * @param to
      */
@@ -391,7 +391,7 @@ public class Graf {
     }
 
     /**
-     * Will remove a edge if it exists
+     * Remove an edge from the map and the list edges
      * @param e edge to remove
      */
     public void removeEdge(Edge e) {
@@ -412,9 +412,9 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give a list of all edges that get out a node n
      * @param n
-     * @return
+     * @return a list of all edges that get out a node n
      */
     public List<Edge> getOutEdges(Node n) {
         List<Edge> le = new ArrayList<>();
@@ -426,9 +426,9 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give a list of all edges that get out a node with a given id
      * @param id
-     * @return
+     * @return a list of all edges that get out a node with a given id
      */
     public List<Edge> getOutEdges(int id) {
         List<Edge> le = new ArrayList<>();
@@ -440,9 +440,9 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give a list of all edges that get in a node n
      * @param n
-     * @return
+     * @return Give a list of all edges that get in a node
      */
     public List<Edge> getInEdges(Node n) {
         List<Edge> le = new ArrayList<>();
@@ -456,9 +456,9 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give a list of all edges that get in a node with a given id
      * @param id
-     * @return
+     * @return Give a list of all edges that get in a node with a given id
      */
     public List<Edge> getInEdges(int id) {
         List<Edge> le = new ArrayList<>();
@@ -472,9 +472,9 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give a list of all edges that get in and out a node n
      * @param n
-     * @return
+     * @return a list of all edges that get in and out a node n
      */
     public List<Edge> getIncidentEdges(Node n) {
         List<Edge> le = new ArrayList<>();
@@ -486,9 +486,9 @@ public class Graf {
     }
 
     /**
-     * 
+     * Give a list of all edges that get in and out a node with a given id
      * @param id
-     * @return
+     * @return a list of all edges that get in and out a node with a given id
      */
     public List<Edge> getIncidentEdges(int id) {
         List<Edge> le = new ArrayList<>();
@@ -500,8 +500,8 @@ public class Graf {
     }
 
     /**
-     * 
-     * @return
+     * Give a list with all edges contain in the map
+     * @return a list with all edges of the map
      */
     public List<Edge> getAllEdges() {
         return edges;
@@ -513,54 +513,54 @@ public class Graf {
    
    
     /**
-     * 
+     * Give the number of edge that have the node n in destination
      * @param n
-     * @return
+     * @return the number of edge that have the node n in destination
      */
     public int inDegree(Node n) {
         return getInEdges(n).size();
     }
 
     /**
-     * 
+     * Give the number of edge that have the node with a given id in destination
      * @param id
-     * @return
+     * @return the number of edge that have the node with a given id in destination
      */
     public int inDegree(int id) {
         return getInEdges(id).size();
     }
 
     /**
-     * 
+     * Give the number of edge that have the node n in source
      * @param n
-     * @return
+     * @return the number of edge that have the node n in source
      */
     public int outDegree(Node n) {
         return getOutEdges(n).size();
     }
 
     /**
-     * 
+     * Give the number of edge that have the node with a given id in source
      * @param id
-     * @return
+     * @return the number of edge that have the node with a given id in source
      */
     public int outDegree(int id) {
         return getOutEdges(id).size();
     }
 
     /**
-     * 
+     * Give the number of edge that have the node n in source or in destination
      * @param n
-     * @return
+     * @return the number of edge that have the node n in source or in destination
      */
     public int degree(Node n) {
         return outDegree(n) + inDegree(n);
     }
 
     /**
-     * 
+     * Give the number of edge that have the node with a given id in source or in destination
      * @param id
-     * @return
+     * @return the number of edge that have the node with a given id in source or in destination
      */
     public int degree(int id) {
         return outDegree(id) + inDegree(id);
@@ -572,8 +572,8 @@ public class Graf {
 
     
     /**
-     * 
-     * @return
+     * Give an array representing the map
+     * @return an array representing the map
      */
     public int[] toSuccessorArray() {
         int SALength = edges.size() + getAllNodes().size() - 1; //-1 because we add a 0 between each node 1-2-3-4-5
@@ -595,8 +595,8 @@ public class Graf {
     }
 
     /**
-     * 
-     * @return
+     * Give a matrix representing the map
+     * @return a matrix representing the map
      */
     public int[][] toAdjMatrix() {
         int lnMatrix = getAllNodes().size();
@@ -622,11 +622,11 @@ public class Graf {
     /****************************************************
      *               GRAPH TRANSFORMATION               *
      ****************************************************/
-    
-    
+
+
     /**
-     * @return
-     * @
+     * Reverse the graf
+     * @return a reversed graf
      */
     public Graf getReverse() {
         Graf reversedGraf = new Graf();
@@ -638,8 +638,8 @@ public class Graf {
     }
 
     /**
-     * @return
-     * @
+     * Add edge between all the node that are accessible by an other one
+     * @return a new graf with all the node added
      */
     public Graf getTransitiveClosure() {
         Graf transitiveClosureGraph = new Graf();

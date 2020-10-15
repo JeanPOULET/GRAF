@@ -28,10 +28,12 @@ public class GrafTest {
 
     Graf g2Esport;
     Graf g3PasEsport;
+    Graf gTest;
 
 
     @Before
     public void setup()  {
+        gTest = new Graf(2, 3, 0, 4, 5, 0, 0, 3, 5, 0, 6, 7, 0, 0, 6, 0, 7, 0);
         g = new Graf();
         n1 = new Node(1);
         n2 = new Node(2);
@@ -768,6 +770,7 @@ public class GrafTest {
         lsWaited.add(new Node(6));
         lsWaited.add(new Node(7));
         //grafFromExample.getBFS().forEach(System.out::println);
+        gTest.getBFS().forEach(System.out::println);
         List<Node> fromBfs = grafFromExample.getBFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
