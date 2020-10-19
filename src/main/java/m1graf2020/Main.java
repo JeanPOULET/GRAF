@@ -107,9 +107,11 @@ public class Main {
         }
         if (!nodeNumber.isEmpty()) {
             myGraf.addNode(Integer.parseInt(nodeNumber.trim()));
+
         } else {
             myGraf.addNode();
         }
+        System.out.println("The node (" + (!nodeNumber.isEmpty() ? Integer.parseInt(nodeNumber) : "auto") + ") have been added !");
 
     }
 
@@ -121,6 +123,7 @@ public class Main {
         System.out.println("Please enter the node number that you want to remove");
         String nodeNumber = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         myGraf.removeNode(Integer.parseInt(nodeNumber));
+        System.out.println("The node (" + Integer.parseInt(nodeNumber) + ") have been removed ! ");
     }
 
     public static void addEdge() throws IOException {
@@ -132,6 +135,7 @@ public class Main {
         System.out.println("Now please enter where your edge go to");
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
+        System.out.println("The edge (" + Integer.parseInt(edgeFrom) + "," + Integer.parseInt(edgeTo) + ") have been added !");
     }
 
     public static void removeEdge() throws IOException {
@@ -145,6 +149,7 @@ public class Main {
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
 
         myGraf.removeEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
+        System.out.println("The edge (" + Integer.parseInt(edgeFrom) + "," + Integer.parseInt(edgeTo) + ") have been removed !");
     }
 
     public static void showGrafInDot() {
@@ -159,6 +164,7 @@ public class Main {
         System.out.println("Please enter your filename (and the path before your file if it not next to the executable) ! It will erase your actual graph !");
         String fileName = bufferReader.readLine().trim();
         myGraf = new Graf(fileName);
+        System.out.println("Your graph is now the graph from file !");
     }
 
     public static void exportGrafToDotFile() throws IOException {
