@@ -153,9 +153,15 @@ public class GrafTest {
     @Test
     public void testAddNodeAuto() {
         g.addNode();
+        g.addNode(2);
+        g.addNode();
+        g.addNode(10);
+
         Assert.assertTrue(g.existsNode(1));
+        Assert.assertTrue(g.existsNode(3));
+        Assert.assertTrue(g.existsNode(10));
         Assert.assertTrue(g.existsNode(n1));
-        Assert.assertEquals(1, g.nbNodes());
+        Assert.assertEquals(4, g.nbNodes());
     }
 
     @Test
@@ -801,7 +807,7 @@ public class GrafTest {
     public void testReverseGraf() throws IOException {
         Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
         Graf reversedGraf = grafFromExample.getReverse();
-        //reversedGraf.printMap();
+        reversedGraf.printMap();
         reversedGraf.toDotFile("oui.dot");
         Assert.assertTrue(reversedGraf.existsEdge(2, 1));
         Assert.assertTrue(reversedGraf.existsEdge(3, 1));
@@ -830,7 +836,7 @@ public class GrafTest {
         //g3PasEsport.printMap();
         Graf gTransi = g3PasEsport.getTransitiveClosure();
 
-        //gTransi.printMap();
+        gTransi.printMap();
 
         Assert.assertTrue(gTransi.existsNode(1));
         Assert.assertTrue(gTransi.existsNode(2));
