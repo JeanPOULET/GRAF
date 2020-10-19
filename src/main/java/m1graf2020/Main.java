@@ -4,7 +4,7 @@ package m1graf2020;
 import java.io.IOException;
 
 
-public class main {
+public class Main {
     public static void main(String args[]) throws IOException {
 
         System.out.println("c'est g");
