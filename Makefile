@@ -1,7 +1,7 @@
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 DIREXIST = test -d build; then ; mkdir build
-REMOVE =
+REMOVE = rm -rf build
 else
 DIREXIST = if not exist build mkdir build
 REMOVE = del /s /q build
