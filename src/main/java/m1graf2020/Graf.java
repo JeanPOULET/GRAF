@@ -51,12 +51,30 @@ public class Graf {
             if (myLine.isEmpty()) continue;
             if (!myLine.contains("{") && !myLine.contains("}") && !myLine.contains("#")) {
                 if (myLine.contains("->")) {
-                    String[] line = myLine.trim().split("->");
-                    if (actualNode != Integer.parseInt(line[0].trim())) {
-                        actualNode++;
-                        addNode(actualNode);
+
+                    if (myLine.contains(",")) {
+
+                        String[] line = myLine.split("->");
+                        if (actualNode != Integer.parseInt(line[0].trim())) {
+                            actualNode++;
+                            addNode(actualNode);
+                        }
+
+                        String[] lineComa = Arrays.toString(line).trim().replace("[", "").replace("]", "").split(",");
+
+                        for (int index = 1; index < lineComa.length; index++) {
+                            addEdge(actualNode, Integer.parseInt(lineComa[index].replaceAll(";", "").trim()));
+                        }
+
+                    } else {
+                        String[] line = myLine.trim().split("->");
+                        if (actualNode != Integer.parseInt(line[0].trim())) {
+                            actualNode++;
+                            addNode(actualNode);
+                        }
+                        addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()));
                     }
-                    addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()));
+
                 } else {
                     String line = myLine.replaceAll(";", "").trim();
                     if (actualNode != Integer.parseInt(line)) {
