@@ -651,11 +651,12 @@ public class GrafTest {
     @Test
     public void testSuccessorArray() {
         int[] SA = g2Esport.toSuccessorArray();
-        int[] SACheck = {2, 3, 0, 3, 5, 0, 4, 0, 1, 5, 5, 0, 5};
+        int[] SACheck = {2, 3, 0, 3, 5, 0, 4, 0, 1, 5, 5, 0, 5, 0};
 
 //        for(int i = 0; i < SA.length; i++){
 //            System.out.print("[" + SA[i] + "]");
 //        }
+
         for (int i = 0; i < SA.length; i++) {
             Assert.assertEquals(SA[i], SACheck[i]);
         }

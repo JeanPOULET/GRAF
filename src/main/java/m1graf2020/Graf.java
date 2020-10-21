@@ -616,7 +616,7 @@ public class Graf {
      * @return an array representing the map
      */
     public int[] toSuccessorArray() {
-        int SALength = edges.size() + getAllNodes().size() - 1; //-1 because we add a 0 between each node 1-2-3-4-5
+        int SALength = edges.size() + getAllNodes().size(); //-1 because we add a 0 between each node 1-2-3-4-5
         int[] SA = new int[SALength];
         int cptIndex = 0;
 
@@ -631,11 +631,12 @@ public class Graf {
                 cptIndex++;
             }
         }
+
         return SA;
     }
 
     /**
-     * Give a matrix representing the map
+     * Give a matrix representing the map by using the successor array of the map
      *
      * @return a matrix representing the map
      */
@@ -826,5 +827,9 @@ public class Graf {
         fWriter.write(toDotString());
         fWriter.close();
     }
+
+    /****************************************************
+     *               GRAPH EXPORT                       *
+     ****************************************************/
 }
 

@@ -90,13 +90,47 @@ public class Main {
     }
 
     public static void createNewGraf() throws IOException {
-        System.out.println("Do you want a directed graf or a undirected graf ? (press 1 or 2)");
+        System.out.println("Do you want a directed graf or a undirected graf or a random connected graf ? (press 1 or 2 or 3)");
         char key = bufferReader.readLine().replaceAll("[^0-9]", "").trim().charAt(0);
-        if (key == '1')
-            myGraf = new Graf();
-        else
-            myGraf = new UndirectedGraf();
+        switch (key) {
+            case '1':
+                myGraf = new Graf();
+                break;
+            case '2':
+                myGraf = new UndirectedGraf();
+                break;
+            case '3':
+                myGraf = new ConnectGraf();
+                break;
+            case '4':
+                myGraf = new DenseGraf();
+                break;
+            case '5':
+                myGraf = new SparsiateGraf();
+                break;
+            case '6':
+                parameterizedGraf();
+                break;
+        }
         System.out.println("Your empty " + (key == '1' ? "directed " : "undirected ") + "graf have been created !");
+    }
+
+    public static void parameterizedGraf() throws IOException {
+        int nbNode = 0;
+        int nbedge = 0;
+        int density = 0;
+
+        System.out.println("Please enter the number of node  : ");
+        String nodeNumber = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
+        nbNode = (Integer.parseInt(nodeNumber));
+        System.out.println("Please enter the number of edge : ");
+        String edgeNumber = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
+        nbedge = (Integer.parseInt(edgeNumber));
+        System.out.println("Please enter the edge probability distribution (between 0 and 100) : ");
+        String densityNumber = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
+        density = (Integer.parseInt(densityNumber));
+
+        myGraf = new GrafParameterized(nbNode, nbedge, density);
     }
 
     public static void addNode() throws IOException {
