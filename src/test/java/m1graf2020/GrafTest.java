@@ -1,5 +1,6 @@
 package m1graf2020;
 
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -721,6 +722,13 @@ public class GrafTest {
 
         Assert.assertTrue(grafFromFile.existsEdge(1, 4));
         Assert.assertTrue(grafFromFile.existsEdge(6, 7));
+
+    }
+
+    @Test
+    public void testImportDotFileWithComa() throws IOException{
+        Graf withComa = new Graf("src/main/resources/exempleProfWithComa.dot");
+        withComa.printMap();
 
     }
 

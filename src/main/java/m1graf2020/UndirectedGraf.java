@@ -9,7 +9,7 @@ public class UndirectedGraf extends Graf {
 
     /**
      * Add an edge to the map and to the list of edges the accosiate nodes doesn't exist they are create
-     * @param ed
+     * @param ed edge to add
      */
     public void addEdge(Edge ed) {
         Edge fromTo = new Edge(ed.getFrom(),ed.getTo());
