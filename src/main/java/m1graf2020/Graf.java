@@ -104,7 +104,7 @@ public class Graf {
     }
 
     /**
-     * Print the whole map like : Node -> Edges destination
+     * Print the whole map like : Node : Edges destination
      */
     public void printMap() {
         for (Node key : adjList.keySet()) {
