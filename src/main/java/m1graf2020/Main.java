@@ -90,29 +90,39 @@ public class Main {
     }
 
     public static void createNewGraf() throws IOException {
-        System.out.println("Do you want a directed graf or a undirected graf or a random connected graf ? (press 1 or 2 or 3)");
+        System.out.println("Press 1 : Create a directed Graf ");
+        System.out.println("Press 2 : Create a undirected Graf ");
+        System.out.println("Press 3 : Create a random connected Graf ");
+        System.out.println("Press 4 : Create a random dense Graf ");
+        System.out.println("Press 5 : Create a random sparse Graf ");
+        System.out.println("Press 6 : Create a random parameterized Graf ");
         char key = bufferReader.readLine().replaceAll("[^0-9]", "").trim().charAt(0);
         switch (key) {
             case '1':
                 myGraf = new Graf();
+                System.out.println("Your empty directed graf have been created !");
                 break;
             case '2':
                 myGraf = new UndirectedGraf();
+                System.out.println("Your empty undirected graf have been created !");
                 break;
             case '3':
                 myGraf = new ConnectGraf();
+                System.out.println("Your random connected graf have been created !");
                 break;
             case '4':
                 myGraf = new DenseGraf();
+                System.out.println("Your random dense graf have been created !");
                 break;
             case '5':
                 myGraf = new SparsiateGraf();
+                System.out.println("Your random sparse graf have been created !");
                 break;
             case '6':
                 parameterizedGraf();
+                System.out.println("Your random parameterized graf have been created !");
                 break;
         }
-        System.out.println("Your empty " + (key == '1' ? "directed " : "undirected ") + "graf have been created !");
     }
 
     public static void parameterizedGraf() throws IOException {

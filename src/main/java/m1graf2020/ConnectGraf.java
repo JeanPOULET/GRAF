@@ -6,23 +6,24 @@ public class ConnectGraf extends Graf {
         super();
         int rand = 4 + (int) (Math.random() * (20 - 4) + 1);
 
-        for (int i = 1; i < rand; i++) {
-            addNode(i);
+        for (int i = 0; i < rand; i++) {
+            addNode(i + 1);
         }
-
         int j;
-        for (j = 1; j < adjList.keySet().size() - 1; j++) {
+        for (j = 1; j < adjList.keySet().size(); j++) {
             addEdge(j, j + 1);
         }
 
-        for (int k = 1; k < adjList.keySet().size(); k++) {
+        addEdge(j, 1);
+
+        for (Node myNode : adjList.keySet()) {
             int randNbEdge = 0 + (int) (Math.random() * (3 - 0) + 1);
             for (int nbEdge = 0; nbEdge < randNbEdge; nbEdge++) {
                 int randNode = 1 + (int) (Math.random() * (adjList.keySet().size() - 1) + 1);
-                addEdge(k, randNode);
+                addEdge(myNode.getId(), randNode);
             }
         }
 
-        addEdge(j + 1, 1);
+
     }
 }
