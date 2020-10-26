@@ -1,4 +1,4 @@
-package m1graf2020;
+import m1graf2020.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
