@@ -52,13 +52,25 @@ public class WeightedGraf extends Graf {
         fileReader.close();
     }
 
-
+    /**
+     * Add an edge to the map and to the list of edges the accosiate nodes doesn't exist they are create
+     *
+     * @param from id where the edge come from
+     * @param to   id where the edge go to
+     * @param weight weight of the edge
+     */
     @Override
     public void addEdge(int from, int to, double weight) {
         addEdge(new Edge(from, to, weight));
     }
 
-
+    /**
+     * Add an edge to the map and to the list of edges, if the accosiate nodes doesn't exist they are create
+     *
+     * @param from node where the edge come from
+     * @param to   node where the edge go to
+     * @param weight weight of the edge
+     */
     @Override
     public void addEdge(Node from, Node to, double weight) {
         addEdge(new Edge(from.getId(), to.getId(), weight));
@@ -92,22 +104,51 @@ public class WeightedGraf extends Graf {
         return dot.toString();
     }
 
-
+    /**
+     * Remove an edge from the map and the list edges
+     *
+     * @param from id where the edge come from
+     * @param to   id where the edge go to
+     * @param weight weight of the edge
+     */
     @Override
     public void removeEdge(int from, int to, double weight) {
         removeEdge(new Edge(from, to, weight));
     }
 
+    /**
+     * Remove an edge from the map and the list edges
+     *
+     * @param from node where the edge come from
+     * @param to   node where the edge go to
+     * @param weight weight of the edge
+     */
     @Override
     public void removeEdge(Node from, Node to, double weight) {
         removeEdge(new Edge(from.getId(), to.getId(), weight));
     }
 
+    /**
+     * Check if an edge between the node with the id u and the node with the id v exist
+     *
+     * @param u id from
+     * @param v id to
+     * @param weight weight of the edge
+     * @return true if an edge between the node with the id u and the node with the id v exist otherwise return false
+     */
     @Override
     public boolean existsEdge(int u, int v, double weight) {
         return existsEdge(new Edge(u, v, weight));
     }
 
+    /**
+     * Check if an edge between u and v exist
+     *
+     * @param u node from
+     * @param v node to
+     * @param weight weight of the edge
+     * @return true if an edge between u and v exist otherwise return false
+     */
     @Override
     public boolean existsEdge(Node u, Node v, double weight) {
         return existsEdge(new Edge(u, v, weight));
