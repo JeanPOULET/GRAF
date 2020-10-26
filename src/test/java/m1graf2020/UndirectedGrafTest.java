@@ -65,15 +65,17 @@ public class UndirectedGrafTest {
         containedEdges.add(reverseE2);
 
         List<Edge> incidentEdges = uGraf.getIncidentEdges(2);
+        System.out.print(uGraf.toDotString());
+        uGraf.printEdges();
         Assert.assertEquals(incidentEdges.size(),4);
         containedEdges.forEach(e -> Assert.assertTrue(incidentEdges.contains(e)));
     }
 
     @Test
     public void testImportDotFile() throws IOException {
-        Graf grafFromFile = new Graf("src/main/resources/exempleProf.dot");
+        UndirectedGraf grafFromFile = new UndirectedGraf("src/main/resources/exempleProfUndirected.dot");
 
-        //grafFromFile.printMap();
+        grafFromFile.printMap();
 
         Assert.assertEquals(grafFromFile.getAllEdges().size(), 11);
         Assert.assertEquals(grafFromFile.getAllNodes().size(), 8);
@@ -98,11 +100,11 @@ public class UndirectedGrafTest {
 
     @Test
     public void testImportDotFileThenImport() throws IOException {
-        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        UndirectedGraf grafFromExample = new UndirectedGraf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
 
         grafFromExample.toDotFile("UndirectedGrafFromExample.dot");
 
-        Graf grafFromFile = new Graf("UndirectedGrafFromExample.dot");
+        UndirectedGraf grafFromFile = new UndirectedGraf("UndirectedGrafFromExample.dot");
         Assert.assertEquals(grafFromFile.getAllEdges().size(), 11);
         Assert.assertEquals(grafFromFile.getAllNodes().size(), 8);
 
@@ -116,8 +118,8 @@ public class UndirectedGrafTest {
 
     @Test
     public void testDFS()  {
-        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
-        //grafFromExample.getDFS().forEach(System.out::println);
+        UndirectedGraf grafFromExample = new UndirectedGraf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        grafFromExample.getDFS().forEach(System.out::println);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
         lsWaited.add(new Node(2));
@@ -125,8 +127,9 @@ public class UndirectedGrafTest {
         lsWaited.add(new Node(3));
         lsWaited.add(new Node(6));
         lsWaited.add(new Node(7));
-        lsWaited.add(new Node(5));
         lsWaited.add(new Node(8));
+        lsWaited.add(new Node(5));
+
 
         List<Node> fromBfs = grafFromExample.getDFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
@@ -137,16 +140,19 @@ public class UndirectedGrafTest {
 
     @Test
     public void testDFSfromTD() throws IOException {
-        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
+        UndirectedGraf grafFromExample = new UndirectedGraf("src/main/resources/exempleProfUndirected.dot");
         //grafFromExample.getDFS().forEach(System.out::println);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
         lsWaited.add(new Node(2));
         lsWaited.add(new Node(4));
-        lsWaited.add(new Node(5));
+        lsWaited.add(new Node(3));
         lsWaited.add(new Node(6));
         lsWaited.add(new Node(7));
-        lsWaited.add(new Node(3));
+        lsWaited.add(new Node(8));
+        lsWaited.add(new Node(5));
+
+
         List<Node> fromBfs = grafFromExample.getDFS();
         Assert.assertEquals(lsWaited.size(), fromBfs.size());
         for (int index = 0; index < fromBfs.size(); index++) {
@@ -156,7 +162,7 @@ public class UndirectedGrafTest {
 
     @Test
     public void testBFS()  {
-        Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
+        UndirectedGraf grafFromExample = new UndirectedGraf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
         lsWaited.add(new Node(2));
@@ -176,14 +182,15 @@ public class UndirectedGrafTest {
 
     @Test
     public void testBFSfromTD() throws IOException {
-        Graf grafFromExample = new Graf("src/main/resources/exempleTD.dot");
-        //grafFromExample.getBFS().forEach(System.out::println);
+        UndirectedGraf grafFromExample = new UndirectedGraf("src/main/resources/exempleProfUndirected.dot");
+        grafFromExample.getBFS().forEach(System.out::println);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
         lsWaited.add(new Node(2));
-        lsWaited.add(new Node(3));
         lsWaited.add(new Node(4));
+        lsWaited.add(new Node(3));
         lsWaited.add(new Node(5));
+        lsWaited.add(new Node(8));
         lsWaited.add(new Node(6));
         lsWaited.add(new Node(7));
         List<Node> fromBfs = grafFromExample.getBFS();

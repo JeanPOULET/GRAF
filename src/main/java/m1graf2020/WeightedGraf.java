@@ -64,25 +64,6 @@ public class WeightedGraf extends Graf {
         addEdge(new Edge(from.getId(), to.getId(), weight));
     }
 
-    @Override
-    public void addEdge(Edge ed) {
-        if (!existsNode(ed.getTo())) {
-            addNode(ed.getTo());
-        }
-        if (!existsNode(ed.getFrom())) {
-            addNode(ed.getFrom());
-        }
-
-        for (Node n : adjList.keySet()) {
-            if (n.getId() == ed.getFrom()) {
-                adjList.get(n).add(new Node(ed.getTo()));
-                edges.add(ed);
-                Collections.sort(edges);
-                Collections.sort(adjList.get(n));
-            }
-        }
-    }
-
     /**
      * the dot representation in a string of the graf
      *
