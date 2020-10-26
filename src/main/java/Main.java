@@ -92,10 +92,11 @@ public class Main {
     public static void createNewGraf() throws IOException {
         System.out.println("Press 1 : Create a directed Graf ");
         System.out.println("Press 2 : Create a undirected Graf ");
-        System.out.println("Press 3 : Create a random connected Graf ");
-        System.out.println("Press 4 : Create a random dense Graf ");
-        System.out.println("Press 5 : Create a random sparse Graf ");
-        System.out.println("Press 6 : Create a random parameterized Graf ");
+        System.out.println("Press 3 : Create a weighted Graf ");
+        System.out.println("Press 4 : Create a random connected Graf ");
+        System.out.println("Press 5 : Create a random dense Graf ");
+        System.out.println("Press 6 : Create a random sparse Graf ");
+        System.out.println("Press 7 : Create a random parameterized Graf ");
         char key = bufferReader.readLine().replaceAll("[^0-9]", "").trim().charAt(0);
         switch (key) {
             case '1':
@@ -107,18 +108,22 @@ public class Main {
                 System.out.println("Your empty undirected graf have been created !");
                 break;
             case '3':
+                myGraf = new WeightedGraf();
+                System.out.println("Your empty weighted graf have been created !");
+                break;
+            case '4':
                 myGraf = new ConnectGraf();
                 System.out.println("Your random connected graf have been created !");
                 break;
-            case '4':
+            case '5':
                 myGraf = new DenseGraf();
                 System.out.println("Your random dense graf have been created !");
                 break;
-            case '5':
+            case '6':
                 myGraf = new SparsiateGraf();
                 System.out.println("Your random sparse graf have been created !");
                 break;
-            case '6':
+            case '7':
                 parameterizedGraf();
                 System.out.println("Your random parameterized graf have been created !");
                 break;
@@ -178,7 +183,13 @@ public class Main {
         String edgeFrom = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         System.out.println("Now please enter where your edge go to");
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
-        myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
+        if(myGraf instanceof WeightedGraf){
+            System.out.println("Now please enter the weight of the edge");
+            String weight = bufferReader.readLine().replaceAll("^[0-9][.[0-9]]?", "").trim();
+            myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
+        }else {
+            myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
+        }
         System.out.println("The edge (" + Integer.parseInt(edgeFrom) + "," + Integer.parseInt(edgeTo) + ") have been added !");
     }
 
@@ -191,8 +202,13 @@ public class Main {
         String edgeFrom = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         System.out.println("Now please enter where your edge go to");
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
-
-        myGraf.removeEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
+        if(myGraf instanceof WeightedGraf){
+            System.out.println("Now please enter the weight of the edge");
+            String weight = bufferReader.readLine().replaceAll("^[0-9][.[0-9]]?", "").trim();
+            myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
+        }else {
+            myGraf.removeEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
+        }
         System.out.println("The edge (" + Integer.parseInt(edgeFrom) + "," + Integer.parseInt(edgeTo) + ") have been removed !");
     }
 
