@@ -2,6 +2,10 @@ package m1graf2020;
 
 public class ConnectGraf extends Graf {
 
+    /**
+     * This constructor build a random connected graph with randomely 4 or 20 nodes which are automaticaly
+     * linked to at least one other node. Like this all the nodes are connected
+     */
     public ConnectGraf() {
         super();
         int rand = 4 + (int) (Math.random() * (20 - 4) + 1);

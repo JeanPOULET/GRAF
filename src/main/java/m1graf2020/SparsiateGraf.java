@@ -2,6 +2,10 @@ package m1graf2020;
 
 public class SparsiateGraf extends Graf {
 
+    /**
+     * This constructor build a random sparse graph with randomely 4 or 20 nodes and a density between 2% and 20%.
+     * It means that two nodes have between 2% and 20% chance to be linked
+     */
     public SparsiateGraf() {
         super();
         int rand = 4 + (int) (Math.random() * (20 - 4) + 1);

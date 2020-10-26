@@ -2,6 +2,12 @@ package m1graf2020;
 
 public class GrafParameterized extends Graf {
 
+    /**
+     * This constructor build a random parameterized graph taking in parameter the number of nodes, the number of edges and the dentisy
+     * @param nbNode the number of node for the graph
+     * @param nbEdge the number of node for the graph
+     * @param density the graph density, it represent the probability to have a link between 2 nodes
+     */
     public GrafParameterized(int nbNode, int nbEdge, int density) {
 
         for (int i = 0; i < nbNode; i++) {
