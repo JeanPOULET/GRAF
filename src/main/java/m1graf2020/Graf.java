@@ -172,6 +172,18 @@ public class Graf {
         }
     }
 
+    public void addEdge(int from, int to, double weight) {}
+
+    public void addEdge(Node from, Node to, double weight) {}
+
+    public void removeEdge(int from, int to, double weight) {}
+
+    public void removeEdge(Node from, Node to, double weight) {}
+
+    public boolean existsEdge(int u, int v, double weight) { return true; }
+
+    public boolean existsEdge(Node u, Node v, double weight) { return true; }
+
     /************************************ FUNCTIONS NOT OF US ************************************/
 
     /****************************************************
