@@ -18,11 +18,18 @@ public class Graf {
     protected TreeSet<Integer> trash = new TreeSet<>();
     protected List<Edge> edges = new ArrayList<>();
 
-
+    /**
+     * Will create a new empty Graf
+     */
     public Graf() {
 
     }
 
+    /**
+     * Will create a new Graf based on the given successor array
+     *
+     * @param SA The successor array
+     */
     public Graf(int... SA) {
         int actualNode = 1;
         addNode(1);
@@ -39,6 +46,12 @@ public class Graf {
 
     }
 
+    /**
+     * Will parse a dot file and create a graf based on it
+     *
+     * @param fileName The name of the file to parse
+     * @throws IOException
+     */
     public Graf(String fileName) throws IOException {
 
         File file = new File(fileName);
