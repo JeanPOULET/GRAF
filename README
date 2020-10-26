@@ -1,0 +1,5 @@
+Created by BATTAGLIA Jérémy and BART Mathieu
+
+To use our graf library, you just have to type in your terminal : make
+You have to be on the root of the project.
+It will compile java files and execute the main directly.
