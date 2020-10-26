@@ -1,0 +1,17 @@
+# DOT Representation for the graph
+
+ digraph graf {
+	1  -> 2[label="2",weight="2"];
+	1  -> 4[label="0.2",weight="0.2"];
+	2 ;
+	3  -> 6[label="0.4",weight="0.4"];
+	4  -> 2[label="1",weight="1"];
+	4  -> 3[label="4",weight="4"];
+	4  -> 5[label="4.2",weight="4.2"];
+	4  -> 8[label="2",weight="2"];
+	5 ;
+	6  -> 4[label="7",weight="7"];
+	6  -> 7[label="12",weight="12"];
+	7  -> 3[label="0.1",weight="0.1"];
+	8  -> 7[label="6",weight="6"];
+}
