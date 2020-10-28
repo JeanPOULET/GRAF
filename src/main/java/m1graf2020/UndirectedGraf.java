@@ -4,10 +4,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class UndirectedGraf extends Graf {
@@ -40,6 +37,47 @@ public class UndirectedGraf extends Graf {
                         addNode(actualNode);
                     }
                     addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()));
+
+
+                } else {
+                    String line = myLine.replaceAll(";", "").trim();
+                    if (actualNode != Integer.parseInt(line)) {
+                        actualNode++;
+                        addNode(actualNode);
+                    }
+                }
+            }
+        }
+        fileReader.close();
+    }
+
+    /**
+     * Will create an undirectedGraf from a dot file
+     *
+     * @param fileName File to parse
+     * @throws IOException
+     */
+    public UndirectedGraf(String fileName,boolean weighted) throws IOException {
+
+        File file = new File(fileName);
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufRead = new BufferedReader(fileReader);
+        String myLine;
+        int actualNode = 0;
+
+        while ((myLine = bufRead.readLine()) != null) {
+            if (myLine.isEmpty()) continue;
+            if (!myLine.contains("{") && !myLine.contains("}") && !myLine.contains("#")) {
+                if (myLine.contains("--")) {
+                    String[] line = myLine.trim().split("--");
+                    if (actualNode != Integer.parseInt(line[0].trim())) {
+                        actualNode++;
+                        addNode(actualNode);
+                    }
+                    String[] lineComa = Arrays.toString(line).trim().replace("[", "").replace("]", "").split(",");
+                    double weight = Double.parseDouble(lineComa[1]
+                            .split("label=\"")[1].replace("\"", ""));
+                    addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()),weight);
 
 
                 } else {
@@ -227,6 +265,32 @@ public class UndirectedGraf extends Graf {
             }
             for (Node edgeNode : entry.getValue()) {
                 dot.append("\t").append(entry.getKey()).append(" -- ").append(edgeNode.getId()).append(";\n");
+            }
+        }
+
+        dot.append("}");
+
+        return dot.toString();
+    }
+
+    /**
+     * the dot representation in a string of the graf
+     *
+     * @return the dot representation in a string of the graf
+     */
+    @Override
+    public String toDotStringWeighted() {
+        StringBuilder dot = new StringBuilder("# DOT Representation for the graph");
+        dot.append("\n\n digraph graf {\n");
+
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            if (entry.getValue().isEmpty()) {
+                dot.append("\t").append(entry.getKey()).append(";\n");
+            }
+
+            for (Edge edgeNode : edges) {
+                dot.append("\t").append(entry.getKey()).append(" -- ").append(edgeNode.getTo()).append("[label=")
+                        .append(edgeNode.getWeight()).append(",weight=").append(edgeNode.getWeight()).append("];\n");
             }
         }
 
