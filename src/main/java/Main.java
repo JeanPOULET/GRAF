@@ -185,9 +185,9 @@ public class Main {
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         if(myGraf instanceof WeightedGraf){
             System.out.println("Now please enter the weight of the edge");
-            String weight = bufferReader.readLine().replaceAll("^[0-9][.[0-9]]?", "").trim();
+            String weight = bufferReader.readLine().replaceAll("[^0-9 || .]", "").trim();
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
-        }else {
+        }else{
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
         }
         System.out.println("The edge (" + Integer.parseInt(edgeFrom) + "," + Integer.parseInt(edgeTo) + ") have been added !");
@@ -204,7 +204,7 @@ public class Main {
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         if(myGraf instanceof WeightedGraf){
             System.out.println("Now please enter the weight of the edge");
-            String weight = bufferReader.readLine().replaceAll("^[0-9][.[0-9]]?", "").trim();
+            String weight = bufferReader.readLine().replaceAll("^[^0-9 || .]", "").trim();
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
         }else {
             myGraf.removeEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
