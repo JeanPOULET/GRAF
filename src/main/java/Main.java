@@ -11,6 +11,7 @@ public class Main {
     static boolean run = true;
     static BufferedReader bufferReader;
     static Graf myGraf = null;
+    static boolean weighted = false;
 
     public static void main(String[] args) throws IOException {
         bufferReader = new BufferedReader(new InputStreamReader(System.in));
@@ -92,40 +93,51 @@ public class Main {
     public static void createNewGraf() throws IOException {
         System.out.println("Press 1 : Create a directed Graf ");
         System.out.println("Press 2 : Create a undirected Graf ");
-        System.out.println("Press 3 : Create a weighted Graf ");
-        System.out.println("Press 4 : Create a random connected Graf ");
-        System.out.println("Press 5 : Create a random dense Graf ");
-        System.out.println("Press 6 : Create a random sparse Graf ");
-        System.out.println("Press 7 : Create a random parameterized Graf ");
+        System.out.println("Press 3 : Create a random connected Graf ");
+        System.out.println("Press 4 : Create a random dense Graf ");
+        System.out.println("Press 5 : Create a random sparse Graf ");
+        System.out.println("Press 6 : Create a random parameterized Graf ");
         char key = bufferReader.readLine().replaceAll("[^0-9]", "").trim().charAt(0);
         switch (key) {
             case '1':
+                isWeightedMenu();
                 myGraf = new Graf();
                 System.out.println("Your empty directed graf have been created !");
                 break;
             case '2':
+                isWeightedMenu();
                 myGraf = new UndirectedGraf();
                 System.out.println("Your empty undirected graf have been created !");
                 break;
             case '3':
-                myGraf = new WeightedGraf();
-                System.out.println("Your empty weighted graf have been created !");
-                break;
-            case '4':
                 myGraf = new ConnectGraf();
                 System.out.println("Your random connected graf have been created !");
                 break;
-            case '5':
+            case '4':
                 myGraf = new DenseGraf();
                 System.out.println("Your random dense graf have been created !");
                 break;
-            case '6':
+            case '5':
                 myGraf = new SparsiateGraf();
                 System.out.println("Your random sparse graf have been created !");
                 break;
-            case '7':
+            case '6':
                 parameterizedGraf();
                 System.out.println("Your random parameterized graf have been created !");
+                break;
+        }
+    }
+
+    public static void isWeightedMenu() throws IOException {
+        System.out.println("Press 1 : To make the graf weighted ");
+        System.out.println("Press 2 : To not make the graf weighted ");
+        char key = bufferReader.readLine().replaceAll("[^0-9]", "").trim().charAt(0);
+        switch (key) {
+            case '1':
+                weighted = true;
+                break;
+            case '2':
+                weighted = false;
                 break;
         }
     }
@@ -183,7 +195,7 @@ public class Main {
         String edgeFrom = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         System.out.println("Now please enter where your edge go to");
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
-        if(myGraf instanceof WeightedGraf){
+        if(weighted){
             System.out.println("Now please enter the weight of the edge");
             String weight = bufferReader.readLine().replaceAll("[^0-9.]?", "").trim();
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
@@ -202,7 +214,7 @@ public class Main {
         String edgeFrom = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         System.out.println("Now please enter where your edge go to");
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
-        if(myGraf instanceof WeightedGraf){
+        if(weighted){
             System.out.println("Now please enter the weight of the edge");
             String weight = bufferReader.readLine().replaceAll("[^0-9.]?", "").trim();
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
@@ -217,13 +229,21 @@ public class Main {
             System.out.println("It appears that your graf is not created !");
             return;
         }
-        System.out.println(myGraf.toDotString());
+        if(weighted){
+            System.out.println(myGraf.toDotStringWeighted());
+        }else {
+            System.out.println(myGraf.toDotString());
+        }
     }
 
     public static void readGrafFromDotFile() throws IOException {
         System.out.println("Please enter your filename (and the path before your file if it not next to the executable) ! It will erase your actual graph !");
         String fileName = bufferReader.readLine().trim();
-        myGraf = new Graf(fileName);
+        if(weighted){
+            myGraf = new Graf(fileName, weighted);
+        }else{
+            myGraf = new Graf(fileName);
+        }
         System.out.println("Your graph is now the graph from file !");
     }
 
@@ -234,7 +254,11 @@ public class Main {
         }
         System.out.println("Please enter the filename for the export of your actual graf !");
         String fileName = bufferReader.readLine().trim();
-        myGraf.toDotFile(fileName);
+        if(weighted){
+            myGraf.toDotFileWeighted(fileName);
+        }else{
+            myGraf.toDotFile(fileName);
+        }
         System.out.println("Your file " + fileName + " have been created, please check it !");
     }
 

@@ -13,9 +13,4 @@ public class WeightedGrafTest {
 
     }
 
-    @Test
-    public void importDotFile() throws IOException {
-        graf = new WeightedGraf("src/main/resources/exempleWeightedGraf.dot");
-        System.out.print(graf.toDotString());
-    }
 }

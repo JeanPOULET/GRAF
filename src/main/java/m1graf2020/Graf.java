@@ -3,6 +3,7 @@ package m1graf2020;
 
 import java.io.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /****************************************************
  *                      QUESTIONS                   *
@@ -53,7 +54,6 @@ public class Graf {
      * @throws IOException
      */
     public Graf(String fileName) throws IOException {
-
         File file = new File(fileName);
         FileReader fileReader = new FileReader(file);
         BufferedReader bufRead = new BufferedReader(fileReader);
@@ -172,17 +172,144 @@ public class Graf {
         }
     }
 
-    public void addEdge(int from, int to, double weight) {}
+    /**
+     * Will parse a dot file and create a weighted graf based on it
+     *
+     * @param fileName file to parse
+     * @throws IOException
+     */
+    public Graf(String fileName, boolean weighted) throws IOException {
+        File file = new File(fileName);
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufRead = new BufferedReader(fileReader);
+        String myLine;
+        int actualNode = 0;
 
-    public void addEdge(Node from, Node to, double weight) {}
+        while ((myLine = bufRead.readLine()) != null) {
+            if (myLine.isEmpty()) continue;
+            if (!myLine.contains("{") && !myLine.contains("}") && !myLine.contains("#")) {
+                if (myLine.contains("->")) {
 
-    public void removeEdge(int from, int to, double weight) {}
+                    String[] line = myLine.trim().split("->");
+                    String edge = line[1].split("\\[")[0];
+                    if (actualNode != Integer.parseInt(line[0].trim())) {
+                        actualNode++;
+                        addNode(actualNode);
+                    }
 
-    public void removeEdge(Node from, Node to, double weight) {}
+                    String[] lineComa = Arrays.toString(line).trim().replace("[", "").replace("]", "").split(",");
+                    double weight = Double.parseDouble(lineComa[1]
+                            .split("label=\"")[1].replace("\"", ""));
+                    addEdge(actualNode, Integer.parseInt(edge.replaceAll(";", "").trim()), weight);
 
-    public boolean existsEdge(int u, int v, double weight) { return true; }
+                } else {
+                    String line = myLine.replaceAll(";", "").trim();
+                    if (actualNode != Integer.parseInt(line)) {
+                        actualNode++;
+                        addNode(actualNode);
+                    }
+                }
+            }
+        }
+        fileReader.close();
+    }
 
-    public boolean existsEdge(Node u, Node v, double weight) { return true; }
+    /**
+     * Add an edge to the map and to the list of edges the accosiate nodes doesn't exist they are create
+     *
+     * @param from id where the edge come from
+     * @param to   id where the edge go to
+     * @param weight weight of the edge
+     */
+    public void addEdge(int from, int to, double weight) {
+        addEdge(new Edge(from, to, weight));
+    }
+
+    /**
+     * Add an edge to the map and to the list of edges, if the accosiate nodes doesn't exist they are create
+     *
+     * @param from node where the edge come from
+     * @param to   node where the edge go to
+     * @param weight weight of the edge
+     */
+    public void addEdge(Node from, Node to, double weight) {
+        addEdge(new Edge(from.getId(), to.getId(), weight));
+    }
+
+    /**
+     * the dot representation in a string of the graf
+     *
+     * @return the dot representation in a string of the graf
+     */
+    public String toDotStringWeighted() {
+        StringBuilder dot = new StringBuilder("# DOT Representation for the graph");
+        dot.append("\n\n digraph graf {\n");
+
+        for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
+            if (entry.getValue().isEmpty()) {
+                dot.append("\t").append(entry.getKey()).append(";\n");
+            }
+            List<Edge> edges = getOutEdges(entry.getKey());
+
+            for (Edge edgeNode : edges) {
+                System.out.println("f :" + edgeNode.getWeight());
+                dot.append("\t").append(entry.getKey()).append(" -> ").append(edgeNode.getTo()).append("[label=")
+                        .append(edgeNode.getWeight()).append(",weight=").append(edgeNode.getWeight()).append("];\n");
+            }
+        }
+
+        dot.append("}");
+
+        return dot.toString();
+    }
+
+    /**
+     * Remove an edge from the map and the list edges
+     *
+     * @param from id where the edge come from
+     * @param to   id where the edge go to
+     * @param weight weight of the edge
+     */
+    public void removeEdge(int from, int to, double weight) {
+        removeEdge(new Edge(from, to, weight));
+    }
+
+    /**
+     * Remove an edge from the map and the list edges
+     *
+     * @param from node where the edge come from
+     * @param to   node where the edge go to
+     * @param weight weight of the edge
+     */
+    public void removeEdge(Node from, Node to, double weight) {
+        removeEdge(new Edge(from.getId(), to.getId(), weight));
+    }
+
+    /**
+     * Check if an edge between the node with the id u and the node with the id v exist
+     *
+     * @param u id from
+     * @param v id to
+     * @param weight weight of the edge
+     * @return true if an edge between the node with the id u and the node with the id v exist otherwise return false
+     */
+    public boolean existsEdge(int u, int v, double weight) {
+        return existsEdge(new Edge(u, v, weight));
+    }
+
+    /**
+     * Check if an edge between u and v exist
+     *
+     * @param u node from
+     * @param v node to
+     * @param weight weight of the edge
+     * @return true if an edge between u and v exist otherwise return false
+     */
+    public boolean existsEdge(Node u, Node v, double weight) {
+        return existsEdge(new Edge(u, v, weight));
+    }
+
+
 
     /************************************ FUNCTIONS NOT OF US ************************************/
 
@@ -487,12 +614,7 @@ public class Graf {
      * @return a list of all edges that get out a node n
      */
     public List<Edge> getOutEdges(Node n) {
-        List<Edge> le = new ArrayList<>();
-
-        for (Node myNode : adjList.get(getNode(n.getId()))) {
-            le.add(new Edge(n.getId(), myNode.getId()));
-        }
-        return le;
+        return edges.stream().filter(e -> n.getId() == e.getFrom()).collect(Collectors.toList());
     }
 
     /**
@@ -502,12 +624,7 @@ public class Graf {
      * @return a list of all edges that get out a node with a given id
      */
     public List<Edge> getOutEdges(int id) {
-        List<Edge> le = new ArrayList<>();
-
-        for (Node myNode : adjList.get(getNode(id))) {
-            le.add(new Edge(id, myNode.getId()));
-        }
-        return le;
+        return edges.stream().filter(e -> id == e.getFrom()).collect(Collectors.toList());
     }
 
     /**
@@ -517,14 +634,7 @@ public class Graf {
      * @return Give a list of all edges that get in a node
      */
     public List<Edge> getInEdges(Node n) {
-        List<Edge> le = new ArrayList<>();
-
-        for (Edge e : edges) {
-            if (e.getTo() == n.getId()) {
-                le.add(e);
-            }
-        }
-        return le;
+        return edges.stream().filter(e -> n.getId() == e.getTo()).collect(Collectors.toList());
     }
 
     /**
@@ -534,14 +644,7 @@ public class Graf {
      * @return Give a list of all edges that get in a node with a given id
      */
     public List<Edge> getInEdges(int id) {
-        List<Edge> le = new ArrayList<>();
-
-        for (Edge e : edges) {
-            if (e.getTo() == id) {
-                le.add(e);
-            }
-        }
-        return le;
+        return edges.stream().filter(e -> id == e.getTo()).collect(Collectors.toList());
     }
 
     /**
@@ -868,6 +971,14 @@ public class Graf {
 
         FileWriter fWriter = new FileWriter(file);
         fWriter.write(toDotString());
+        fWriter.close();
+    }
+
+    public void toDotFileWeighted(String fileName) throws IOException {
+        File file = new File(fileName);
+
+        FileWriter fWriter = new FileWriter(file);
+        fWriter.write(toDotStringWeighted());
         fWriter.close();
     }
 
