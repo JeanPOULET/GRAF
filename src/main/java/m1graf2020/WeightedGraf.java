@@ -1,7 +1,12 @@
 package m1graf2020;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class WeightedGraf extends Graf {
@@ -74,25 +79,6 @@ public class WeightedGraf extends Graf {
     @Override
     public void addEdge(Node from, Node to, double weight) {
         addEdge(new Edge(from.getId(), to.getId(), weight));
-    }
-
-    @Override
-    public void addEdge(Edge ed) {
-        if (!existsNode(ed.getTo())) {
-            addNode(ed.getTo());
-        }
-        if (!existsNode(ed.getFrom())) {
-            addNode(ed.getFrom());
-        }
-
-        for (Node n : adjList.keySet()) {
-            if (n.getId() == ed.getFrom()) {
-                adjList.get(n).add(new Node(ed.getTo()));
-                edges.add(ed);
-                Collections.sort(edges);
-                Collections.sort(adjList.get(n));
-            }
-        }
     }
 
     /**
