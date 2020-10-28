@@ -953,7 +953,6 @@ public class Graf {
             List<Edge> edges = getOutEdges(entry.getKey());
 
             for (Edge edgeNode : edges) {
-                System.out.println("f :" + edgeNode.getWeight());
                 dot.append("\t").append(entry.getKey()).append(" -> ").append(edgeNode.getTo()).append("[label=")
                         .append(edgeNode.getWeight()).append(",weight=").append(edgeNode.getWeight()).append("];\n");
             }
@@ -973,7 +972,6 @@ public class Graf {
      */
     public void toDotFile(String fileName) throws IOException {
         File file = new File(fileName);
-
         FileWriter fWriter = new FileWriter(file);
         fWriter.write(toDotString());
         fWriter.close();
@@ -981,7 +979,6 @@ public class Graf {
 
     public void toDotFileWeighted(String fileName) throws IOException {
         File file = new File(fileName);
-
         FileWriter fWriter = new FileWriter(file);
         fWriter.write(toDotStringWeighted());
         fWriter.close();

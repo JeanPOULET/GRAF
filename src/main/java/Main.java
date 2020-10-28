@@ -240,7 +240,7 @@ public class Main {
         System.out.println("Please enter your filename (and the path before your file if it not next to the executable) ! It will erase your actual graph !");
         String fileName = bufferReader.readLine().trim();
         if(weighted){
-            myGraf = new Graf(fileName, weighted);
+            myGraf = new Graf(fileName, true);
         }else{
             myGraf = new Graf(fileName);
         }

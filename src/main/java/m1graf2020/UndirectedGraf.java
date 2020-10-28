@@ -57,7 +57,7 @@ public class UndirectedGraf extends Graf {
      * @param fileName File to parse
      * @throws IOException
      */
-    public UndirectedGraf(String fileName,boolean weighted) throws IOException {
+    public UndirectedGraf(String fileName, boolean weighted) throws IOException {
 
         File file = new File(fileName);
         FileReader fileReader = new FileReader(file);
@@ -77,7 +77,7 @@ public class UndirectedGraf extends Graf {
                     String[] lineComa = Arrays.toString(line).trim().replace("[", "").replace("]", "").split(",");
                     double weight = Double.parseDouble(lineComa[1]
                             .split("label=\"")[1].replace("\"", ""));
-                    addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()),weight);
+                    addEdge(actualNode, Integer.parseInt(line[1].replaceAll(";", "").trim()), 1/*,weight*/);
 
 
                 } else {
@@ -123,6 +123,22 @@ public class UndirectedGraf extends Graf {
                 outEdges.add(edge);
             } else if (edge.getTo() == id) {
                 outEdges.add(new Edge(edge.getTo(), edge.getFrom()));
+            }
+        });
+        return outEdges;
+    }
+
+    public List<Edge> getOutEdgesWeighted(Node n) {
+        return getOutEdgesWeighted(n.getId());
+    }
+
+    public List<Edge> getOutEdgesWeighted(int id) {
+        List<Edge> outEdges = new ArrayList<>();
+        edges.forEach(edge -> {
+            if (edge.getFrom() == id) {
+                outEdges.add(edge);
+            } else if (edge.getTo() == id) {
+                outEdges.add(new Edge(edge.getTo(), edge.getFrom(), edge.getWeight()));
             }
         });
         return outEdges;
@@ -269,7 +285,6 @@ public class UndirectedGraf extends Graf {
         }
 
         dot.append("}");
-
         return dot.toString();
     }
 
@@ -281,21 +296,20 @@ public class UndirectedGraf extends Graf {
     @Override
     public String toDotStringWeighted() {
         StringBuilder dot = new StringBuilder("# DOT Representation for the graph");
-        dot.append("\n\n digraph graf {\n");
+        dot.append("\n\n graf {\n");
 
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
-            if (entry.getValue().isEmpty()) {
+            if (getOutEdgesWeighted(entry.getKey()).isEmpty()) {
                 dot.append("\t").append(entry.getKey()).append(";\n");
             }
 
-            for (Edge edgeNode : edges) {
+            for (Edge edgeNode : getOutEdgesWeighted(entry.getKey())) {
                 dot.append("\t").append(entry.getKey()).append(" -- ").append(edgeNode.getTo()).append("[label=")
                         .append(edgeNode.getWeight()).append(",weight=").append(edgeNode.getWeight()).append("];\n");
             }
         }
 
         dot.append("}");
-
         return dot.toString();
     }
 
