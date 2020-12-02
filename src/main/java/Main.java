@@ -1,9 +1,14 @@
-import m1graf2020.*;
+import javafx.util.Pair;
+import m1graf2020.pw2.*;
+import m1graf2020.maximumflow.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.TreeMap;
 
 
 public class Main {
@@ -97,6 +102,8 @@ public class Main {
         System.out.println("Press 4 : Create a random dense Graf ");
         System.out.println("Press 5 : Create a random sparse Graf ");
         System.out.println("Press 6 : Create a random parameterized Graf ");
+        System.out.println("Press 7 : Create a flow Graf ");
+        System.out.println("Press 8 : Create a residual Graf ");
         char key = bufferReader.readLine().replaceAll("[^0-9]", "").trim().charAt(0);
         switch (key) {
             case '1':
@@ -125,6 +132,17 @@ public class Main {
                 parameterizedGraf();
                 System.out.println("Your random parameterized graf have been created !");
                 break;
+            case '7':
+                myGraf = new Flow();
+                weighted=true;
+                System.out.println("Your flow graf have been created !");
+
+                break;
+            case '8':
+                myGraf = new ResidualGraf();
+                weighted = true;
+                break;
+
         }
     }
 
@@ -195,11 +213,11 @@ public class Main {
         String edgeFrom = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         System.out.println("Now please enter where your edge go to");
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
-        if(weighted){
+        if (weighted) {
             System.out.println("Now please enter the weight of the edge");
             String weight = bufferReader.readLine().replaceAll("[^0-9.]?", "").trim();
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
-        }else{
+        } else {
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
         }
         System.out.println("The edge (" + Integer.parseInt(edgeFrom) + "," + Integer.parseInt(edgeTo) + ") have been added !");
@@ -214,11 +232,11 @@ public class Main {
         String edgeFrom = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
         System.out.println("Now please enter where your edge go to");
         String edgeTo = bufferReader.readLine().replaceAll("[^0-9]", "").trim();
-        if(weighted){
+        if (weighted) {
             System.out.println("Now please enter the weight of the edge");
             String weight = bufferReader.readLine().replaceAll("[^0-9.]?", "").trim();
             myGraf.addEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo), Double.parseDouble(weight));
-        }else {
+        } else {
             myGraf.removeEdge(Integer.parseInt(edgeFrom), Integer.parseInt(edgeTo));
         }
         System.out.println("The edge (" + Integer.parseInt(edgeFrom) + "," + Integer.parseInt(edgeTo) + ") have been removed !");
@@ -229,9 +247,14 @@ public class Main {
             System.out.println("It appears that your graf is not created !");
             return;
         }
-        if(weighted){
-            System.out.println(myGraf.toDotStringWeighted());
-        }else {
+        if (weighted) {
+            if(myGraf instanceof Flow || myGraf instanceof ResidualGraf){
+                System.out.println(myGraf.toDotString());
+            }else{
+                System.out.println(myGraf.toDotStringWeighted());
+            }
+
+        } else {
             System.out.println(myGraf.toDotString());
         }
     }
@@ -239,9 +262,9 @@ public class Main {
     public static void readGrafFromDotFile() throws IOException {
         System.out.println("Please enter your filename (and the path before your file if it not next to the executable) ! It will erase your actual graph !");
         String fileName = bufferReader.readLine().trim();
-        if(weighted){
+        if (weighted) {
             myGraf = new Graf(fileName, true);
-        }else{
+        } else {
             myGraf = new Graf(fileName);
         }
         System.out.println("Your graph is now the graph from file !");
@@ -254,9 +277,9 @@ public class Main {
         }
         System.out.println("Please enter the filename for the export of your actual graf !");
         String fileName = bufferReader.readLine().trim();
-        if(weighted){
+        if (weighted && !(myGraf instanceof Flow || myGraf instanceof ResidualGraf)) {
             myGraf.toDotFileWeighted(fileName);
-        }else{
+        } else {
             myGraf.toDotFile(fileName);
         }
         System.out.println("Your file " + fileName + " have been created, please check it !");

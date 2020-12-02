@@ -1,4 +1,4 @@
-package m1graf2020;
+package m1graf2020.pw2;
 
 
 import java.io.*;
@@ -848,6 +848,20 @@ public class Graf {
 
         ls.add(adjList.firstKey());
         dfs(adjList.firstKey(), visited, ls);
+        return ls;
+    }
+
+    /**
+     * Will do the dfs traversal of the graph in a recursive way
+     *
+     * @return list of parcoured nodes in the DFS order
+     */
+    public List<Node> getDFS(Node toVisit) {
+        boolean[] visited = new boolean[256];
+        List<Node> ls = new ArrayList<>();
+
+        ls.add(toVisit);
+        dfs(toVisit, visited, ls);
         return ls;
     }
 

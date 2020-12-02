@@ -1,5 +1,8 @@
 package m1graf2020;
 
+import m1graf2020.pw2.Edge;
+import m1graf2020.pw2.Graf;
+import m1graf2020.pw2.Node;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -876,5 +879,10 @@ public class GrafTest {
         graf.addEdge(1, 2);
         graf.removeEdge(1, 2);
         Assert.assertTrue(graf.existsEdge(1, 2));
+    }
+
+    @Test
+    public void testWeighted() throws IOException {
+        Graf graf = new Graf("src/main/resources/exempleWeighted.dot",true);
     }
 }

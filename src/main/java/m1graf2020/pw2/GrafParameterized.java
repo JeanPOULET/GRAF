@@ -1,4 +1,4 @@
-package m1graf2020;
+package m1graf2020.pw2;
 
 public class GrafParameterized extends Graf {
 

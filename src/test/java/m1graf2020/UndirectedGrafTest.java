@@ -1,5 +1,8 @@
 package m1graf2020;
 
+import m1graf2020.pw2.Edge;
+import m1graf2020.pw2.Node;
+import m1graf2020.pw2.UndirectedGraf;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
