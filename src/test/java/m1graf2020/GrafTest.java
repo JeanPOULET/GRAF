@@ -1,5 +1,7 @@
 package m1graf2020;
 
+import m1graf2020.maximumflow.Flow;
+import m1graf2020.maximumflow.ResidualGraf;
 import m1graf2020.pw2.Edge;
 import m1graf2020.pw2.Graf;
 import m1graf2020.pw2.Node;
@@ -884,5 +886,39 @@ public class GrafTest {
     @Test
     public void testWeighted() throws IOException {
         Graf graf = new Graf("src/main/resources/exempleWeighted.dot",true);
+    }
+
+    @Test
+    public void testFlowToResidual(){
+        Flow f = new Flow();
+
+        ResidualGraf rg = f.createResidualFromFlow();
+        System.out.println(rg.toDotString());
+    }
+
+    @Test
+    public void testResidualToFlow(){
+        Flow f = new Flow();
+        ResidualGraf rg = f.createResidualFromFlow();
+        //System.out.println(rg.toDotString());
+        rg.updateFlowFromResidual(f);
+        //System.out.println(f.toDotString());
+        ResidualGraf rg2 = f.createResidualFromFlow();
+        //System.out.println(rg2.toDotString());
+        rg2.updateFlowFromResidual(f);
+        //System.out.println(f.toDotString(2));
+        ResidualGraf rg3 = f.createResidualFromFlow();
+        //System.out.println(rg3.toDotString());
+        rg3.updateFlowFromResidual(f);
+        //System.out.println(f.toDotString(2));
+        ResidualGraf rg4 = f.createResidualFromFlow();
+        System.out.println(rg4.toDotString());
+    }
+
+    @Test
+    public void testMaximumFlowLecture(){
+        Flow f = new Flow();
+        f.FordFulkersonAlgorithm();
+        System.out.println(f.toDotString());
     }
 }

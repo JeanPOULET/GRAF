@@ -10,22 +10,23 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ResidualGraf extends Graf {
 
     public ResidualGraf() {
-        addEdge(1, 2, 8);
+        /*addEdge(1, 2, 8);
         addEdge(1, 3, 6);
         addEdge(2, 4, 6);
         addEdge(3, 4, 10);
         addEdge(3, 5, 7);
         addEdge(4, 5, 3);
         addEdge(4, 6, 4);
-        addEdge(5, 6, 6);
-
+        addEdge(5, 6, 6);*/
     }
 
 
     public List<Edge> getAugmentingPathBFS() {
         List<Node> nodes = getBFS();
+
         List<Edge> edges = new ArrayList<>();
         for (int indice = 0; indice < nodes.size() - 1; indice++) {
+
             Node next = nodes.get(indice + 1);
             edges.add(getEdge(nodes.get(indice), next));
         }
@@ -34,6 +35,7 @@ public class ResidualGraf extends Graf {
 
     public List<Edge> getAugmentingPathDFS() {
         List<Node> nodes = getDFS();
+
         List<Edge> edges = new ArrayList<>();
         for (int indice = 0; indice < nodes.size() - 1; indice++) {
             Node next = nodes.get(indice + 1);
@@ -43,12 +45,15 @@ public class ResidualGraf extends Graf {
     }
 
     public int getMinimalWeight(List<Edge> edges) {
-        int minimalWeight = (int) edges.get(0).getWeight();
-        for (Edge e : edges) {
-            int actualWeight = (int) e.getWeight();
-            if (actualWeight != 0) {
-                if (minimalWeight > actualWeight) {
-                    minimalWeight = actualWeight;
+        int minimalWeight = -1;
+        if(!edges.isEmpty()){
+            minimalWeight= (int) edges.get(0).getWeight();
+            for (Edge e : edges) {
+                int actualWeight = (int) e.getWeight();
+                if (actualWeight != 0) {
+                    if (minimalWeight > actualWeight) {
+                        minimalWeight = actualWeight;
+                    }
                 }
             }
         }
@@ -96,7 +101,7 @@ public class ResidualGraf extends Graf {
     @Override
     public void bfs(Node actualNode, List<Node> ls) {
         boolean[] visited = new boolean[256];
-        Node[] parents = new Node[adjList.size()+1];
+        Node[] parents = new Node[adjList.size() + 1];
 
         LinkedList<Node> queue = new LinkedList<>();
 
@@ -143,30 +148,32 @@ public class ResidualGraf extends Graf {
      * @return list of parcoured nodes in the DFS order
      */
     public List<Node> getDFS() {
+
         boolean[] visited = new boolean[256];
 
         List<Node> nodes = new ArrayList<>();
 
-        Node[] parents = new Node[adjList.size()+1];
+        Node[] parents = new Node[adjList.size() + 1];
+        Node osef = new Node(-1);
+        Arrays.fill(parents, osef);
+
         dfs(adjList.firstKey(), visited, parents);
 
-
         int index = parents.length - 1;
+
         nodes.add(adjList.lastKey());
-        while (true) {
-            if (parents[index].equals(adjList.firstKey())) {
-                nodes.add(adjList.firstKey());
-                break;
-            }
+        while(!parents[index].equals(adjList.firstKey())) {
 
             Node parent = parents[index];
-            if (parent != null) {
+            if (parent.getId() != -1) {
                 nodes.add(parent);
                 index = parent.getId();
             } else {
-                break;
+                return new ArrayList<>();
             }
         }
+
+        nodes.add(adjList.firstKey());
 
         Collections.reverse(nodes);
 
@@ -178,19 +185,22 @@ public class ResidualGraf extends Graf {
      *
      * @param actualNode actualNode to visit
      * @param visited    tab of visited nodes
-     * @param parents         list of the parcoured nodes
+     * @param parents    list of the parcoured nodes
      */
     public void dfs(Node actualNode, boolean[] visited, Node[] parents) {
         visited[actualNode.getId()] = true;
 
-        for (Node n : adjList.get(actualNode)) {
+        List<Node> l = adjList.get(actualNode);
+
+        Collections.sort(l);
+
+        for (Node n : l) {
             if (!visited[n.getId()]) {
                 parents[n.getId()] = actualNode;
                 dfs(n, visited, parents);
             }
         }
     }
-
 
     @Override
     public String toDotString() {
@@ -245,7 +255,7 @@ public class ResidualGraf extends Graf {
         }
         int minimalWeight = getMinimalWeight(parcouredEdges);
         dot += (parcouredEdges.isEmpty() ? "" : "t]\n");
-        dot += (parcouredEdges.isEmpty() ? "Previous flow was maximum." : "Residual capacity: " + minimalWeight + "\";\n");
+        dot += (parcouredEdges.isEmpty() ? "Previous flow was maximum.\n" : "Residual capacity: " + minimalWeight + "\";\n");
 
 
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
@@ -264,12 +274,19 @@ public class ResidualGraf extends Graf {
                 }
                 dot += "];\n";
 
-
             }
-
         }
 
-
         return dot += "}";
+    }
+
+    public void updateFlowFromResidual(Flow f){
+        List<Edge> augmentingPath = getAugmentingPathDFS();
+        for(Edge e : augmentingPath){
+            double value = -(getMinimalWeight(augmentingPath) - f.getEdgeFlowValue(new Node(e.getTo()), new Node(e.getFrom())));
+
+            f.setEdgeFlowValue(new Node(e.getFrom()), new Node(e.getTo()), (getMinimalWeight(augmentingPath) + f.getEdgeFlowValue(new Node(e.getFrom()), new Node(e.getTo()))));
+            f.setEdgeFlowValue(new Node(e.getTo()), new Node(e.getFrom()), value);
+        }
     }
 }

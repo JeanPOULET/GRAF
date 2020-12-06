@@ -142,7 +142,6 @@ public class Main {
                 myGraf = new ResidualGraf();
                 weighted = true;
                 break;
-
         }
     }
 
