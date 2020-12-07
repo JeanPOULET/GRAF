@@ -47,6 +47,7 @@ public class Main {
         System.out.println("Press 10 : compute the transitive closure of the graf ");
         System.out.println("Press 11 : traverse the graf in DSF ");
         System.out.println("Press 12 : traverse the graf in BSF ");
+        System.out.println("Press 13 : select augmenting path ");
         System.out.println("Press q to quit !");
 
     }
@@ -89,8 +90,11 @@ public class Main {
             case "11":
                 traverseDFS();
                 break;
-            default:
+            case "12":
                 traverseBFS();
+                break;
+            default:
+                getAugmentingPath();
                 break;
         }
     }
@@ -103,7 +107,6 @@ public class Main {
         System.out.println("Press 5 : Create a random sparse Graf ");
         System.out.println("Press 6 : Create a random parameterized Graf ");
         System.out.println("Press 7 : Create a flow Graf ");
-        System.out.println("Press 8 : Create a residual Graf ");
         char key = bufferReader.readLine().replaceAll("[^0-9]", "").trim().charAt(0);
         switch (key) {
             case '1':
@@ -134,13 +137,9 @@ public class Main {
                 break;
             case '7':
                 myGraf = new Flow();
-                weighted=true;
+                weighted = true;
                 System.out.println("Your flow graf have been created !");
 
-                break;
-            case '8':
-                myGraf = new ResidualGraf();
-                weighted = true;
                 break;
         }
     }
@@ -247,9 +246,9 @@ public class Main {
             return;
         }
         if (weighted) {
-            if(myGraf instanceof Flow || myGraf instanceof ResidualGraf){
+            if (myGraf instanceof Flow || myGraf instanceof ResidualGraf) {
                 System.out.println(myGraf.toDotString());
-            }else{
+            } else {
                 System.out.println(myGraf.toDotStringWeighted());
             }
 
@@ -261,8 +260,18 @@ public class Main {
     public static void readGrafFromDotFile() throws IOException {
         System.out.println("Please enter your filename (and the path before your file if it not next to the executable) ! It will erase your actual graph !");
         String fileName = bufferReader.readLine().trim();
+        System.out.println("Do you want to import a Flow ? (y/n)");
+        char key = bufferReader.readLine().trim().charAt(0);
+        if (key == 'y') {
+            weighted = true;
+        }
+
         if (weighted) {
-            myGraf = new Graf(fileName, true);
+            if (key == 'y') {
+                myGraf = new Flow(fileName);
+            } else {
+                myGraf = new Graf(fileName, true);
+            }
         } else {
             myGraf = new Graf(fileName);
         }
@@ -320,6 +329,28 @@ public class Main {
         }
         myGraf = myGraf.getTransitiveClosure();
         System.out.println("Your graph is now the transitive closure of himself");
+    }
+
+    public static void getAugmentingPath() throws IOException {
+        if(!(myGraf instanceof Flow)){
+            System.out.println("Your graph isn't a flow network !");
+            return;
+        }
+        System.out.println("Please choose your augmenting path search algorithm ");
+        System.out.println("Press 1 : DFS way ");
+        System.out.println("Press 2 : BFS way ");
+
+        char key = bufferReader.readLine().trim().charAt(0);
+
+        switch (key){
+            case '1':
+                ((Flow)myGraf).FordFulkersonAlgorithm(AugmentingType.DFS);
+                break;
+            default:
+                ((Flow)myGraf).FordFulkersonAlgorithm(AugmentingType.BFS);
+                break;
+
+        }
     }
 
 

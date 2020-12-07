@@ -1,5 +1,6 @@
 package m1graf2020;
 
+import m1graf2020.maximumflow.AugmentingType;
 import m1graf2020.maximumflow.Flow;
 import m1graf2020.maximumflow.ResidualGraf;
 import m1graf2020.pw2.Edge;
@@ -37,7 +38,7 @@ public class GrafTest {
 
 
     @Before
-    public void setup()  {
+    public void setup() {
         gTest = new Graf(2, 3, 0, 4, 5, 0, 0, 3, 5, 0, 6, 7, 0, 0, 6, 0, 7, 0);
         g = new Graf();
         n1 = new Node(1);
@@ -97,7 +98,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsNodeWithNode()  {
+    public void testExistsNodeWithNode() {
         g.addNode(n1);
         for (Node myNode : g.getNodes()) {
             Assert.assertEquals((myNode.getId() == n1.getId()), g.existsNode(n1));
@@ -105,7 +106,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsNodeWithInt()  {
+    public void testExistsNodeWithInt() {
         g.addNode(1);
 
         for (Node myNode : g.getNodes()) {
@@ -114,7 +115,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetNodeWithInt()  {
+    public void testGetNodeWithInt() {
         g.addNode(n1);
         Node newNode = g.getNode(1);
         Assert.assertSame(newNode, n1);
@@ -122,7 +123,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddNodeWithInt()  {
+    public void testAddNodeWithInt() {
         g.addNode(1);
         Assert.assertEquals(1, g.nbNodes());
         Assert.assertTrue(g.existsNode(n1));
@@ -131,7 +132,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddNodeWithNode()  {
+    public void testAddNodeWithNode() {
         g.addNode(n1);
         Assert.assertEquals(1, g.nbNodes());
         Assert.assertTrue(g.existsNode(n1));
@@ -141,7 +142,7 @@ public class GrafTest {
 
     @Test
     @Ignore
-    public void testAddNodeExceptionWithInt()  {
+    public void testAddNodeExceptionWithInt() {
         g.addNode(2);
         g.addNode(2);
         //g.printMap();
@@ -149,7 +150,7 @@ public class GrafTest {
 
     @Test
     @Ignore
-    public void testAddNodeExceptionWithNode()  {
+    public void testAddNodeExceptionWithNode() {
         g.addNode(n1);
         g.addNode(n1);
         //g.printMap();
@@ -170,7 +171,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithNode()  {
+    public void testRemoveNodeWithNode() {
         g.addNode(n1);
         Assert.assertTrue(g.existsNode(n1));
         g.removeNode(n1);
@@ -178,7 +179,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithNode2()  {
+    public void testRemoveNodeWithNode2() {
         g.addNode(1);
         Assert.assertTrue(g.existsNode(1));
         g.removeNode(n1);
@@ -186,7 +187,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithInt()  {
+    public void testRemoveNodeWithInt() {
         g.addNode(1);
         Assert.assertTrue(g.existsNode(1));
         g.removeNode(1);
@@ -194,7 +195,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNodeWithInt2()  {
+    public void testRemoveNodeWithInt2() {
         g.addNode(n1);
         Assert.assertTrue(g.existsNode(n1));
         g.removeNode(1);
@@ -202,7 +203,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveNotExisting()  {
+    public void testRemoveNotExisting() {
         g.addNode(n1);
         //g.printMap();
         Assert.assertFalse(g.existsNode(n2));
@@ -213,7 +214,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetSuccessorWithNode()  {
+    public void testGetSuccessorWithNode() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -234,7 +235,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetSuccessorWithInt()  {
+    public void testGetSuccessorWithInt() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -255,7 +256,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetSuccessorInexistantWithNode()  {
+    public void testGetSuccessorInexistantWithNode() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -269,7 +270,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetSuccessorInexistantWithInt()  {
+    public void testGetSuccessorInexistantWithInt() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -310,7 +311,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAdjacentWithNode()  {
+    public void testAdjacentWithNode() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -325,7 +326,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAdjacentWithInt()  {
+    public void testAdjacentWithInt() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -340,7 +341,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAdjacentWithNodeNonDirected()  {
+    public void testAdjacentWithNodeNonDirected() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -354,7 +355,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetAllNodes()  {
+    public void testGetAllNodes() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -371,7 +372,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testNbEdges()  {
+    public void testNbEdges() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -391,7 +392,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgWitheNode()  {
+    public void testExistsEdgWitheNode() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -406,7 +407,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgeWithInt()  {
+    public void testExistsEdgeWithInt() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -421,7 +422,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgeWithEdge()  {
+    public void testExistsEdgeWithEdge() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -437,7 +438,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testExistsEdgeWithEdgeAlreadyCreated()  {
+    public void testExistsEdgeWithEdgeAlreadyCreated() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -455,7 +456,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddEdgesWithNode()  {
+    public void testAddEdgesWithNode() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -468,7 +469,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddEdgesWithInt()  {
+    public void testAddEdgesWithInt() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -482,7 +483,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testAddEdgesWithEdges()  {
+    public void testAddEdgesWithEdges() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -496,7 +497,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveEdgeWithNode()  {
+    public void testRemoveEdgeWithNode() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -515,7 +516,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveEdgeWithInt()  {
+    public void testRemoveEdgeWithInt() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -534,7 +535,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testRemoveEdgeWithEdge()  {
+    public void testRemoveEdgeWithEdge() {
         g.addNode(n1);
         g.addNode(n2);
         g.addNode(n3);
@@ -730,14 +731,14 @@ public class GrafTest {
     }
 
     @Test
-    public void testImportDotFileWithComa() throws IOException{
+    public void testImportDotFileWithComa() throws IOException {
         Graf withComa = new Graf("src/main/resources/exempleProfWithComa.dot");
         withComa.printMap();
 
     }
 
     @Test
-    public void testDFS()  {
+    public void testDFS() {
         Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
         //grafFromExample.getDFS().forEach(System.out::println);
         List<Node> lsWaited = new ArrayList<>();
@@ -777,7 +778,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testBFS()  {
+    public void testBFS() {
         Graf grafFromExample = new Graf(2, 4, 0, 0, 6, 0, 2, 3, 5, 8, 0, 0, 4, 7, 0, 3, 0, 7, 0);
         List<Node> lsWaited = new ArrayList<>();
         lsWaited.add(new Node(1));
@@ -845,7 +846,7 @@ public class GrafTest {
     }
 
     @Test
-    public void testGetTransitiveClosur()  {
+    public void testGetTransitiveClosur() {
         //g3PasEsport.printMap();
         Graf gTransi = g3PasEsport.getTransitiveClosure();
 
@@ -885,11 +886,11 @@ public class GrafTest {
 
     @Test
     public void testWeighted() throws IOException {
-        Graf graf = new Graf("src/main/resources/exempleWeighted.dot",true);
+        Graf graf = new Graf("src/main/resources/exempleWeighted.dot", true);
     }
 
     @Test
-    public void testFlowToResidual(){
+    public void testFlowToResidual() {
         Flow f = new Flow();
 
         ResidualGraf rg = f.createResidualFromFlow();
@@ -897,28 +898,28 @@ public class GrafTest {
     }
 
     @Test
-    public void testResidualToFlow(){
+    public void testResidualToFlow() {
         Flow f = new Flow();
         ResidualGraf rg = f.createResidualFromFlow();
-        //System.out.println(rg.toDotString());
-        rg.updateFlowFromResidual(f);
-        //System.out.println(f.toDotString());
+        System.out.println(rg.toDotString());
+        rg.updateFlowFromResidual(f, AugmentingType.BFS);
+        System.out.println(f.toDotString());
         ResidualGraf rg2 = f.createResidualFromFlow();
-        //System.out.println(rg2.toDotString());
-        rg2.updateFlowFromResidual(f);
-        //System.out.println(f.toDotString(2));
+        System.out.println(rg2.toDotString());
+        rg2.updateFlowFromResidual(f, AugmentingType.BFS);
+        System.out.println(f.toDotString(2));
         ResidualGraf rg3 = f.createResidualFromFlow();
-        //System.out.println(rg3.toDotString());
-        rg3.updateFlowFromResidual(f);
-        //System.out.println(f.toDotString(2));
+        System.out.println(rg3.toDotString());
+        rg3.updateFlowFromResidual(f, AugmentingType.BFS);
+        System.out.println(f.toDotString(2));
         ResidualGraf rg4 = f.createResidualFromFlow();
         System.out.println(rg4.toDotString());
     }
 
     @Test
-    public void testMaximumFlowLecture(){
+    public void testMaximumFlowLecture() throws IOException {
         Flow f = new Flow();
-        f.FordFulkersonAlgorithm();
+        f.FordFulkersonAlgorithm(AugmentingType.BFS);
         System.out.println(f.toDotString());
     }
 }

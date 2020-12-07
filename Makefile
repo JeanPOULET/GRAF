@@ -1,4 +1,5 @@
-UNAME := $(shell uname)
+UNAME := $(shell uname -s)
+SHELL=CMD
 ifeq ($(UNAME), Linux)
 DIREXIST = if test -d build; then echo 0;else mkdir build; fi
 REMOVE = rm -rf build
