@@ -1,4 +1,4 @@
-package m1graf2020.maximumflow;
+package maximumflow;
 
 public enum AugmentingType {
     DFS,

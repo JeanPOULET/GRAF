@@ -1,8 +1,8 @@
-package m1graf2020.maximumflow;
+package maximumflow;
 
-import m1graf2020.pw2.Edge;
-import m1graf2020.pw2.Graf;
-import m1graf2020.pw2.Node;
+import m1graf2020.Edge;
+import m1graf2020.Graf;
+import m1graf2020.Node;
 
 import java.io.*;
 import java.util.*;

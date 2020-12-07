@@ -1,6 +1,6 @@
-package m1graf2020.maximumflow;
+package maximumflow;
 
-import m1graf2020.pw2.Node;
+import m1graf2020.Node;
 
 public class PairFlow implements Comparable<PairFlow> {
 

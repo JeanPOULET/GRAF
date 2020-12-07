@@ -1,14 +1,13 @@
-import javafx.util.Pair;
-import m1graf2020.pw2.*;
-import m1graf2020.maximumflow.*;
+import m1graf2020.*;
+import maximumflow.*;
+import maximumflow.AugmentingType;
+import maximumflow.Flow;
+import maximumflow.ResidualGraf;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.TreeMap;
 
 
 public class Main {

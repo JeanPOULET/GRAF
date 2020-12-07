@@ -1,4 +1,4 @@
-package m1graf2020.pw2;
+package m1graf2020;
 
 import java.io.BufferedReader;
 import java.io.File;

@@ -1,14 +1,13 @@
-package m1graf2020.maximumflow;
+package maximumflow;
 
-import m1graf2020.pw2.Edge;
-import m1graf2020.pw2.Graf;
-import m1graf2020.pw2.Node;
+import m1graf2020.Edge;
+import m1graf2020.Graf;
+import m1graf2020.Node;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ResidualGraf extends Graf {
 

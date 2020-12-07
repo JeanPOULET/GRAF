@@ -1,11 +1,8 @@
 package m1graf2020;
 
-import m1graf2020.maximumflow.AugmentingType;
-import m1graf2020.maximumflow.Flow;
-import m1graf2020.maximumflow.ResidualGraf;
-import m1graf2020.pw2.Edge;
-import m1graf2020.pw2.Graf;
-import m1graf2020.pw2.Node;
+import maximumflow.AugmentingType;
+import maximumflow.Flow;
+import maximumflow.ResidualGraf;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;

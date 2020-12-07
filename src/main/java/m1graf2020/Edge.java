@@ -1,4 +1,4 @@
-package m1graf2020.pw2;
+package m1graf2020;
 
 public class Edge implements Comparable<Edge> {
     private int from;
