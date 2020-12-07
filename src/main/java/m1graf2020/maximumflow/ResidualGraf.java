@@ -10,16 +10,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class ResidualGraf extends Graf {
 
     public ResidualGraf() {
-        /*addEdge(1, 2, 8);
-        addEdge(1, 3, 6);
-        addEdge(2, 4, 6);
-        addEdge(3, 4, 10);
-        addEdge(3, 5, 7);
-        addEdge(4, 5, 3);
-        addEdge(4, 6, 4);
-        addEdge(5, 6, 6);*/
     }
-
 
     public List<Edge> getAugmentingPathBFS() {
         List<Node> nodes = getBFS();
