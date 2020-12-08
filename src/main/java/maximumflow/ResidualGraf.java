@@ -96,6 +96,9 @@ public class ResidualGraf extends Graf {
         boolean[] visited = new boolean[256];
         Node[] parents = new Node[adjList.size() + 1];
 
+        Node osef = new Node(-1);
+        Arrays.fill(parents, osef);
+
         LinkedList<Node> queue = new LinkedList<>();
 
         visited[actualNode.getId()] = true;
@@ -114,13 +117,14 @@ public class ResidualGraf extends Graf {
             }
         }
 
+        System.out.println("Parent length:" + parents.length);
 
         int index = parents.length - 1;
         ls.add(actualNode);
         while (!parents[index].equals(firstNode)) {
 
             Node parent = parents[index];
-            if (parent != null) {
+            if (parent.getId() != -1) {
                 ls.add(parent);
                 index = parent.getId();
             } else {
