@@ -144,9 +144,7 @@ public class Flow extends Graf {
                 flow.put(pairReverse, 0);
             });
         });
-
     }
-
 
     @Override
     public String toDotString() {

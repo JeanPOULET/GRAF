@@ -138,7 +138,7 @@ public class Main {
                 myGraf = new Flow();
                 weighted = true;
                 System.out.println("Your flow graf have been created !");
-
+                initialisationFlow();
                 break;
         }
     }
@@ -331,24 +331,41 @@ public class Main {
     }
 
     public static void getAugmentingPath() throws IOException {
-        if(!(myGraf instanceof Flow)){
+        if (!(myGraf instanceof Flow)) {
             System.out.println("Your graph isn't a flow network !");
             return;
         }
+
+        if(((Flow) myGraf).getFlow().isEmpty()){
+            System.out.println("Your flow network is empty !");
+            return;
+        }
+
         System.out.println("Please choose your augmenting path search algorithm ");
         System.out.println("Press 1 : DFS way ");
         System.out.println("Press 2 : BFS way ");
 
         char key = bufferReader.readLine().trim().charAt(0);
 
-        switch (key){
+
+        switch (key) {
             case '1':
-                ((Flow)myGraf).FordFulkersonAlgorithm(AugmentingType.DFS);
+                ((Flow) myGraf).FordFulkersonAlgorithm(AugmentingType.DFS);
                 break;
             default:
-                ((Flow)myGraf).FordFulkersonAlgorithm(AugmentingType.BFS);
+                ((Flow) myGraf).FordFulkersonAlgorithm(AugmentingType.BFS);
                 break;
 
+        }
+    }
+
+    public static void initialisationFlow() throws IOException {
+        System.out.println("Do you want to initialize your flow network ? (y/n)");
+
+        char key = bufferReader.readLine().trim().charAt(0);
+
+        if (key == 'y') {
+            ((Flow) myGraf).initExampleFlow();
         }
     }
 
