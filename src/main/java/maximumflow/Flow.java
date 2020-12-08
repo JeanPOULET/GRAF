@@ -122,8 +122,27 @@ public class Flow extends Graf {
     }
 
     public Flow() {
+        System.out.println("Constructeur");
+        addEdge(1, 2, 8);
+        addEdge(1, 3, 6);
+        addEdge(2, 4, 6);
+        addEdge(3, 4, 10);
+        addEdge(3, 5, 7);
+        addEdge(4, 5, 3);
+        addEdge(4, 6, 4);
+        addEdge(5, 6, 6);
 
+        adjList.forEach((node, nodes) -> {
+            nodes.forEach(edge -> {
+                PairFlow pair = new PairFlow(node, edge);
+                PairFlow pairReverse = new PairFlow(edge, node);
 
+                flow.put(pair, 0);
+                flow.put(pairReverse, 0);
+            });
+        });
+
+        printFlow();
     }
 
     public void initExampleFlow(){
@@ -196,24 +215,6 @@ public class Flow extends Graf {
         str += (adjList.lastKey().equals(value) ? "t" : (value.getId() - 1));
 
         return str;
-    }
-
-    @Override
-    public void addEdge(Node from, Node to, double weight) {
-        super.addEdge(from, to, weight);
-        flow.put(new PairFlow(from, to), 0);
-    }
-
-    @Override
-    public void addEdge(int from, int to, double weight) {
-        super.addEdge(from, to, weight);
-        flow.put(new PairFlow(new Node(from), new Node(to)), 0);
-    }
-
-    @Override
-    public void addEdge(Edge ed) {
-        super.addEdge(ed);
-        flow.put(new PairFlow(ed.getFrom(), ed.getTo()), 0);
     }
 
     public String toDotString(int index) {
