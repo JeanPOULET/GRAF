@@ -889,7 +889,7 @@ public class GrafTest {
     @Test
     public void testFlowToResidual() {
         Flow f = new Flow();
-
+        f.initExampleFlow();
         ResidualGraf rg = f.createResidualFromFlow();
         System.out.println(rg.toDotString());
     }
@@ -897,6 +897,7 @@ public class GrafTest {
     @Test
     public void testResidualToFlow() {
         Flow f = new Flow();
+        f.initExampleFlow();
         ResidualGraf rg = f.createResidualFromFlow();
         System.out.println(rg.toDotString());
         rg.updateFlowFromResidual(f, AugmentingType.BFS);
@@ -916,6 +917,7 @@ public class GrafTest {
     @Test
     public void testMaximumFlowLecture() throws IOException {
         Flow f = new Flow();
+        f.initExampleFlow();
         f.FordFulkersonAlgorithm(AugmentingType.BFS);
         System.out.println(f.toDotString());
     }

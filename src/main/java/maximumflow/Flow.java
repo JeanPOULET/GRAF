@@ -122,27 +122,7 @@ public class Flow extends Graf {
     }
 
     public Flow() {
-        System.out.println("Constructeur");
-        addEdge(1, 2, 8);
-        addEdge(1, 3, 6);
-        addEdge(2, 4, 6);
-        addEdge(3, 4, 10);
-        addEdge(3, 5, 7);
-        addEdge(4, 5, 3);
-        addEdge(4, 6, 4);
-        addEdge(5, 6, 6);
 
-        adjList.forEach((node, nodes) -> {
-            nodes.forEach(edge -> {
-                PairFlow pair = new PairFlow(node, edge);
-                PairFlow pairReverse = new PairFlow(edge, node);
-
-                flow.put(pair, 0);
-                flow.put(pairReverse, 0);
-            });
-        });
-
-        printFlow();
     }
 
     public void initExampleFlow(){
@@ -164,6 +144,7 @@ public class Flow extends Graf {
                 flow.put(pairReverse, 0);
             });
         });
+
     }
 
 
@@ -269,6 +250,16 @@ public class Flow extends Graf {
     }
 
     public void FordFulkersonAlgorithm(AugmentingType type) throws IOException {
+        adjList.forEach((node, nodes) -> {
+            nodes.forEach(edge -> {
+                PairFlow pair = new PairFlow(node, edge);
+                PairFlow pairReverse = new PairFlow(edge, node);
+
+                flow.put(pair, 0);
+                flow.put(pairReverse, 0);
+            });
+        });
+
         int index = 1;
         this.toDotFile("flow" + index + ".gv", index);
         ResidualGraf rg = createResidualFromFlow();
