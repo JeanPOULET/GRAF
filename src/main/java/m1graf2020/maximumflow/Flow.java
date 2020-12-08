@@ -32,15 +32,15 @@ public class Flow extends Graf {
     }
 
     public Flow() {
-        /*addEdge(new Edge(1, 2, 8));
+        addEdge(new Edge(1, 2, 8));
         addEdge(new Edge(1, 3, 6));
         addEdge(new Edge(2, 4, 6));
         addEdge(new Edge(3, 4, 10));
         addEdge(new Edge(3, 5, 7));
         addEdge(new Edge(4, 5, 3));
         addEdge(new Edge(4, 6, 4));
-        addEdge(new Edge(5, 6, 6));*/
-        addEdge(1, 2, 16);
+        addEdge(new Edge(5, 6, 6));
+        /*addEdge(1, 2, 16);
         addEdge(1, 3, 13);
         addEdge(2, 3, 10);
         addEdge(2, 4, 12);
@@ -49,7 +49,7 @@ public class Flow extends Graf {
         addEdge(4, 3, 9);
         addEdge(4, 6, 20);
         addEdge(5, 4, 7);
-        addEdge(5, 6, 4);
+        addEdge(5, 6, 4);*/
 
 
         adjList.forEach((node, nodes) -> {
@@ -165,6 +165,7 @@ public class Flow extends Graf {
         while(!rg.getAugmentingPathDFS().isEmpty()){
             rg.updateFlowFromResidual(this);
             rg = createResidualFromFlow();
+            System.out.println(rg.toDotString());
         }
     }
 
