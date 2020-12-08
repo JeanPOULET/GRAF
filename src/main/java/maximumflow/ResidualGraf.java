@@ -1,11 +1,13 @@
-package m1graf2020.maximumflow;
+package maximumflow;
 
-import m1graf2020.pw2.Edge;
-import m1graf2020.pw2.Graf;
-import m1graf2020.pw2.Node;
+import m1graf2020.Edge;
+import m1graf2020.Graf;
+import m1graf2020.Node;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class ResidualGraf extends Graf {
 
@@ -37,8 +39,8 @@ public class ResidualGraf extends Graf {
 
     public int getMinimalWeight(List<Edge> edges) {
         int minimalWeight = -1;
-        if(!edges.isEmpty()){
-            minimalWeight= (int) edges.get(0).getWeight();
+        if (!edges.isEmpty()) {
+            minimalWeight = (int) edges.get(0).getWeight();
             for (Edge e : edges) {
                 int actualWeight = (int) e.getWeight();
                 if (actualWeight != 0) {
@@ -115,20 +117,18 @@ public class ResidualGraf extends Graf {
 
         int index = parents.length - 1;
         ls.add(actualNode);
-        while (true) {
-            if (parents[index].equals(firstNode)) {
-                ls.add(firstNode);
-                break;
-            }
+        while (!parents[index].equals(firstNode)) {
 
             Node parent = parents[index];
             if (parent != null) {
                 ls.add(parent);
                 index = parent.getId();
             } else {
+                ls = new ArrayList<>();
                 break;
             }
         }
+        ls.add(firstNode);
 
         Collections.reverse(ls);
     }
@@ -153,7 +153,7 @@ public class ResidualGraf extends Graf {
         int index = parents.length - 1;
 
         nodes.add(adjList.lastKey());
-        while(!parents[index].equals(adjList.firstKey())) {
+        while (!parents[index].equals(adjList.firstKey())) {
 
             Node parent = parents[index];
             if (parent.getId() != -1) {
@@ -222,7 +222,6 @@ public class ResidualGraf extends Graf {
             str += (value.getId() - 1);
         }
 
-
         return str;
     }
 
@@ -231,9 +230,9 @@ public class ResidualGraf extends Graf {
 
         String dot = "# DOT Representation for the graph";
         dot += "\n\n digraph residualGraph" + index + "{ \n";
-        dot += "rankdir=\"LR\"\n";
-        dot += "label=\"(" + index + ") residual graph.\n";
-        dot += "\n Augmenting path : " + (parcouredEdges.isEmpty() ? "none.\n" : "[");
+        dot += " rankdir=\"LR\"\n";
+        dot += " label=\"(" + index + ") residual graph.\n";
+        dot += " Augmenting path : " + (parcouredEdges.isEmpty() ? "none.\n" : "[");
 
         for (Edge e : parcouredEdges) {
             if (e.getFrom() - 1 == 0) {
@@ -245,20 +244,22 @@ public class ResidualGraf extends Graf {
 
         }
         int minimalWeight = getMinimalWeight(parcouredEdges);
-        dot += (parcouredEdges.isEmpty() ? "" : "t]\n");
-        dot += (parcouredEdges.isEmpty() ? "Previous flow was maximum.\n" : "Residual capacity: " + minimalWeight + "\";\n");
-
+        dot += (parcouredEdges.isEmpty() ? "" : "t] \n");
+        dot += (parcouredEdges.isEmpty() ? "Previous flow was maximum.\";\n" : "Residual capacity: " + minimalWeight + "\";\n");
+        boolean firstColor = true;
 
         for (Map.Entry<Node, List<Node>> entry : adjList.entrySet()) {
             for (Node edgeNode : entry.getValue()) {
                 int edgeWeight = getWeight(entry.getKey(), edgeNode);
                 dot += "\t" + computeLine(entry.getKey(), edgeNode);
                 dot += " [label=\"" + edgeWeight + "\"";
-                if (minimalWeight == edgeWeight) {
-                    dot += ", fontcolor=\"red\"";
-                }
+
                 for (Edge e : parcouredEdges) {
                     if (edgeNode.getId() == e.getTo() && entry.getKey().getId() == e.getFrom()) {
+                        if (minimalWeight == edgeWeight && firstColor) {
+                            dot += ", fontcolor=\"red\"";
+                            firstColor = false;
+                        }
                         dot += ", penwitdh=3, color=\"blue\"";
 
                     }
@@ -268,12 +269,35 @@ public class ResidualGraf extends Graf {
             }
         }
 
-        return dot += "}";
+        return dot + "}";
     }
 
-    public void updateFlowFromResidual(Flow f){
-        List<Edge> augmentingPath = getAugmentingPathDFS();
-        for(Edge e : augmentingPath){
+    /**
+     * Will write into the specified file the dot representation of the graf
+     *
+     * @param fileName file to write the dot representation
+     * @throws IOException possible I/O exception with file
+     */
+    public void toDotFile(String fileName, int index) throws IOException {
+        File file = new File(fileName);
+        FileWriter fWriter = new FileWriter(file);
+        fWriter.write(toDotString(index));
+        fWriter.close();
+    }
+
+    public void updateFlowFromResidual(Flow f, AugmentingType type) {
+        List<Edge> augmentingPath;
+
+        switch (type) {
+            case BFS:
+                augmentingPath = getAugmentingPathBFS();
+                break;
+            default:
+                augmentingPath = getAugmentingPathDFS();
+                break;
+        }
+
+        for (Edge e : augmentingPath) {
             double value = -(getMinimalWeight(augmentingPath) - f.getEdgeFlowValue(new Node(e.getTo()), new Node(e.getFrom())));
 
             f.setEdgeFlowValue(new Node(e.getFrom()), new Node(e.getTo()), (getMinimalWeight(augmentingPath) + f.getEdgeFlowValue(new Node(e.getFrom()), new Node(e.getTo()))));
